@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional portfolio website showcasing my work and experience">
+    <title>Portfolio | Kerlyn Difo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- Navbar -->
+            <div class="nav-content">
+                <div class="logo">
+                    <a href="#home">Kerlyn</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" aria-label="Home section">Home</a></li>
+                    <li><a href="#about" aria-label="About section">About</a></li>
+                    <li><a href="#experience" aria-label="Experience section">Experience</a></li>
+                    <li><a href="#projects" aria-label="Projects section">Projects</a></li>
+                    <li><a href="#contact" aria-label="Contact section">Contact</a></li>
+                </ul>
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <div class="container">
+                <div class="about-image">
+                    <img src="assets/profile.jpeg" alt="Profile picture" class="profile-img">
+                </div>
+                <h1>Hello, I'm Kerlyn Difo</h1>
+                <p class="lead">Data Engineer | Full Stack Developer</p>
+                <a href="#contact" class="cta-button">Get in Touch</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <div class="quick-info">
+                        <a href="https://www.qc.cuny.edu/" class="quick-info-item" target="_blank">
+                            <i class="fas fa-university"></i>
+                            Queens College
+                        </a>
+                        <a href="#" class="quick-info-item">
+                            <i class="fas fa-code"></i>
+                            Data Engineer
+                        </a>
+                        <a href="#" class="quick-info-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            Senior
+                        </a>
+                        <a href="#" class="quick-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            New York
+                        </a>
+                    </div>
+                    <div class="about-text">
+                        <p>I'm Kerlyn Difo, a <b>data engineer</b>, software enthusiast and current <b>Queens College Senior</b>, passionate about leveraging data to solve complex problems.</p>
+                        <p>
+                            With a strong foundation in <b>data science</b>, and <b>software engineering</b> I've honed my expertise through hands-on experiences, 
+                            including a part-time role as a <b>Data Engineer at Columbia University Irving Medical Center</b> and impactful projects that bridge technical 
+                            innovation with real-world applications. My professional journey has been shaped by a commitment to precision and scalability. 
+                        </p>
+                        <p>
+                            Major leadership roles like being a <b>LifeSci NYC Technical Campus Ambassador</b>, <b>Journalist for the Queens College Code for All Club</b>, and contributions to <b>hackathon-winning projects </b>
+                            are a testament to my dedication to innovation and community engagement!
+                        </p>
+                        <p>
+                            My goal is to continue driving innovation in data engineering and software while building systems that make data actionable, reliable, and accessible!</p>
+                    </div>
+                    <div class="skills">
+                        <h3>Skills</h3>
+                        <ul class="skills-list">
+                            <li>Backend Development: <b>Python</b>, <b>TypeScript</b>, Node.js, Java, C++</li>
+                            <li>Data Engineering: <b>PostgreSQL</b>, <b>SQL</b>, MongoDB</li>
+                            <li>Data Visualization: <b>R</b>, <b>Jupyter Notebook</b>, Tableau</li>
+                            <li>Containerization: Docker</li>
+                            <li>Cloud Computing: AWS</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="container">
+                <h2>Experience</h2>
+                <div class="timeline">
+                    <!-- Add your experience items here -->
+                    <div class="timeline-item">
+                        <h3>Data Engineer</h3>
+                        <h4>Columbia University Irving Medical Center</h4>
+                        <p class="timeline-date">June 2024 - Present</p>
+                        <p>• Launched a novel tool integrating large metadata from PubMed and dbGaP databases, improving data accessibility for research teams.</p>
+                        <p>• Utilized Web-Scraping, Clustering & Association Rule Mining to enhance data retrieval efficiency by 20%, supporting 15 researchers in genomics research.</p>
+                        <p>• Designed and implemented an Extract-Transform-Load pipeline for the tool to organize and visualize metadata with pandas dataframes, using Tkinter, matplotlib & seaborn for user-friendly displays and visualizations.</p>
+                        <p>• Improved data integration and analysis tools, increasing data processing capacity by 30%</p>
+                        <p>• Applied Python, Jupyter, and Anaconda to create asynchronous solutions that optimized pipeline performance.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>Data Analyst</h3>
+                        <h4>Department of Health & Mental Hygiene</h4>
+                        <p class="timeline-date">June 2022 - August 2022</p>
+                        <p>• Integrated real-time tracking algorithms for vaccine inventory and distribution, increasing resource allocation efficiency by 40%, adopted by over 12 health facilities.</p>
+                        <p>• Enhanced the Covid-19 Vaccination Pediatric Support Program using SQL and Excel to refine vaccine distribution strategies.</p>
+                        <p>• Analyzed substantial medical metadata to boost data accessibility for healthcare professionals by 31%.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>Technical Campus Ambassador</h3>
+                        <h4>LifeSci NYC Internship Program</h4>
+                        <p class="timeline-date">September 2024 - Present</p>
+                        <p>• Led mock technical and behavioral interviews for students aiming to strengthen their skills in the tech industry, ensuring they are well-prepared for real-world scenarios.</p>
+                        <p>• Reviewed and provided actionable feedback on resumes and application materials, helping students craft compelling profiles that increase their chances of securing internships in life sciences and tech fields.</p>
+                        <p>• Facilitated workshops on technical skills and resume building, delivering guidance on the essential skills and best practices students need to showcase in order to align with industry expectations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="assets/MPDS.png" alt="MultiOmic Phenotypic Data Search">
+                        </div>
+                        <div class="project-content">
+                            <h3>MultiOmic Phenotypic Data Search</h3>
+                            <p>• Created a relational tool that uses the E-Utilities API that queries PubMed to find relationships between studies & metadata from its
+                                corresponding dbGaP publications using an <b>Extract-Transform-Load pipeline.</b></p>
+                            <p>• All data was then organized using <b>Pandas</b>. Automated data management with a query-driven model for quick extraction and
+                                visualization using <b>Matplotlib & Seaborn</b>.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">View Project</a>
+                                <a href="#" class="project-link">Source Code (When Public)</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="assets/refuconnect.png" alt="RefuConnect">
+                        </div>
+                        <div class="project-content">
+                            <h3>RefuConnect</h3>
+                            <p>• Developed a multilingual communication platform using <b>ReactJS, ExpressJS, MongoDB, and WebSockets</b>, 
+                                enabling refugees and aid workers to communicate seamlessly across language barriers with real-time translation via the <b>Google Translate API</b>.</p>
+                            <p>• Implemented a real-time chat feature with <b>WebSockets</b>, allowing users to send messages that are automatically translated into the
+                                recipients preferred language on an easy-to-use <b>React</b> front-end.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">View Project</a>
+                                <a href="https://github.com/ehab20011/p-hacks" class="project-link">Source Code</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                
+                <div class="contact-content">
+                    <h2>Contact Me</h2>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </div>
+                    </form>
+                    <div class="social-links">
+                        <a href="https://github.com/KerlynD" aria-label="GitHub profile"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/kerlyn-difo-81059b23b/" aria-label="LinkedIn profile"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Kerlyn Difo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
