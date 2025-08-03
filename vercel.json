@@ -16,19 +16,15 @@
             "dest": "/$1"
         },
         {
-            "src": "/projects/?",
+            "src": "/projects/?$",
             "dest": "/projects.html"
         },
         {
-            "src": "/experience/?",
+            "src": "/experience/?$",
             "dest": "/experience.html"
         },
         {
-            "src": "/",
-            "dest": "/index.html"
-        },
-        {
-            "src": "/(.*)",
+            "src": "/$",
             "dest": "/index.html"
         }
     ]

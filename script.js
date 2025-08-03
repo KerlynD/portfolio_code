@@ -5,6 +5,7 @@ const icon = themeToggle.querySelector('i');
 
 // Check for saved theme preference or default to dark mode
 const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
 body.setAttribute('data-theme', savedTheme);
 updateThemeIcon(savedTheme);
 
@@ -13,6 +14,7 @@ themeToggle.addEventListener('click', () => {
     const currentTheme = body.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
+    document.documentElement.setAttribute('data-theme', newTheme);
     body.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
