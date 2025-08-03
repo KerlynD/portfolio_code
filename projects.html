@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kerlyn Difo - Projects Portfolio">
+    <title>Projects | Kerlyn Difo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/jpeg" href="assets/profile.jpeg">
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="logo">
+                    <a href="index.html">~</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html" class="active">Projects</a></li>
+                    <li><a href="experience.html">Experience</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Projects</h1>
+                <p class="page-description">
+                    A collection of projects I've worked on, ranging from data engineering pipelines to full-stack applications. 
+                    Each project represents a unique challenge and learning opportunity.
+                </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <div class="container">
+                <div class="projects-grid">
+                    <!-- MultiOmic Phenotypic Data Search -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="assets/MPDS.png" alt="MultiOmic Phenotypic Data Search Interface">
+                        </div>
+                        <div class="project-content">
+                            <h3>MultiOmic Phenotypic Data Search</h3>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">AWS</span>
+                                <span class="tag">Pandas</span>
+                                <span class="tag">ETL</span>
+                            </div>
+                            <p>Created a comprehensive relational tool that uses the E-Utilities API to query PubMed and find relationships between studies and metadata from corresponding dbGaP publications using an Extract-Transform-Load pipeline.</p>
+                            <ul class="project-details">
+                                <li>• Unifies study, sample, and assay records from PubMed, GEO, ENA, dbGaP, and BioStudies into a single searchable schema</li>
+                                <li>• Orchestrated an asynchronous ingestion layer (aiohttp + asyncio) and vectorized clustering logic, shrinking metadata harvest time from 60 min to < 8 min</li>
+                                <li>• Built a fault-tolerant ETL pipeline on AWS (EC2 + S3, IAM-scoped roles, CloudWatch alerts) that streams multi-GB FTP payloads directly into object storage</li>                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/KerlynD/MultiOmic_Phenotypic_Data_Search" class="project-btn secondary">
+                                    <i class="fab fa-github"></i> Source Code (Private)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discord Job Tracker Bot -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <img src="assets/project_photos/discordbot.jpg" alt="Discord Bot Icon" class="project-icon-image">
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Discord Job Tracker Bot</h3>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Discord.py</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">API</span>
+                            </div>
+                            <p>Developed a Discord bot that tracks job applications and provides updates on the status of applications.</p>
+                            <ul class="project-details">
+                                <li>• Built a REST API using Flask and SQLite to store job application data</li>
+                                <li>• Implemented a Discord bot using Discord.py that allows users to track their job applications</li>
+                                <li>• Integrated options like update, export, list by company, and list by status</li>
+                                <li>• Implemented a Discord bot using Discord.py that allows users to track their job applications</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/KerlynD/discord-job-tracker-bot" class="project-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Use Bot
+                                </a>
+                                <a href="https://github.com/KerlynD/discord-job-tracker-bot" class="project-btn secondary" target="_blank">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Code Whisperer-->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <img src="assets/project_photos/codewhisperer.jpg" alt="Code Whisperer Icon" class="project-icon-image">
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Code Whisperer</h3>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Faster-Whisper</span>
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">VSCode API</span>
+                                <span class="hackathon">HackKnight 2025 Winner: Best Software</span>
+                            </div>
+                            <p>Developed a VSCode extension that uses Faster-Whisper to transcribe code in real-time, providing instant feedback and suggestions for improvements.</p>
+                            <ul class="project-details">
+                                <li>• Implemented a VSCode extension that uses OpenAI's API to type your code for you</li>
+                                <li>• Integrated Faster-Whisper for real-time transcription of code</li>
+                                <li>• Desgined a user friendly website for the extension</li>
+                                <li>• Added features like switching between lines, adjusting already typed code, and more</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://devpost.com/software/code-whisperer" class="project-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> DEVPOST
+                                </a>
+                                <a href="https://github.com/KerlynD/code-whisperer" class="project-btn secondary" target="_blank">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RefuConnect -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="assets/refuconnect.png" alt="RefuConnect Communication Platform">
+                        </div>
+                        <div class="project-content">
+                            <h3>RefuConnect</h3>
+                            <div class="project-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">WebSockets</span>
+                                <span class="hackathon">HopHacks 2024 Winner: Bloomberg Track</span>
+                            </div>
+                            <p>Developed a multilingual communication platform using ReactJS, ExpressJS, MongoDB, and WebSockets, enabling refugees and aid workers to communicate seamlessly across language barriers with real-time translation.</p>
+                            <ul class="project-details">
+                                <li>• Implemented real-time chat feature with WebSockets for instant communication</li>
+                                <li>• Integrated Google Translate API for automatic message translation</li>
+                                <li>• Built responsive React front-end with intuitive user interface</li>
+                                <li>• Designed scalable backend architecture with Express and MongoDB</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://devpost.com/software/refuconnect-t1gu0i" class="project-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> DEVPOST
+                                </a>
+                                <a href="https://github.com/ehab20011/p-hacks" class="project-btn secondary" target="_blank">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Website -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <img src="assets/project_photos/portfolio.png" alt="Portfolio Website Icon" class="project-icon-image">
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Personal Portfolio Website</h3>
+                            <div class="project-tags">
+                                <span class="tag">HTML</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Responsive</span>
+                            </div>
+                            <p>Designed and developed a modern, responsive portfolio website showcasing my projects and experience with clean UI/UX design principles.</p>
+                            <ul class="project-details">
+                                <li>• Implemented responsive design with CSS Grid and Flexbox</li>
+                                <li>• Added dark/light theme toggle with localStorage persistence</li>
+                                <li>• Optimized for performance and accessibility</li>
+                                <li>• Deployed using modern web technologies and best practices</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="index.html" class="project-btn">
+                                    <i class="fas fa-external-link-alt"></i> Live Site
+                                </a>
+                                <a href="https://github.com/KerlynD" class="project-btn secondary" target="_blank">
+                                    <i class="fab fa-github"></i> Source Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text">
+                Made by Kerlyn Difo<br>
+                <span class="footer-note">This portfolio is open source and available on <a href="https://github.com/KerlynD" target="_blank">GitHub</a></span>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
