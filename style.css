@@ -440,7 +440,7 @@ section {
 
 .experience-org {
     font-size: 1rem;
-    color: #38bdf8;
+    color: #319dcc;
     font-weight: 500;
     margin-bottom: 0.25rem;
 }
@@ -506,7 +506,7 @@ section {
 
 .project-placeholder i {
     font-size: 3rem;
-    color: #38bdf8;
+    color: #319dcc;
 }
 
 .project-card .project-content {
@@ -529,7 +529,7 @@ section {
 
 .tag {
     background-color: var(--bg-secondary);
-    color: #38bdf8;
+    color: #319dcc;
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
     font-size: 0.8rem;
@@ -588,7 +588,7 @@ section {
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background-color: #38bdf8;
+    background-color: #319dcc;
     color: white;
     text-decoration: none;
     border-radius: 0.5rem;
@@ -598,7 +598,7 @@ section {
 }
 
 .project-btn:hover {
-    background-color: #0ea5e9;
+    background-color: #319dcc;
     transform: translateY(-1px);
 }
 
@@ -645,7 +645,7 @@ section {
     top: 0.5rem;
     width: 1rem;
     height: 1rem;
-    background-color: #38bdf8;
+    background-color: #319dcc;
     border-radius: 50%;
     border: 3px solid var(--bg-primary);
 }
@@ -664,7 +664,7 @@ section {
 }
 
 .status {
-    background-color: #38bdf8;
+    background-color: #319dcc;
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
@@ -713,7 +713,7 @@ section {
 
 .timeline-content h4 {
     font-size: 1.1rem;
-    color: #38bdf8;
+    color: #319dcc;
     margin-bottom: 1rem;
 }
 
@@ -752,7 +752,7 @@ section {
 
 .tech {
     background-color: var(--bg-primary);
-    color: #38bdf8;
+    color: #319dcc;
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
     font-size: 0.8rem;
@@ -788,7 +788,7 @@ section {
 }
 
 .category-title i {
-    color: #38bdf8;
+    color: #319dcc;
 }
 
 .skills-list {
@@ -809,9 +809,9 @@ section {
 }
 
 .skill-item.featured {
-    background-color: #38bdf8;
+    background-color: #319dcc;
     color: white;
-    border-color: #38bdf8;
+    border-color: #319dcc;
 }
 
 .skill-item:hover {
@@ -824,7 +824,7 @@ section {
 }
 
 .view-all-link {
-    color: #38bdf8;
+    color: #319dcc;
     text-decoration: none;
     font-weight: 500;
     display: inline-flex;
@@ -915,7 +915,7 @@ section {
 
 .achievement-org {
     font-size: 0.9rem;
-    color: #38bdf8;
+    color: #319dcc;
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
@@ -943,14 +943,14 @@ section {
 }
 
 .email-link {
-    color: #38bdf8;
+    color: #319dcc;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .email-link:hover {
-    color: #0ea5e9;
+    color: #319dcc;
 }
 
 .contact-social {
@@ -968,7 +968,7 @@ section {
 }
 
 .social-link:hover {
-    color: #38bdf8;
+    color: #319dcc;
     background-color: var(--bg-primary);
     transform: translateY(-2px);
 }
@@ -993,7 +993,7 @@ footer {
 }
 
 .footer-note a {
-    color: #38bdf8;
+    color: #319dcc;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -1025,7 +1025,7 @@ footer {
 }
 
 .timeline-item::before {
-    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    background: linear-gradient(135deg, #319dcc, #0ea5e9);
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
