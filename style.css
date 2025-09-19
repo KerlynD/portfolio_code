@@ -21,6 +21,13 @@
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Company Brand Colors */
+    --datadog-purple: #904be6;
+    --capitalone-red: #d81a1a;
+    --columbia-blue: #2a8cce;
+    --lifesci-green: #b96a10;
+    --nyc-health-orange: #0b78f5;
 }
 
 /* Dark theme - Blue/teal with orange accents */
@@ -672,6 +679,32 @@ section {
     font-weight: 500;
 }
 
+/* Company-specific status badges */
+.datadog .status {
+    background-color: var(--datadog-purple);
+    color: white;
+}
+
+.capitalone .status {
+    background-color: var(--capitalone-red);
+    color: white;
+}
+
+.columbia .status {
+    background-color: var(--columbia-blue);
+    color: white;
+}
+
+.lifesci .status {
+    background-color: var(--lifesci-green);
+    color: white;
+}
+
+.nyc-health .status {
+    background-color: var(--nyc-health-orange);
+    color: white;
+}
+
 .timeline-content {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 245, 235, 0.8) 100%);
     backdrop-filter: blur(10px);
@@ -717,6 +750,84 @@ section {
     margin-bottom: 1rem;
 }
 
+/* Company-specific styles */
+.datadog h4 {
+    color: var(--datadog-purple) !important;
+}
+
+.capitalone h4 {
+    color: var(--capitalone-red) !important;
+}
+
+.columbia h4 {
+    color: var(--columbia-blue) !important;
+}
+
+.lifesci h4 {
+    color: var(--lifesci-green) !important;
+}
+
+.nyc-health h4 {
+    color: var(--nyc-health-orange) !important;
+}
+
+/* Permanent company-branded cards */
+.datadog .timeline-content {
+    box-shadow: 0 6px 20px rgba(144, 75, 230, 0.12) !important;
+    border: 1px solid rgba(144, 75, 230, 0.25) !important;
+}
+
+.capitalone .timeline-content {
+    box-shadow: 0 6px 20px rgba(250, 26, 37, 0.12) !important;
+    border: 1px solid rgba(250, 26, 37, 0.25) !important;
+}
+
+.columbia .timeline-content {
+    box-shadow: 0 6px 20px rgba(42, 140, 206, 0.12) !important;
+    border: 1px solid rgba(42, 140, 206, 0.25) !important;
+}
+
+.lifesci .timeline-content {
+    box-shadow: 0 6px 20px rgba(185, 106, 16, 0.12) !important;
+    border: 1px solid rgba(185, 106, 16, 0.25) !important;
+}
+
+.nyc-health .timeline-content {
+    box-shadow: 0 6px 20px rgba(11, 120, 245, 0.12) !important;
+    border: 1px solid rgba(11, 120, 245, 0.25) !important;
+}
+
+/* Enhanced hover effects - brighter versions */
+.datadog .timeline-content:hover {
+    box-shadow: 0 10px 30px rgba(144, 75, 230, 0.25) !important;
+    border: 1px solid rgba(144, 75, 230, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.capitalone .timeline-content:hover {
+    box-shadow: 0 10px 30px rgba(250, 26, 37, 0.25) !important;
+    border: 1px solid rgba(250, 26, 37, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.columbia .timeline-content:hover {
+    box-shadow: 0 10px 30px rgba(42, 140, 206, 0.25) !important;
+    border: 1px solid rgba(42, 140, 206, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.lifesci .timeline-content:hover {
+    box-shadow: 0 10px 30px rgba(185, 106, 16, 0.25) !important;
+    border: 1px solid rgba(185, 106, 16, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.nyc-health .timeline-content:hover {
+    box-shadow: 0 10px 30px rgba(11, 120, 245, 0.25) !important;
+    border: 1px solid rgba(11, 120, 245, 0.5) !important;
+    transform: translateY(-2px);
+}
+
 .job-highlights {
     display: flex;
     flex-wrap: wrap;
@@ -758,6 +869,37 @@ section {
     font-size: 0.8rem;
     font-weight: 500;
     border: 1px solid var(--border);
+}
+
+/* Company-specific tech stack items */
+.datadog .tech {
+    color: var(--datadog-purple);
+    border-color: rgba(144, 75, 230, 0.3);
+    background-color: rgba(144, 75, 230, 0.05);
+}
+
+.capitalone .tech {
+    color: var(--capitalone-red);
+    border-color: rgba(250, 26, 37, 0.3);
+    background-color: rgba(250, 26, 37, 0.05);
+}
+
+.columbia .tech {
+    color: var(--columbia-blue);
+    border-color: rgba(42, 140, 206, 0.3);
+    background-color: rgba(42, 140, 206, 0.05);
+}
+
+.lifesci .tech {
+    color: var(--lifesci-green);
+    border-color: rgba(185, 106, 16, 0.3);
+    background-color: rgba(185, 106, 16, 0.05);
+}
+
+.nyc-health .tech {
+    color: var(--nyc-health-orange);
+    border-color: rgba(11, 120, 245, 0.3);
+    background-color: rgba(11, 120, 245, 0.05);
 }
 
 /* Skills Section */
@@ -1002,31 +1144,65 @@ footer {
     color: #0ea5e9;
 }
 
-/* Timeline styling updates */
+/* Timeline styling updates - base styles only */
 .timeline-content {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
     backdrop-filter: blur(10px);
     border-radius: 1rem;
     padding: 2rem;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 4px 15px var(--card-shadow);
+    /* Company-specific borders and shadows are applied via specific classes */
 }
 
 [data-theme="dark"] .timeline-content {
     background: linear-gradient(135deg, rgba(45, 55, 72, 0.9) 0%, rgba(26, 32, 44, 0.8) 100%);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 4px 15px var(--card-shadow);
+    /* Company-specific borders and shadows are applied via specific classes */
 }
 
-/* Timeline line and dots */
+/* Timeline line with smooth company gradient flow */
 .timeline::before {
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.4) 0%, rgba(14, 165, 233, 0.6) 50%, rgba(56, 189, 248, 0.4) 100%);
+    background: linear-gradient(180deg, 
+        var(--datadog-purple) 0%, 
+        var(--datadog-purple) 10%, 
+        var(--capitalone-red) 25%, 
+        var(--capitalone-red) 35%, 
+        var(--columbia-blue) 50%, 
+        var(--columbia-blue) 60%, 
+        var(--lifesci-green) 75%, 
+        var(--lifesci-green) 85%, 
+        var(--nyc-health-orange) 100%);
+    opacity: 0.8;
 }
 
 .timeline-item::before {
     background: linear-gradient(135deg, #319dcc, #0ea5e9);
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+/* Company-specific timeline dots */
+.datadog.timeline-item::before {
+    background: var(--datadog-purple);
+    box-shadow: 0 0 10px rgba(144, 75, 230, 0.4);
+}
+
+.capitalone.timeline-item::before {
+    background: var(--capitalone-red);
+    box-shadow: 0 0 10px rgba(250, 26, 37, 0.4);
+}
+
+.columbia.timeline-item::before {
+    background: var(--columbia-blue);
+    box-shadow: 0 0 10px rgba(91, 164, 214, 0.4);
+}
+
+.lifesci.timeline-item::before {
+    background: var(--lifesci-green);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.nyc-health.timeline-item::before {
+    background: var(--nyc-health-orange);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
 /* Project cards updates */
