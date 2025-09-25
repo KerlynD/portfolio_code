@@ -406,13 +406,8 @@ section {
     background-color: var(--bg-secondary);
     border-radius: 1rem;
     padding: 2rem;
-    border: 1px solid var(--border);
     transition: all 0.3s ease;
-}
-
-.experience-overview-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    /* Company-specific borders and shadows are applied via specific classes */
 }
 
 .experience-icon {
@@ -778,8 +773,8 @@ section {
 }
 
 .capitalone .timeline-content {
-    box-shadow: 0 6px 20px rgba(250, 26, 37, 0.12) !important;
-    border: 1px solid rgba(250, 26, 37, 0.25) !important;
+    box-shadow: 0 6px 20px rgba(216, 26, 26, 0.12) !important;
+    border: 1px solid rgba(216, 26, 26, 0.25) !important;
 }
 
 .columbia .timeline-content {
@@ -805,8 +800,8 @@ section {
 }
 
 .capitalone .timeline-content:hover {
-    box-shadow: 0 10px 30px rgba(250, 26, 37, 0.25) !important;
-    border: 1px solid rgba(250, 26, 37, 0.5) !important;
+    box-shadow: 0 10px 30px rgba(216, 26, 26, 0.25) !important;
+    border: 1px solid rgba(216, 26, 26, 0.5) !important;
     transform: translateY(-2px);
 }
 
@@ -880,8 +875,8 @@ section {
 
 .capitalone .tech {
     color: var(--capitalone-red);
-    border-color: rgba(250, 26, 37, 0.3);
-    background-color: rgba(250, 26, 37, 0.05);
+    border-color: rgba(216, 26, 26, 0.3);
+    background-color: rgba(216, 26, 26, 0.05);
 }
 
 .columbia .tech {
@@ -900,6 +895,83 @@ section {
     color: var(--nyc-health-orange);
     border-color: rgba(11, 120, 245, 0.3);
     background-color: rgba(11, 120, 245, 0.05);
+}
+
+/* Company-specific experience overview cards for index.html */
+.experience-overview-card.datadog {
+    box-shadow: 0 4px 15px rgba(144, 75, 230, 0.12) !important;
+    border: 1px solid rgba(144, 75, 230, 0.25) !important;
+}
+
+.experience-overview-card.datadog .experience-org {
+    color: var(--datadog-purple) !important;
+}
+
+.experience-overview-card.capitalone {
+    box-shadow: 0 4px 15px rgba(216, 26, 26, 0.12) !important;
+    border: 1px solid rgba(216, 26, 26, 0.25) !important;
+}
+
+.experience-overview-card.capitalone .experience-org {
+    color: var(--capitalone-red) !important;
+}
+
+.experience-overview-card.columbia {
+    box-shadow: 0 4px 15px rgba(42, 140, 206, 0.12) !important;
+    border: 1px solid rgba(42, 140, 206, 0.25) !important;
+}
+
+.experience-overview-card.columbia .experience-org {
+    color: var(--columbia-blue) !important;
+}
+
+.experience-overview-card.lifesci {
+    box-shadow: 0 4px 15px rgba(185, 106, 16, 0.12) !important;
+    border: 1px solid rgba(185, 106, 16, 0.25) !important;
+}
+
+.experience-overview-card.lifesci .experience-org {
+    color: var(--lifesci-green) !important;
+}
+
+.experience-overview-card.nyc-health {
+    box-shadow: 0 4px 15px rgba(11, 120, 245, 0.12) !important;
+    border: 1px solid rgba(11, 120, 245, 0.25) !important;
+}
+
+.experience-overview-card.nyc-health .experience-org {
+    color: var(--nyc-health-orange) !important;
+}
+
+/* Enhanced hover effects for experience overview cards */
+.experience-overview-card.datadog:hover {
+    box-shadow: 0 6px 20px rgba(144, 75, 230, 0.2) !important;
+    border: 1px solid rgba(144, 75, 230, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+.experience-overview-card.capitalone:hover {
+    box-shadow: 0 6px 20px rgba(216, 26, 26, 0.2) !important;
+    border: 1px solid rgba(216, 26, 26, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+.experience-overview-card.columbia:hover {
+    box-shadow: 0 6px 20px rgba(42, 140, 206, 0.2) !important;
+    border: 1px solid rgba(42, 140, 206, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+.experience-overview-card.lifesci:hover {
+    box-shadow: 0 6px 20px rgba(185, 106, 16, 0.2) !important;
+    border: 1px solid rgba(185, 106, 16, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+.experience-overview-card.nyc-health:hover {
+    box-shadow: 0 6px 20px rgba(11, 120, 245, 0.2) !important;
+    border: 1px solid rgba(11, 120, 245, 0.4) !important;
+    transform: translateY(-2px);
 }
 
 /* Skills Section */
@@ -1187,7 +1259,7 @@ footer {
 
 .capitalone.timeline-item::before {
     background: var(--capitalone-red);
-    box-shadow: 0 0 10px rgba(250, 26, 37, 0.4);
+    box-shadow: 0 0 10px rgba(216, 26, 26, 0.4);
 }
 
 .columbia.timeline-item::before {
@@ -1264,31 +1336,20 @@ footer {
     border-color: rgba(56, 189, 248, 0.4);
 }
 
-/* Experience overview cards */
+/* Experience overview cards - base styles only */
 .experience-overview-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
     backdrop-filter: blur(10px);
     border-radius: 1rem;
     padding: 2rem;
-    border: 1px solid var(--card-border);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px var(--card-shadow);
-}
-
-.experience-overview-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15);
+    /* Company-specific borders and shadows are applied via specific classes */
 }
 
 [data-theme="dark"] .experience-overview-card {
     background: linear-gradient(135deg, rgba(45, 55, 72, 0.9) 0%, rgba(26, 32, 44, 0.8) 100%);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 4px 15px var(--card-shadow);
-}
-
-[data-theme="dark"] .experience-overview-card:hover {
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+    /* Company-specific borders and shadows are applied via specific classes */
 }
 
 /* Achievement cards */
