@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const style = document.createElement('style');
 style.textContent = `
     .nav-links a.active {
-        color: #38bdf8 !important;
+        color: #ebdbb2 !important;
     }
     
     .nav-links a.active::after {
