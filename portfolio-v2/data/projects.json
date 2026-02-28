@@ -1,0 +1,135 @@
+[
+  {
+    "id": "url-monitor",
+    "name": "URL Monitor",
+    "description": "Distributed URL monitoring system with real-time health checks, custom alerting, and comprehensive Datadog Agent integration for metrics, logs, and distributed tracing.",
+    "shortDescription": "Distributed URL monitoring with real-time health checks and full Datadog Agent integration for metrics, logs, and traces.",
+    "tags": ["Go", "Distributed Systems", "Datadog", "Observability"],
+    "color": "#F0F4FF",
+    "emoji": "🔍",
+    "featured": true,
+    "image": "/assets/project_photos/urlmonitor.png",
+    "links": {
+      "live": "https://url-monitor-gamma.vercel.app",
+      "github": "https://github.com/KerlynD/URL-Monitor"
+    },
+    "details": [
+      "Implemented telemetry pipeline with StatsD metrics for latency/error rates, structured file-based logging with automatic ingestion, and dd-trace-go for request-level tracing",
+      "Containerized with Docker and orchestrated multi-container deployment via Docker Compose and Kubernetes (Minikube)",
+      "Deployed React/TypeScript frontend on Vercel and Go backend on Fly.io"
+    ]
+  },
+  {
+    "id": "mpds",
+    "name": "MultiOmic Phenotypic Data Search",
+    "description": "ETL pipeline querying PubMed & dbGaP with advanced visualization for biomedical researchers.",
+    "shortDescription": "ETL pipeline querying PubMed & dbGaP with advanced visualization for biomedical researchers.",
+    "tags": ["Python", "ETL", "Biomedical", "AWS"],
+    "color": "#F5F0FF",
+    "emoji": "🧬",
+    "featured": true,
+    "image": "/assets/MPDS.png",
+    "links": {
+      "github": "https://github.com/KerlynD/MultiOmic_Phenotypic_Data_Search"
+    },
+    "details": [
+      "Unifies study, sample, and assay records from PubMed, GEO, ENA, dbGaP, and BioStudies into a single searchable schema",
+      "Orchestrated an asynchronous ingestion layer (aiohttp + asyncio) and vectorized clustering logic, shrinking metadata harvest time from 60 min to < 8 min",
+      "Built a fault-tolerant ETL pipeline on AWS (EC2 + S3, IAM-scoped roles, CloudWatch alerts)"
+    ]
+  },
+  {
+    "id": "refuconnect",
+    "name": "RefuConnect",
+    "description": "Real-time multilingual platform connecting refugees with resources. 2nd place at HopHacks.",
+    "shortDescription": "Real-time multilingual platform connecting refugees with resources. 2nd place at HopHacks.",
+    "tags": ["React", "Node.js", "WebSockets", "MongoDB"],
+    "color": "#FFF5F0",
+    "emoji": "🌍",
+    "featured": true,
+    "hackathon": "HopHacks 2024 Winner: Bloomberg Track",
+    "image": "/assets/refuconnect.png",
+    "links": {
+      "devpost": "https://devpost.com/software/refuconnect-t1gu0i",
+      "github": "https://github.com/ehab20011/p-hacks"
+    },
+    "details": [
+      "Implemented real-time chat feature with WebSockets for instant communication",
+      "Integrated Google Translate API for automatic message translation",
+      "Built responsive React front-end with intuitive user interface"
+    ]
+  },
+  {
+    "id": "cuny-calendar",
+    "name": "CUNY to Calendar",
+    "description": "Chrome extension letting CUNY students export class schedules directly to Google Calendar.",
+    "shortDescription": "Chrome extension letting CUNY students export class schedules directly to Google Calendar.",
+    "tags": ["TypeScript", "Chrome Extension", "Web Scraping"],
+    "color": "#F0FFF4",
+    "emoji": "📅",
+    "featured": false,
+    "image": "/assets/project_photos/cunytocalproj.jpeg",
+    "links": {
+      "live": "https://chromewebstore.google.com/detail/cuny-to-calendar/fdghagnokhlejaeplokagpmbhinbhanb",
+      "github": "https://github.com/KerlynD/CUNY-to-Cal"
+    },
+    "details": [
+      "Built a chrome extension that allows CUNY students to easily add their classes to their Google Calendar",
+      "Used ICS library to parse the class schedule",
+      "Integrated custom API to scrape the class schedule"
+    ]
+  },
+  {
+    "id": "code-whisperer",
+    "name": "Code Whisperer",
+    "description": "VSCode extension using Faster-Whisper for real-time code transcription with instant feedback.",
+    "shortDescription": "VSCode extension using Faster-Whisper for real-time code transcription.",
+    "tags": ["Python", "TypeScript", "VSCode API", "Faster-Whisper"],
+    "color": "#FFF0F5",
+    "emoji": "🎤",
+    "featured": false,
+    "hackathon": "HackKnight 2025 Winner: Best Software",
+    "image": "/assets/project_photos/codewhisperer.jpg",
+    "links": {
+      "devpost": "https://devpost.com/software/code-whisperer",
+      "github": "https://github.com/KerlynD/code-whisperer"
+    },
+    "details": [
+      "Implemented a VSCode extension that uses OpenAI's API to type code for you",
+      "Integrated Faster-Whisper for real-time transcription of code",
+      "Added features like switching between lines, adjusting already typed code"
+    ]
+  },
+  {
+    "id": "discord-bot",
+    "name": "Discord Job Tracker Bot",
+    "description": "Discord bot that tracks job applications and provides status updates.",
+    "shortDescription": "Discord bot that tracks job applications and provides status updates.",
+    "tags": ["Python", "Discord.py", "SQLite", "API"],
+    "color": "#F0F4FF",
+    "emoji": "🤖",
+    "featured": false,
+    "image": "/assets/project_photos/discordbot.jpg",
+    "links": {
+      "github": "https://github.com/KerlynD/discord-job-tracker-bot"
+    },
+    "details": [
+      "Built a REST API using Flask and SQLite to store job application data",
+      "Implemented a Discord bot using Discord.py that allows users to track their job applications",
+      "Integrated options like update, export, list by company, and list by status"
+    ]
+  },
+  {
+    "id": "dmq",
+    "name": "Distributed Message Queue",
+    "description": "Kafka-inspired message queue system. Currently in progress — building for scale and reliability.",
+    "shortDescription": "Kafka-inspired message queue system for scale and reliability.",
+    "tags": ["Go", "Distributed Systems", "WIP"],
+    "color": "#FFFBF0",
+    "emoji": "📨",
+    "featured": false,
+    "wip": true,
+    "links": {},
+    "details": []
+  }
+]

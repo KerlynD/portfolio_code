@@ -1,0 +1,158 @@
+.card {
+  border-radius: 20px;
+  padding: 28px 32px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.highlighted {
+  box-shadow: 0 0 0 2px var(--highlight-color, var(--accent)), 0 20px 60px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px var(--highlight-color, var(--accent)), 0 20px 60px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--highlight-color, var(--accent)), 0 20px 60px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.upcomingBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #E8F0FE;
+  color: #4285F4;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.logoImage {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.companyInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.company {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.period {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.role {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.team {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.content {
+  flex: 1;
+}
+
+.description {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.responsibilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.responsibilities li {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 8px;
+  padding-left: 16px;
+  position: relative;
+}
+
+.responsibilities li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px 24px;
+  }
+
+  .role {
+    font-size: 18px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+}

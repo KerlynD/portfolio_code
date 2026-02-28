@@ -1,0 +1,11 @@
+.experienceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .experienceGrid {
+    grid-template-columns: 1fr;
+  }
+}

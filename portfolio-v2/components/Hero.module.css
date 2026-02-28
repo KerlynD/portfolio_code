@@ -1,0 +1,97 @@
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 140px 32px 80px;
+  text-align: center;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E8F5E9;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2E7D32;
+  margin-bottom: 32px;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.headline {
+  font-family: var(--font-serif);
+  font-size: clamp(42px, 8vw, 80px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+}
+
+.accent {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.bio {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 48px;
+  font-weight: 300;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scrollIndicator {
+  margin-top: 72px;
+  color: #CCC;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 20px 60px;
+  }
+
+  .headline {
+    font-size: clamp(32px, 7vw, 48px);
+  }
+
+  .bio {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .scrollIndicator {
+    margin-top: 48px;
+  }
+}

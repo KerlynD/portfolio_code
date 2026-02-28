@@ -1,0 +1,120 @@
+[
+  {
+    "id": "google",
+    "company": "Google",
+    "role": "Software Engineer Intern",
+    "team": "Google Cloud Platform",
+    "period": "May - Aug 2026",
+    "upcoming": true,
+    "color": "#E8F0FE",
+    "accent": "#4285F4",
+    "logo": "/assets/experience_icons/google.png",
+    "logoFallback": "G",
+    "description": "Joining GCP in New York to rewrite hardware health detection libraries from C++ to Go.",
+    "tags": ["Go", "C++", "Cloud Infrastructure"],
+    "highlights": ["Internship", "Backend", "Infrastructure"],
+    "responsibilities": [],
+    "featured": true
+  },
+  {
+    "id": "datadog",
+    "company": "Datadog",
+    "role": "Software Engineer Intern",
+    "team": "Datadog Agent | Log Pipelines",
+    "period": "Jan - Apr 2026",
+    "upcoming": false,
+    "color": "#FFF3E6",
+    "accent": "#632CA6",
+    "logo": "/assets/experience_icons/datadog.png",
+    "logoFallback": "DD",
+    "description": "Implemented disk-backed log buffering ensuring zero data loss during network outages. Worked on compressor failover and log pipeline reliability.",
+    "tags": ["Golang", "Kubernetes", "Data Pipelines", "Agentic Workflows"],
+    "highlights": ["Internship", "Backend", "Agentic Workflows"],
+    "responsibilities": [
+      "Designed and developed a production-ready compressor failover system for the Datadog Agent to eliminate data loss during compression blocking, featuring health monitoring, automatic pipeline failover with less than 1% overhead, and comprehensive telemetry",
+      "Fixed multiple critical bugs in the logs pipeline including metric consistency across TCP/HTTP senders, duplicate log truncation issues, and wildcard file path validation restrictions"
+    ],
+    "featured": true
+  },
+  {
+    "id": "capitalone",
+    "company": "Capital One",
+    "role": "Software Engineer Intern",
+    "team": "Debt Collection Services",
+    "period": "Jun - Aug 2025",
+    "upcoming": false,
+    "color": "#FFE8E8",
+    "accent": "#CC0000",
+    "logo": "/assets/experience_icons/capitalone.jpg",
+    "logoFallback": "C1",
+    "description": "Designed and deployed two serverless REST APIs in Python powering a new Debt Assistance tile across web and mobile.",
+    "tags": ["Python", "Snowflake", "AWS Lambda", "CDK"],
+    "highlights": ["Internship", "Backend", "Software"],
+    "responsibilities": [
+      "Architected a Java Spring Boot microservice that interfaces with Capital One's internal Message Hub API to push real-time and batched settlement offers to customers, automating outreach",
+      "Created a Snowflake SQL + Streams/Tasks pipeline that stitches together customer, balance, and consent data across 3+ schemas, transforms it into JSON payloads, and streams them directly to Message Hub shrinking payload-prep time by ≈ 20%",
+      "Designed and deployed two serverless REST APIs in Python (AWS Lambda + CDK) to power a new 'Debt Assistance' tile in Capital One's web & mobile apps"
+    ],
+    "featured": true
+  },
+  {
+    "id": "columbia",
+    "company": "Columbia University Irving Medical Center",
+    "role": "Data Engineer Intern",
+    "team": "Genomic Data Pipelines",
+    "period": "Jun 2024 - Dec 2025",
+    "upcoming": false,
+    "color": "#EDE7F6",
+    "accent": "#003087",
+    "logo": "/assets/experience_icons/columbia.jpg",
+    "logoFallback": "CU",
+    "description": "Built a full-stack tool unifying biomedical records from PubMed, GEO, ENA, dbGaP and BioStudies into a single searchable schema.",
+    "tags": ["Python", "ETL", "PostgreSQL", "AWS"],
+    "highlights": ["Intern to Part-time", "Full Stack", "Data"],
+    "responsibilities": [
+      "Engineered a full-stack tool that unifies study, sample, and assay records from PubMed, GEO, ENA, dbGaP, and BioStudies into a single searchable schema",
+      "Orchestrated an asynchronous ingestion layer (aiohttp + asyncio) and vectorized clustering logic, shrinking metadata harvest time from 60 min to < 8 min",
+      "Built a fault-tolerant ETL pipeline on AWS (EC2 + S3, IAM-scoped roles, CloudWatch alerts) that streams multi-GB FTP payloads directly into object storage"
+    ],
+    "featured": true
+  },
+  {
+    "id": "lifesci",
+    "company": "LifeSci NYC",
+    "role": "Technical Campus Ambassador",
+    "team": "Ambassador Program",
+    "period": "Sep 2024 - Jun 2025",
+    "upcoming": false,
+    "color": "#FFF8E1",
+    "accent": "#B96A10",
+    "logo": "/assets/experience_icons/lifesci.jpg",
+    "logoFallback": "LS",
+    "description": "Leading technical interviews and workshops for aspiring professionals.",
+    "tags": ["Technical Interviews", "Mentoring", "Workshops"],
+    "highlights": ["Part-time", "Leadership", "Education"],
+    "responsibilities": [
+      "Conducted many mock technical interviews and resume workshops for students pursuing tech careers",
+      "Provided actionable feedback on resumes and application materials to improve students' internship prospects"
+    ],
+    "featured": false
+  },
+  {
+    "id": "nyc-health",
+    "company": "NYC DOHMH",
+    "role": "Data Analyst Intern",
+    "team": "COVID Outreach",
+    "period": "Jun - Aug 2022",
+    "upcoming": false,
+    "color": "#E3F2FD",
+    "accent": "#0B78F5",
+    "logo": "/assets/experience_icons/DOHMH.png",
+    "logoFallback": "NYC",
+    "description": "Enhanced COVID-19 vaccination programs with data-driven strategies.",
+    "tags": ["SQL", "Excel", "Data Analysis"],
+    "highlights": ["Internship", "Public Health", "Analytics"],
+    "responsibilities": [
+      "Optimized vaccine distribution for NYC DOHMH, using SQL & Excel models that reallocated doses 40% more efficiently"
+    ],
+    "featured": false
+  }
+]

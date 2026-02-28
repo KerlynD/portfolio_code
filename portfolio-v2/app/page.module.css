@@ -1,0 +1,48 @@
+.main {
+  padding: 0 48px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.col {
+  flex: 1;
+  min-height: 0;
+}
+
+.projectsSection {
+  margin-top: 64px;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding: 0 20px 32px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .projectsSection {
+    margin-top: 48px;
+  }
+}

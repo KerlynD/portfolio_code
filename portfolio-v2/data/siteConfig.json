@@ -1,0 +1,47 @@
+{
+  "name": "Kerlyn Angel Difo",
+  "shortName": "Angel",
+  "title": "Software Engineer",
+  "email": "difokerlyn19@gmail.com",
+  "location": "New York City 🗽",
+  "school": "CUNY Queens College",
+  "graduationYear": "2027",
+  "currentRole": "Software Engineer Intern at Datadog",
+  "education": "CUNY Queens College, CS '27",
+  "statusMessage": "Open to Summer 2026 roles",
+  "bio": "CS student at CUNY Queens College. Interning at Datadog on the Logs Agent team. Heading to Google Cloud this summer. Passionate about backend systems, distributed infrastructure, and developer tooling.",
+  "aboutDescription": "CS major at CUNY Queens College (class of '27). I lead the newsletter at Code For All with 1,800 members, organize Datadog office tours, and build projects that scratch my own itches. When I'm not coding I'm reading distributed systems papers.",
+  "aboutTagline": "Backend engineer with a love for distributed systems.",
+  "currentlyReading": "Designing Data-Intensive Applications",
+  "links": {
+    "github": "https://github.com/KerlynD",
+    "linkedin": "https://www.linkedin.com/in/kerlyn-difo/",
+    "email": "mailto:difokerlyn19@gmail.com"
+  },
+  "skills": {
+    "languages": ["Go", "Python", "Java", "TypeScript", "C++"],
+    "infrastructure": ["Kubernetes", "AWS", "Docker", "Bazel"],
+    "databases": ["PostgreSQL", "MongoDB", "SQLite", "Snowflake"],
+    "tools": ["Git", "Linux", "CI/CD", "Datadog"]
+  },
+  "achievements": [
+    {
+      "title": "Head of Newsletter",
+      "organization": "Queens College Code for All Club",
+      "description": "Contributing to tech journalism and community engagement initiatives. Writing articles about emerging technologies and industry trends for the college community.",
+      "icon": "/assets/achievement_icons/codeforall.jpg"
+    },
+    {
+      "title": "Computer Science Senior",
+      "organization": "Queens College, CUNY",
+      "description": "Specializing in data engineering and software development with strong academic performance. Active participant in computer science research and projects.",
+      "icon": "graduation"
+    },
+    {
+      "title": "Hackathon Winner",
+      "organization": "Multiple Competitions",
+      "description": "Contributed to hackathon-winning projects including RefuConnect, demonstrating innovation and teamwork in high-pressure development environments.",
+      "icon": "trophy"
+    }
+  ]
+}

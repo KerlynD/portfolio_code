@@ -1,0 +1,43 @@
+.main {
+  padding: 0 48px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  margin-bottom: 48px;
+}
+
+.pageTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.pageDescription {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.section {
+  margin-bottom: 64px;
+}
+
+.experienceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding: 0 20px 32px;
+  }
+
+  .experienceGrid {
+    grid-template-columns: 1fr;
+  }
+}
