@@ -8,6 +8,7 @@
     "upcoming": true,
     "color": "#E8F0FE",
     "accent": "#4285F4",
+    "logoBackground": "#FFFFFF",
     "logo": "/assets/experience_icons/google.png",
     "logoFallback": "G",
     "description": "Joining GCP in New York to rewrite hardware health detection libraries from C++ to Go.",

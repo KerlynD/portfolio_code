@@ -13,6 +13,7 @@ interface Experience {
   upcoming?: boolean
   color: string
   accent: string
+  logoBackground?: string
   logo: string
   logoFallback: string
   description: string
@@ -54,8 +55,8 @@ export default function ExperienceCard({ experience, detailed = false, highlight
       
       <div className={styles.header}>
         <div 
-          className={styles.logo}
-          style={{ background: experience.accent }}
+          className={`${styles.logo} ${experience.logoBackground === '#FFFFFF' || experience.logoBackground === 'white' ? styles.logoWhiteBg : ''}`}
+          style={{ background: experience.logoBackground ?? experience.accent }}
         >
           {experience.logo.startsWith('/') ? (
             <Image 
