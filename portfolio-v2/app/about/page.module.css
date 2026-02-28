@@ -4,7 +4,27 @@
   margin: 0 auto;
 }
 
+.layout {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.sideNav {
+  position: sticky;
+  top: 120px;
+}
+
 .content {
+  min-width: 0;
+}
+
+.aboutSection {
+  margin-bottom: 64px;
+}
+
+.aboutGrid {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 64px;
@@ -72,7 +92,19 @@
     padding: 0 20px 32px;
   }
 
-  .content {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .sideNav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .aboutGrid {
     grid-template-columns: 1fr;
     gap: 32px;
   }

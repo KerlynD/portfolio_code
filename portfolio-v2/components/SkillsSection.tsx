@@ -10,7 +10,7 @@ const skillCategories = [
 
 export default function SkillsSection() {
   return (
-    <section className={styles.section}>
+    <section id="skills" className={styles.section}>
       <div className={styles.header}>
         <h2 className={styles.title}>Skills & Technologies</h2>
       </div>

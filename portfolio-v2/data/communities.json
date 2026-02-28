@@ -1,0 +1,20 @@
+[
+  {
+    "id": "code-for-all",
+    "name": "Code For All",
+    "icon": "/assets/achievement_icons/codeforall.jpg",
+    "socialLink": "",
+    "socialLabel": "",
+    "description": "I lead the newsletter at Queens College's Code For All club with 1,800+ members. We contribute to tech journalism and community engagement writing articles about emerging technologies, organizing workshops, and helping students break into tech.",
+    "images": []
+  },
+  {
+    "id": "colorstack",
+    "name": "ColorStack",
+    "icon": "/assets/achievement_icons/colorstack-icon.png",
+    "socialLink": "",
+    "socialLabel": "",
+    "description": "Community supporting Black and Latinx computer science students in tech to build careers in software engineering.",
+    "images": []
+  }
+]

@@ -1,0 +1,86 @@
+.section {
+  margin-bottom: 64px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 400;
+  margin: 0 0 8px 0;
+}
+
+.resumeLink {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.resumeLink:hover {
+  color: var(--text-primary);
+}
+
+.externalIcon {
+  flex-shrink: 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.logoImage {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.company {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.role {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
