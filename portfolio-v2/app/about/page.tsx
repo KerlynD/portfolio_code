@@ -1,17 +1,16 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Header from '@/components/Header'
-import AboutSideNav from '@/components/AboutSideNav'
-import AboutExperienceSection from '@/components/AboutExperienceSection'
-import CommunitiesSection from '@/components/CommunitiesSection'
-import SkillsSection from '@/components/SkillsSection'
-import FooterMinimal from '@/components/FooterMinimal'
+import Header from '@/components/layout/Header'
+import AboutSideNav from '@/components/navigation/AboutSideNav'
+import AboutExperienceSection from '@/components/sections/AboutExperienceSection'
+import CommunitiesSection from '@/components/sections/CommunitiesSection'
+import FooterMinimal from '@/components/layout/FooterMinimal'
 import siteConfig from '@/data/siteConfig.json'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'About | Kerlyn Difo',
-  description: 'Learn more about Kerlyn Difo, a software engineer passionate about backend systems and distributed infrastructure.',
+  title: 'About | Kerlyn Angel Difo',
+  description: 'Learn more about Kerlyn Angel Difo, a software engineer passionate about backend systems and distributed infrastructure.',
 }
 
 export default function AboutPage() {
@@ -30,8 +29,8 @@ export default function AboutPage() {
               <div className={styles.aboutGrid}>
                 <div className={styles.photoSection}>
                   <Image 
-                    src="/assets/profile.jpg"
-                    alt="Kerlyn Difo"
+                    src="/assets/profile/profile.jpg"
+                    alt="Kerlyn Angel Difo"
                     width={280}
                     height={280}
                     className={styles.photo}
@@ -64,7 +63,6 @@ export default function AboutPage() {
 
             <AboutExperienceSection />
             <CommunitiesSection />
-            <SkillsSection />
           </div>
         </div>
       </main>

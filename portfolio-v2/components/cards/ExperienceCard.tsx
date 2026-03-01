@@ -30,6 +30,7 @@ interface ExperienceCardProps {
 
 export default function ExperienceCard({ experience, detailed = false, highlighted = false }: ExperienceCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
+  const hasImageLogo = experience.logo.startsWith('/')
 
   useEffect(() => {
     if (highlighted && cardRef.current) {
@@ -55,15 +56,15 @@ export default function ExperienceCard({ experience, detailed = false, highlight
       
       <div className={styles.header}>
         <div 
-          className={`${styles.logo} ${experience.logoBackground === '#FFFFFF' || experience.logoBackground === 'white' ? styles.logoWhiteBg : ''}`}
-          style={{ background: experience.logoBackground ?? experience.accent }}
+          className={styles.logo}
+          style={!hasImageLogo ? { background: experience.logoBackground ?? experience.accent } : undefined}
         >
-          {experience.logo.startsWith('/') ? (
+          {hasImageLogo ? (
             <Image 
               src={experience.logo} 
               alt={experience.company}
-              width={28}
-              height={28}
+              width={48}
+              height={48}
               className={styles.logoImage}
             />
           ) : (

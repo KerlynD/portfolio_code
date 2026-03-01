@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p className={styles.text}>
-        Designed & built by Kerlyn Difo · Open source on{' '}
+        Designed & built by Kerlyn Angel Difo · Open source on{' '}
         <Link 
           href="https://github.com/KerlynD" 
           target="_blank"

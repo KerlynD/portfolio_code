@@ -4,6 +4,8 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: default;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -41,11 +43,7 @@
 .content {
   display: flex;
   flex-direction: column;
-}
-
-.emoji {
-  font-size: 28px;
-  margin-bottom: 14px;
+  flex: 1;
 }
 
 .title {
@@ -121,99 +119,40 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-}
-
-.link {
-  font-size: 13px;
-  color: var(--accent);
-  font-weight: 500;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .linkButton {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 16px;
-  background: var(--text-primary);
-  color: white;
-  border-radius: 8px;
+  padding: 0;
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 0;
   font-size: 13px;
   font-weight: 500;
-  transition: transform 0.2s, opacity 0.2s;
+  transition: transform 0.2s, opacity 0.2s, color 0.2s;
 }
 
 .linkButton:hover {
   transform: translateY(-1px);
-  opacity: 0.9;
+  opacity: 1;
+  color: var(--accent);
 }
 
-.linkButtonSecondary {
+.confidentialText {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 8px 16px;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  gap: 6px;
   font-size: 13px;
   font-weight: 500;
-  transition: transform 0.2s, background 0.2s;
+  color: var(--text-secondary);
 }
 
-.linkButtonSecondary:hover {
-  transform: translateY(-1px);
-  background: var(--bg-secondary);
-}
-
-/* Featured card styles */
-.featuredCard {
-  border-radius: 20px;
-  padding: 28px 32px;
-  margin-bottom: 16px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
-  align-items: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.featuredCard:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.09);
-}
-
-.featuredContent {
-  display: flex;
-  flex-direction: column;
-}
-
-.featuredContent .emoji {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.featuredTitle {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: 400;
-  margin-bottom: 10px;
-}
-
-.featuredDescription {
-  font-size: 14px;
-  line-height: 1.75;
-  color: #555;
-  margin-bottom: 16px;
-  max-width: 460px;
-}
-
-.featuredNumber {
-  font-size: 80px;
-  opacity: 0.15;
-  font-weight: 900;
-  color: #4285F4;
-  user-select: none;
+.lockIcon {
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -228,17 +167,5 @@
 
   .title {
     font-size: 18px;
-  }
-
-  .featuredCard {
-    grid-template-columns: 1fr;
-  }
-
-  .featuredNumber {
-    display: none;
-  }
-
-  .featuredTitle {
-    font-size: 22px;
   }
 }

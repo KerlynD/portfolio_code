@@ -60,14 +60,10 @@
   overflow: hidden;
 }
 
-.logoWhiteBg {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
 .logoImage {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .logoText {

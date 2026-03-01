@@ -12,9 +12,8 @@ interface Project {
   shortDescription?: string
   tags: string[]
   color: string
-  emoji: string
-  featured?: boolean
   wip?: boolean
+  confidential?: boolean
   hackathon?: string
   image?: string
   links?: {
@@ -27,59 +26,19 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project
-  featured?: boolean
   detailed?: boolean
   highlighted?: boolean
 }
 
-export default function ProjectCard({ project, featured = false, detailed = false, highlighted = false }: ProjectCardProps) {
+export default function ProjectCard({ project, detailed = false, highlighted = false }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
+  const links = project.links
 
   useEffect(() => {
     if (highlighted && cardRef.current) {
       cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }, [highlighted])
-
-  if (featured) {
-    return (
-      <div 
-        id={project.id}
-        ref={cardRef}
-        className={`${styles.featuredCard} ${highlighted ? styles.highlighted : ''}`}
-        style={{ 
-          background: project.color,
-          ...(highlighted && { '--highlight-color': project.color } as React.CSSProperties)
-        }}
-      >
-        <div className={styles.featuredContent}>
-          <div className={styles.emoji}>{project.emoji}</div>
-          <h3 className={styles.featuredTitle}>{project.name}</h3>
-          <p className={styles.featuredDescription}>{project.description}</p>
-          <div className={styles.tags}>
-            {project.tags.map((tag) => (
-              <span key={tag} className="tag">{tag}</span>
-            ))}
-          </div>
-          {detailed && project.links && (
-            <div className={styles.links}>
-              {project.links.live && (
-                <Link href={project.links.live} target="_blank" className={styles.link}>
-                  Live ↗
-                </Link>
-              )}
-              {project.links.github && (
-                <Link href={project.links.github} target="_blank" className={styles.link}>
-                  GitHub ↗
-                </Link>
-              )}
-            </div>
-          )}
-        </div>
-        <div className={styles.featuredNumber}>01</div>
-      </div>
-    )
-  }
 
   return (
     <div 
@@ -104,7 +63,6 @@ export default function ProjectCard({ project, featured = false, detailed = fals
         </div>
       )}
       <div className={styles.content}>
-        <div className={styles.emoji}>{project.emoji}</div>
         <h3 className={styles.title}>
           {project.name}
           {project.wip && <span className={styles.wipBadge}>WIP</span>}
@@ -130,22 +88,44 @@ export default function ProjectCard({ project, featured = false, detailed = fals
           ))}
         </div>
 
-        {detailed && project.links && Object.keys(project.links).length > 0 && (
+        {detailed && ((links && Object.keys(links).length > 0) || project.confidential) && (
           <div className={styles.links}>
-            {project.links.live && (
-              <Link href={project.links.live} target="_blank" className={styles.linkButton}>
+            {links?.live && (
+              <Link href={links.live} target="_blank" className={styles.linkButton}>
                 Live Site ↗
               </Link>
             )}
-            {project.links.github && (
-              <Link href={project.links.github} target="_blank" className={styles.linkButtonSecondary}>
+            {links?.github && !project.confidential && (
+              <Link href={links.github} target="_blank" className={styles.linkButton}>
                 Source Code ↗
               </Link>
             )}
-            {project.links.devpost && (
-              <Link href={project.links.devpost} target="_blank" className={styles.linkButton}>
+            {links?.devpost && (
+              <Link href={links.devpost} target="_blank" className={styles.linkButton}>
                 Devpost ↗
               </Link>
+            )}
+            {project.confidential && (
+              <span className={styles.confidentialText}>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={styles.lockIcon}
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M7 10V7a5 5 0 0 1 10 0v3m-9 0h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                This work is confidential
+              </span>
             )}
           </div>
         )}

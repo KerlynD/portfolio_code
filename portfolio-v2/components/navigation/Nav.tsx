@@ -33,7 +33,7 @@ export default function Nav() {
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <Link href="/" className={styles.logo}>
-        Kerlyn Difo
+        Kerlyn Angel Difo
       </Link>
       <div className={styles.links}>
         {navLinks.map((link) => (

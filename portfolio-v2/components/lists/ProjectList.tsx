@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import ProjectCard from './ProjectCard'
+import ProjectCard from '@/components/cards/ProjectCard'
 import styles from './ProjectList.module.css'
 
 interface Project {
@@ -11,8 +11,6 @@ interface Project {
   shortDescription?: string
   tags: string[]
   color: string
-  emoji: string
-  featured?: boolean
   wip?: boolean
   hackathon?: string
   image?: string
@@ -26,10 +24,9 @@ interface Project {
 
 interface ProjectListProps {
   projects: Project[]
-  featuredProject?: Project
 }
 
-export default function ProjectList({ projects, featuredProject }: ProjectListProps) {
+export default function ProjectList({ projects }: ProjectListProps) {
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -44,26 +41,15 @@ export default function ProjectList({ projects, featuredProject }: ProjectListPr
   }, [])
 
   return (
-    <>
-      {featuredProject && (
+    <div className={styles.projectsGrid}>
+      {projects.map((project) => (
         <ProjectCard 
-          project={featuredProject} 
-          featured 
+          key={project.id} 
+          project={project} 
           detailed 
-          highlighted={highlightedId === featuredProject.id}
+          highlighted={highlightedId === project.id}
         />
-      )}
-      
-      <div className={styles.projectsGrid}>
-        {projects.map((project) => (
-          <ProjectCard 
-            key={project.id} 
-            project={project} 
-            detailed 
-            highlighted={highlightedId === project.id}
-          />
-        ))}
-      </div>
-    </>
+      ))}
+    </div>
   )
 }

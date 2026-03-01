@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import ExperienceCard from './ExperienceCard'
+import ExperienceCard from '@/components/cards/ExperienceCard'
 import styles from './ExperienceList.module.css'
 
 interface Experience {

@@ -24,8 +24,8 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.profile}>
         <Image 
-          src="/assets/profile.jpg"
-          alt="Kerlyn Difo"
+          src="/assets/profile/profile.jpg"
+          alt="Kerlyn Angel Difo"
           width={32}
           height={32}
           className={styles.avatar}

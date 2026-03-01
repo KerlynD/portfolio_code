@@ -17,10 +17,7 @@ export default function AboutExperienceSection() {
           rel="noopener noreferrer"
           className={styles.resumeLink}
         >
-          Resume
-          <svg width="12" height="12" viewBox="0 0 12 12" className={styles.externalIcon}>
-            <path d="M10 10H2V2h3V0H0v12h12V7h-2v3zM7 0v2h1.586L5.293 5.293 4 3.586 8.414 0H7z" fill="currentColor"/>
-          </svg>
+          Resume ↗
         </Link>
       </div>
 
@@ -29,14 +26,14 @@ export default function AboutExperienceSection() {
           <li key={exp.id} className={styles.item}>
             <div 
               className={styles.logo}
-              style={{ background: (exp as { logoBackground?: string }).logoBackground ?? '#E8E8E8' }}
+              style={!exp.logo.startsWith('/') ? { background: (exp as { logoBackground?: string }).logoBackground ?? '#E8E8E8' } : undefined}
             >
               {exp.logo.startsWith('/') ? (
                 <Image 
                   src={exp.logo}
                   alt={exp.company}
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                   className={styles.logoImage}
                 />
               ) : (

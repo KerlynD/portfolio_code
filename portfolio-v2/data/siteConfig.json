@@ -27,21 +27,21 @@
   },
   "achievements": [
     {
-      "title": "Head of Newsletter",
+      "title": "Head of Newsletter & Workshop Developer",
       "organization": "Queens College Code for All Club",
       "description": "Contributing to tech journalism and community engagement initiatives. Writing articles about emerging technologies and industry trends for the college community.",
-      "icon": "/assets/achievement_icons/codeforall.jpg"
+      "icon": "/assets/achievements/codeforall.jpg"
     },
     {
       "title": "Computer Science Senior",
       "organization": "Queens College, CUNY",
-      "description": "Specializing in data engineering and software development with strong academic performance. Active participant in computer science research and projects.",
+      "description": "Specializing in software development. Active in computer science news and projects.",
       "icon": "graduation"
     },
     {
       "title": "Hackathon Winner",
       "organization": "Multiple Competitions",
-      "description": "Contributed to hackathon-winning projects including RefuConnect, demonstrating innovation and teamwork in high-pressure development environments.",
+      "description": "Contributed to hackathon-winning projects, demonstrating innovation and teamwork in high-pressure development environments.",
       "icon": "trophy"
     }
   ]
