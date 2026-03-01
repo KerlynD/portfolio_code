@@ -1,18 +1,22 @@
 import type { Metadata } from 'next'
-import Header from '@/components/Header'
-import ProjectList from '@/components/ProjectList'
-import FooterMinimal from '@/components/FooterMinimal'
+import Header from '@/components/layout/Header'
+import ProjectList from '@/components/lists/ProjectList'
+import FooterMinimal from '@/components/layout/FooterMinimal'
 import projects from '@/data/projects.json'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Projects | Kerlyn Difo',
+  title: 'Projects | Kerlyn Angel Difo',
   description: 'A collection of projects ranging from distributed systems to full-stack applications.',
 }
 
 export default function ProjectsPage() {
-  const featuredProject = projects.find(p => p.featured)
-  const otherProjects = projects.filter(p => p.id !== featuredProject?.id)
+  const selectedProjectOrder = ['url-monitor', 'discord-bot', 'cuny-calendar', 'mpds']
+  const selectedProjects = selectedProjectOrder
+    .map((id) => projects.find((project) => project.id === id))
+    .filter((project): project is (typeof projects)[number] => Boolean(project))
+
+  const hackathonProjects = projects.filter((project) => project.hackathon)
 
   return (
     <>
@@ -27,7 +31,12 @@ export default function ProjectsPage() {
         </div>
 
         <section className={styles.section}>
-          <ProjectList projects={otherProjects} featuredProject={featuredProject} />
+          <ProjectList projects={selectedProjects} />
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Hackathon Winners</h2>
+          <ProjectList projects={hackathonProjects} />
         </section>
       </main>
 

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
-import Header from '@/components/Header'
-import ExperienceList from '@/components/ExperienceList'
-import AchievementsSection from '@/components/AchievementsSection'
-import SkillsSection from '@/components/SkillsSection'
-import FooterMinimal from '@/components/FooterMinimal'
+import Header from '@/components/layout/Header'
+import ExperienceList from '@/components/lists/ExperienceList'
+import AchievementsSection from '@/components/sections/AchievementsSection'
+import SkillsSection from '@/components/sections/SkillsSection'
+import FooterMinimal from '@/components/layout/FooterMinimal'
 import experiences from '@/data/experiences.json'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Experience | Kerlyn Difo',
+  title: 'Experience | Kerlyn Angel Difo',
   description: 'Professional experience in software engineering, data engineering, and backend development.',
 }
 

@@ -10,13 +10,13 @@ export default function FooterMinimal() {
         <div className={styles.left}>
           <div className={styles.brand}>
             <Image 
-              src="/assets/profile.jpg"
-              alt="Kerlyn Difo"
+              src="/assets/profile/profile.jpg"
+              alt="Kerlyn Angel Difo"
               width={24}
               height={24}
               className={styles.avatar}
             />
-            <span className={styles.name}>kerlyn difo</span>
+            <span className={styles.name}>kerlyn angel difo</span>
           </div>
         </div>
 

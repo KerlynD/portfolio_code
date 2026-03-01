@@ -6,9 +6,7 @@
     "shortDescription": "Distributed URL monitoring with real-time health checks and full Datadog Agent integration for metrics, logs, and traces.",
     "tags": ["Go", "Distributed Systems", "Datadog", "Observability"],
     "color": "#F0F4FF",
-    "emoji": "🔍",
-    "featured": true,
-    "image": "/assets/project_photos/urlmonitor.png",
+    "image": "/assets/projects/images/urlmonitor.png",
     "links": {
       "live": "https://url-monitor-gamma.vercel.app",
       "github": "https://github.com/KerlynD/URL-Monitor"
@@ -26,12 +24,9 @@
     "shortDescription": "ETL pipeline querying PubMed & dbGaP with advanced visualization for biomedical researchers.",
     "tags": ["Python", "ETL", "Biomedical", "AWS"],
     "color": "#F5F0FF",
-    "emoji": "🧬",
-    "featured": true,
-    "image": "/assets/MPDS.png",
-    "links": {
-      "github": "https://github.com/KerlynD/MultiOmic_Phenotypic_Data_Search"
-    },
+    "confidential": true,
+    "image": "/assets/projects/images/MPDS.png",
+    "links": {},
     "details": [
       "Unifies study, sample, and assay records from PubMed, GEO, ENA, dbGaP, and BioStudies into a single searchable schema",
       "Orchestrated an asynchronous ingestion layer (aiohttp + asyncio) and vectorized clustering logic, shrinking metadata harvest time from 60 min to < 8 min",
@@ -45,10 +40,8 @@
     "shortDescription": "Real-time multilingual platform connecting refugees with resources. 2nd place at HopHacks.",
     "tags": ["React", "Node.js", "WebSockets", "MongoDB"],
     "color": "#FFF5F0",
-    "emoji": "🌍",
-    "featured": true,
     "hackathon": "HopHacks 2024 Winner: Bloomberg Track",
-    "image": "/assets/refuconnect.png",
+    "image": "/assets/projects/images/refuconnect.png",
     "links": {
       "devpost": "https://devpost.com/software/refuconnect-t1gu0i",
       "github": "https://github.com/ehab20011/p-hacks"
@@ -66,9 +59,7 @@
     "shortDescription": "Chrome extension letting CUNY students export class schedules directly to Google Calendar.",
     "tags": ["TypeScript", "Chrome Extension", "Web Scraping"],
     "color": "#F0FFF4",
-    "emoji": "📅",
-    "featured": false,
-    "image": "/assets/project_photos/cunytocalproj.jpeg",
+    "image": "/assets/projects/images/cunytocalproj.jpeg",
     "links": {
       "live": "https://chromewebstore.google.com/detail/cuny-to-calendar/fdghagnokhlejaeplokagpmbhinbhanb",
       "github": "https://github.com/KerlynD/CUNY-to-Cal"
@@ -86,10 +77,8 @@
     "shortDescription": "VSCode extension using Faster-Whisper for real-time code transcription.",
     "tags": ["Python", "TypeScript", "VSCode API", "Faster-Whisper"],
     "color": "#FFF0F5",
-    "emoji": "🎤",
-    "featured": false,
     "hackathon": "HackKnight 2025 Winner: Best Software",
-    "image": "/assets/project_photos/codewhisperer.jpg",
+    "image": "/assets/projects/images/codewhisperer.jpg",
     "links": {
       "devpost": "https://devpost.com/software/code-whisperer",
       "github": "https://github.com/KerlynD/code-whisperer"
@@ -107,9 +96,7 @@
     "shortDescription": "Discord bot that tracks job applications and provides status updates.",
     "tags": ["Python", "Discord.py", "SQLite", "API"],
     "color": "#F0F4FF",
-    "emoji": "🤖",
-    "featured": false,
-    "image": "/assets/project_photos/discordbot.jpg",
+    "image": "/assets/projects/images/discordbot.jpg",
     "links": {
       "github": "https://github.com/KerlynD/discord-job-tracker-bot"
     },
@@ -118,18 +105,5 @@
       "Implemented a Discord bot using Discord.py that allows users to track their job applications",
       "Integrated options like update, export, list by company, and list by status"
     ]
-  },
-  {
-    "id": "dmq",
-    "name": "Distributed Message Queue",
-    "description": "Kafka-inspired message queue system. Currently in progress — building for scale and reliability.",
-    "shortDescription": "Kafka-inspired message queue system for scale and reliability.",
-    "tags": ["Go", "Distributed Systems", "WIP"],
-    "color": "#FFFBF0",
-    "emoji": "📨",
-    "featured": false,
-    "wip": true,
-    "links": {},
-    "details": []
   }
 ]

@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/jpeg" href="/assets/profile.jpg" />
+        <link rel="icon" type="image/jpeg" href="/assets/profile/profile.jpg" />
       </head>
       <body>
         {children}

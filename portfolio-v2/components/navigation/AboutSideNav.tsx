@@ -7,7 +7,6 @@ const navItems = [
   { id: 'about', label: 'Me' },
   { id: 'experience', label: 'Experience' },
   { id: 'communities', label: 'Community' },
-  { id: 'skills', label: 'Skills' },
 ]
 
 export default function AboutSideNav() {
