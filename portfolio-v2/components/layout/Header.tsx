@@ -33,13 +33,13 @@ export default function Header() {
         <div className={styles.info}>
           <h1 className={styles.name}>kerlyn angel difo</h1>
           <p className={styles.tagline}>
-            Learning to build systems and create meaningful projects
+            Working on silent data corruption and data privacy
           </p>
           <p className={styles.previously}>
-            Currently at <span className={styles.company}>Datadog</span>
+            Currently at <span className={styles.company}>Google</span>
           </p>
           <p className={styles.previously}>
-            Previously at <span className={styles.company}>Capital One</span> & <span className={styles.company}>Columbia</span>
+            Previously at <span className={styles.company}>Datadog</span> & <span className={styles.company}>Capital One</span> & <span className={styles.company}>Columbia</span>
           </p>
         </div>
       </div>

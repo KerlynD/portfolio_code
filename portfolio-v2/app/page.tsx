@@ -6,11 +6,12 @@ import styles from './page.module.css'
 const workItems = [
   {
     id: 'google',
-    title: 'Incoming Google',
+    title: 'Google',
     subtitle: '2026',
     gradientImage: '/assets/experience/gradients/experience-google-gradient.png',
     href: '/experience',
     size: 'large' as const,
+    photos: [] as string[],
   },
   {
     id: 'datadog',
@@ -19,6 +20,11 @@ const workItems = [
     gradientImage: '/assets/experience/gradients/experience-card-gradient.png',
     href: '/experience',
     size: 'large' as const,
+    photos: [
+      '/assets/experience/photos/datadog/datadog-event.png',
+      '/assets/experience/photos/datadog/datadog-mug.png',
+      '/assets/experience/photos/datadog/me-and-daniel.png',
+    ],
   },
   {
     id: 'capitalone',
@@ -27,6 +33,11 @@ const workItems = [
     gradientImage: '/assets/experience/gradients/experience-capitalone-gradient.png',
     href: '/experience',
     size: 'large' as const,
+    photos: [
+      '/assets/experience/photos/capitalone/IMG_5721.jpg',
+      '/assets/experience/photos/capitalone/c1-friends.PNG',
+      '/assets/experience/photos/capitalone/c1-me-in-mirror.png',
+    ],
   },
   {
     id: 'columbia',
@@ -35,6 +46,11 @@ const workItems = [
     gradientImage: '/assets/experience/gradients/experience-columbia-gradient.png',
     href: '/experience',
     size: 'large' as const,
+    photos: [
+      '/assets/experience/photos/columbia/columbia-coding.png',
+      '/assets/experience/photos/columbia/mpds-early-days.PNG',
+      '/assets/experience/photos/columbia/shabir_angel_eric_josh.jpg',
+    ],
   },
 ]
 
