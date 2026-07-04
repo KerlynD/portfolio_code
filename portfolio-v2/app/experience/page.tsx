@@ -1,31 +1,14 @@
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { getBuildSha } from "@/lib/build";
+import { getExperiences } from "@/lib/content";
 import siteConfig from "@/data/siteConfig.json";
-import experiences from "@/data/experiences.json";
 
 export const metadata = { title: `Experience | ${siteConfig.name}` };
+export const dynamic = "force-dynamic";
 
-const CURRENT_ID = "google";
-
-type Experience = {
-  id: string;
-  company: string;
-  role: string;
-  team: string;
-  period: string;
-  logo: string;
-  logoFallback: string;
-  logoBackground?: string;
-  description: string;
-  tags: string[];
-  highlights: string[];
-  responsibilities: string[];
-};
-
-const items = experiences as Experience[];
-
-export default function ExperiencePage() {
+export default async function ExperiencePage() {
+  const items = await getExperiences();
   const companies = new Set(items.map((e) => e.company)).size;
 
   return (
@@ -33,7 +16,7 @@ export default function ExperiencePage() {
       <SiteHeader
         active="experience"
         ghost={["THE", "LOG"]}
-        readoutTop={`history :: ${experiences.length} roles`}
+        readoutTop={`history :: ${items.length} roles`}
         ticker={experiences
           .slice(0, 4)
           .map((e) => `${e.company} — ${e.team.split("|")[0].trim()}`)}
@@ -45,7 +28,7 @@ export default function ExperiencePage() {
         <div className="col">
           <div className="feedbar">
             <span className="lead">The Job Log - Where I've Worked</span>
-            <span className="drop">{experiences.length}</span>
+            <span className="drop">{items.length}</span>
             roles across cloud infrastructure, observability, fintech and
             biomedical data. Newest first. Each entry lists what I actually
             shipped in each.
@@ -76,7 +59,7 @@ export default function ExperiencePage() {
                   <div>
                     <div className="role">
                       {e.role}
-                      {e.id === CURRENT_ID && (
+                      {e.current && (
                         <span className="current-badge">Current</span>
                       )}
                     </div>
@@ -115,11 +98,11 @@ export default function ExperiencePage() {
           <section className="panel">
             <div className="ph">
               <span className="title">Timeline</span>
-              <span className="arch">{experiences.length}</span>
+              <span className="arch">{items.length}</span>
             </div>
             <div className="pb" style={{ padding: "10px 12px 14px" }}>
               <div className="tl-wrap">
-                {experiences.map((e) => (
+                {items.map((e) => (
                   <div className="tl" key={e.id}>
                     <div className="co">{e.company}</div>
                     <div className="yr">{e.period}</div>
@@ -135,7 +118,7 @@ export default function ExperiencePage() {
             </div>
             <div className="pb" style={{ padding: "10px 12px 14px" }}>
               <p className="statline">
-                {String(experiences.length).padStart(2, "0")} &nbsp;roles
+                {String(items.length).padStart(2, "0")} &nbsp;roles
                 <br />
                 {String(companies).padStart(2, "0")} &nbsp;companies
                 <br />

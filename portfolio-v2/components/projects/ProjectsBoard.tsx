@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import siteConfig from "@/data/siteConfig.json";
-import projects from "@/data/projects.json";
-
-type Project = (typeof projects)[number];
+import type { ProjectView as Project } from "@/lib/content";
 
 const COVER_GRADIENT: Record<string, string> = {
   "url-monitor": "linear-gradient(135deg,#4d76b8,#1a2b52)",
@@ -35,9 +33,8 @@ function primaryTag(p: Project): string {
 }
 
 function badge(p: Project): { label: string; conf: boolean } | null {
-  if ("confidential" in p && p.confidential)
-    return { label: "Confidential", conf: true };
-  if ("hackathon" in p && p.hackathon)
+  if (p.confidential) return { label: "Confidential", conf: true };
+  if (p.hackathon)
     return {
       label: String(p.hackathon)
         .replace(/^[^:]*:\s*/, "")
@@ -56,7 +53,7 @@ const TECH_GROUPS: { label: string; match: (t: string) => boolean }[] = [
   { label: "Datadog", match: (t) => /datadog/i.test(t) },
 ];
 
-export default function ProjectsBoard() {
+export default function ProjectsBoard({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<string | null>(null);
 
   const techCounts = TECH_GROUPS.map((g) => ({
@@ -69,11 +66,9 @@ export default function ProjectsBoard() {
     ? projects.filter((p) => p.tags.some(group.match))
     : projects;
 
-  const wins = projects.filter(
-    (p) => "hackathon" in p && p.hackathon,
-  ) as Project[];
+  const wins = projects.filter((p) => Boolean(p.hackathon));
   const shipped = projects.filter(
-    (p) => p.links && ("live" in p.links || "devpost" in p.links),
+    (p) => "live" in p.links || "devpost" in p.links,
   ).length;
 
   return (
@@ -197,7 +192,7 @@ export default function ProjectsBoard() {
                 </span>
                 <span className="d">
                   <span className="win">
-                    {"hackathon" in p ? String(p.hackathon) : ""}
+                    {p.hackathon ?? ""}
                   </span>
                 </span>
               </div>

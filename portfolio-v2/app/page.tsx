@@ -5,25 +5,24 @@ import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
 import { getBuildSha } from "@/lib/build";
 import { getPublishedPosts } from "@/lib/db/queries";
+import { getExperiences, getProjects, type ProjectView } from "@/lib/content";
 import { formatDate } from "@/lib/markdown";
 import siteConfig from "@/data/siteConfig.json";
-import experiences from "@/data/experiences.json";
-import projects from "@/data/projects.json";
 import communities from "@/data/communities.json";
 
 export const dynamic = "force-dynamic";
 
-const now = experiences[0];
-
-function projectBadge(p: (typeof projects)[number]): string | null {
-  if ("confidential" in p && p.confidential) return "confidential";
-  if ("hackathon" in p && p.hackathon) return String(p.hackathon).split(":")[0];
+function projectBadge(p: ProjectView): string | null {
+  if (p.confidential) return "confidential";
+  if (p.hackathon) return String(p.hackathon).split(":")[0];
   return null;
 }
 
 export default async function Home() {
   const feed = (await getPublishedPosts()).slice(0, 6);
-  const topProjects = projects.slice(0, 4);
+  const experiences = await getExperiences();
+  const now = experiences[0];
+  const topProjects = (await getProjects()).slice(0, 4);
 
   return (
     <div className="shell">
