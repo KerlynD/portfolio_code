@@ -205,14 +205,18 @@ a:hover {
     bottom: 18px;
     z-index: 2;
     text-align: right;
-    color: #b9bd93;
+    /* sits over the photo — black w/ a white halo so it reads on light OR dark areas */
+    color: #141210;
+    text-shadow:
+        0 0 3px rgba(255, 255, 255, 0.95),
+        0 1px 2px rgba(255, 255, 255, 0.8);
     font-size: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
     line-height: 1.9;
 }
 .mast-right .stat {
-    color: var(--cream);
+    color: #141210;
     font-family: var(--mono);
     font-size: 14px;
     letter-spacing: 1px;
@@ -1265,11 +1269,27 @@ footer.site .mono {
     .mast-title {
         font-size: 40px;
     }
+    /* one scrollable row; tighter tabs so all 5 fit on most phones, swipe on tiny ones */
     nav.primary {
-        flex-wrap: wrap;
-        padding: 0 12px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
-    nav.primary .spacer {
+    nav.primary::-webkit-scrollbar {
+        display: none;
+    }
+    nav.primary a.tab {
+        flex: 0 0 auto;
+        padding: 0 13px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-right: 2px;
+    }
+    nav.primary .spacer,
+    nav.primary .util {
         display: none;
     }
     .mast-right {
