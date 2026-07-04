@@ -1,9 +1,10 @@
-import siteConfig from '@/data/siteConfig.json'
+import { getSiteConfig } from '@/lib/content'
 
 /**
  * Shared Currently panel — identical on every page that shows it.
  */
-export default function CurrentlyPanel() {
+export default async function CurrentlyPanel() {
+  const siteConfig = await getSiteConfig()
   return (
     <section className="panel">
       <div className="ph">

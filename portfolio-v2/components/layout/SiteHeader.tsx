@@ -1,5 +1,5 @@
 import Link from "next/link";
-import siteConfig from "@/data/siteConfig.json";
+import { getSiteConfig } from "@/lib/content";
 import Metrics from "./Metrics";
 
 export type PageKey = "home" | "experience" | "projects" | "writing" | "about";
@@ -21,7 +21,7 @@ function brandParts(fullName: string): [string, string] {
   return [first, last];
 }
 
-export default function SiteHeader({
+export default async function SiteHeader({
   active,
   ghost,
   readoutTop,
@@ -34,6 +34,7 @@ export default function SiteHeader({
   ticker: string[];
   build: string;
 }) {
+  const siteConfig = await getSiteConfig();
   const [first, last] = brandParts(siteConfig.name);
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, "").trim();
   const doubled = [...ticker, ...ticker];

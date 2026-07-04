@@ -1,13 +1,17 @@
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { getBuildSha } from "@/lib/build";
-import { getExperiences } from "@/lib/content";
-import siteConfig from "@/data/siteConfig.json";
+import { getExperiences, getSiteConfig } from "@/lib/content";
 
-export const metadata = { title: `Experience | ${siteConfig.name}` };
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata() {
+  const siteConfig = await getSiteConfig();
+  return { title: `Experience | ${siteConfig.name}` };
+}
+
 export default async function ExperiencePage() {
+  const siteConfig = await getSiteConfig();
   const items = await getExperiences();
   const companies = new Set(items.map((e) => e.company)).size;
 

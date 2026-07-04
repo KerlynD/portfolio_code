@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import siteConfig from "@/data/siteConfig.json";
 import type { ProjectView as Project } from "@/lib/content";
+
+type Links = { github: string; linkedin: string; resume: string; email: string };
 
 const COVER_GRADIENT: Record<string, string> = {
   "url-monitor": "linear-gradient(135deg,#4d76b8,#1a2b52)",
@@ -53,7 +54,13 @@ const TECH_GROUPS: { label: string; match: (t: string) => boolean }[] = [
   { label: "Datadog", match: (t) => /datadog/i.test(t) },
 ];
 
-export default function ProjectsBoard({ projects }: { projects: Project[] }) {
+export default function ProjectsBoard({
+  projects,
+  links,
+}: {
+  projects: Project[];
+  links: Links;
+}) {
   const [active, setActive] = useState<string | null>(null);
 
   const techCounts = TECH_GROUPS.map((g) => ({
@@ -85,7 +92,7 @@ export default function ProjectsBoard({ projects }: { projects: Project[] }) {
         <div className="pgrid">
           {shown.map((p) => {
             const b = badge(p);
-            const links = Object.entries(p.links ?? {});
+            const pLinks = Object.entries(p.links ?? {});
             return (
               <section className="panel pcard" key={p.id}>
                 <div className="ph">
@@ -125,8 +132,8 @@ export default function ProjectsBoard({ projects }: { projects: Project[] }) {
                     ))}
                   </div>
                   <div className="plinks">
-                    {links.length > 0 ? (
-                      links.map(([key, url]) => (
+                    {pLinks.length > 0 ? (
+                      pLinks.map(([key, url]) => (
                         <a
                           key={key}
                           href={url as string}
@@ -221,27 +228,27 @@ export default function ProjectsBoard({ projects }: { projects: Project[] }) {
           </div>
           <div className="pb elsewhere" style={{ padding: "10px 12px 14px" }}>
             <a
-              href={siteConfig.links.github}
+              href={links.github}
               target="_blank"
               rel="noopener noreferrer"
             >
               GitHub
             </a>
             <a
-              href={siteConfig.links.linkedin}
+              href={links.linkedin}
               target="_blank"
               rel="noopener noreferrer"
             >
               LinkedIn
             </a>
             <a
-              href={siteConfig.links.resume}
+              href={links.resume}
               target="_blank"
               rel="noopener noreferrer"
             >
               Résumé
             </a>
-            <a href={siteConfig.links.email}>Email</a>
+            <a href={links.email}>Email</a>
           </div>
         </section>
       </aside>

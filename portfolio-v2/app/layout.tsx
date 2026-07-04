@@ -1,18 +1,21 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
-import siteConfig from '@/data/siteConfig.json'
+import { getSiteConfig } from '@/lib/content'
 import './globals.css'
 
-export const metadata: Metadata = {
-  title: `${siteConfig.name} | ${siteConfig.title}`,
-  description: siteConfig.bio,
-  keywords: ['Software Engineer', 'Backend', 'Distributed Systems', 'Go', 'Python', 'Datadog', 'Google Cloud'],
-  authors: [{ name: siteConfig.name }],
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const siteConfig = await getSiteConfig()
+  return {
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: siteConfig.bio,
-    type: 'website',
-  },
+    keywords: ['Software Engineer', 'Backend', 'Distributed Systems', 'Go', 'Python', 'Datadog', 'Google Cloud'],
+    authors: [{ name: siteConfig.name }],
+    openGraph: {
+      title: `${siteConfig.name} | ${siteConfig.title}`,
+      description: siteConfig.bio,
+      type: 'website',
+    },
+  }
 }
 
 export default function RootLayout({

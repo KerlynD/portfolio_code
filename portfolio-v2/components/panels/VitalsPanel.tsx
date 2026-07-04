@@ -1,10 +1,11 @@
-import siteConfig from '@/data/siteConfig.json'
+import { getSiteConfig } from '@/lib/content'
 
 /**
  * Shared Vitals panel — identical on every page that shows it.
- * Edit the rows here (or the underlying siteConfig fields) once.
+ * Values come from the site config (editable in the admin).
  */
-export default function VitalsPanel() {
+export default async function VitalsPanel() {
+  const siteConfig = await getSiteConfig()
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, '').trim()
   const nowCompany = siteConfig.currentRole.split(/\bat\b/).pop()?.trim() ?? siteConfig.currentRole
 

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
-import siteConfig from '@/data/siteConfig.json'
+import { getSiteConfig } from '@/lib/content'
 import { getPostBySlug, getPublishedPosts } from '@/lib/db/queries'
 import { renderMarkdown, formatDate } from '@/lib/markdown'
 
@@ -11,12 +11,13 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = await getPostBySlug(slug)
+  const [post, siteConfig] = await Promise.all([getPostBySlug(slug), getSiteConfig()])
   return { title: post ? `${post.title} | ${siteConfig.name}` : 'Writing' }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  const siteConfig = await getSiteConfig()
   const post = await getPostBySlug(slug)
   if (!post || !post.published) notFound()
 

@@ -2,13 +2,17 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import ProjectsBoard from "@/components/projects/ProjectsBoard";
 import { getBuildSha } from "@/lib/build";
-import { getProjects } from "@/lib/content";
-import siteConfig from "@/data/siteConfig.json";
+import { getProjects, getSiteConfig } from "@/lib/content";
 
-export const metadata = { title: `Projects | ${siteConfig.name}` };
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata() {
+  const siteConfig = await getSiteConfig();
+  return { title: `Projects | ${siteConfig.name}` };
+}
+
 export default async function ProjectsPage() {
+  const siteConfig = await getSiteConfig();
   const projects = await getProjects();
   const wins = projects.filter((p) => p.hackathon).slice(0, 3);
 
@@ -29,7 +33,7 @@ export default async function ProjectsPage() {
         build={getBuildSha()}
       />
 
-      <ProjectsBoard projects={projects} />
+      <ProjectsBoard projects={projects} links={siteConfig.links} />
 
       <SiteFooter page="projects" />
     </div>

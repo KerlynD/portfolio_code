@@ -1,9 +1,33 @@
 import { cache } from 'react'
 import { asc } from 'drizzle-orm'
 import { db } from './db'
-import { experiences, projects } from './db/schema'
+import { experiences, projects, config } from './db/schema'
 import experiencesJson from '@/data/experiences.json'
 import projectsJson from '@/data/projects.json'
+import siteConfigJson from '@/data/siteConfig.json'
+
+export type SiteConfig = typeof siteConfigJson
+
+/**
+ * Site config, merged: DB `config` rows (edited in the admin) win over the
+ * bundled JSON defaults key-by-key, so nothing is ever missing.
+ */
+export const getSiteConfig = cache(async (): Promise<SiteConfig> => {
+  const base = { ...(siteConfigJson as SiteConfig) } as Record<string, unknown>
+  try {
+    const rows = await db.select().from(config)
+    for (const r of rows) {
+      try {
+        base[r.key] = JSON.parse(r.value)
+      } catch {
+        base[r.key] = r.value
+      }
+    }
+  } catch (e) {
+    console.error('[content] getSiteConfig fell back to JSON:', e)
+  }
+  return base as SiteConfig
+})
 
 /**
  * Normalized shapes used by the public pages, independent of the source

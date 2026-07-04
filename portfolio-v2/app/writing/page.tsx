@@ -2,18 +2,23 @@ import Link from 'next/link'
 import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
-import siteConfig from '@/data/siteConfig.json'
+import { getSiteConfig } from '@/lib/content'
 import { getPublishedPosts } from '@/lib/db/queries'
 import { formatDate } from '@/lib/markdown'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: `Writing | ${siteConfig.name}` }
+
+export async function generateMetadata() {
+  const siteConfig = await getSiteConfig()
+  return { title: `Writing | ${siteConfig.name}` }
+}
 
 function kindClass(k: string): string {
   return k === 'Review' ? 'review' : k === 'Paper Notes' ? 'notes' : ''
 }
 
 export default async function WritingPage() {
+  const siteConfig = await getSiteConfig()
   const feed = await getPublishedPosts()
   const kinds = ['Post', 'Review', 'Paper Notes']
     .map((k) => ({ k, n: feed.filter((p) => p.kind === k).length }))

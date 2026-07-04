@@ -5,9 +5,13 @@ import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
 import { getBuildSha } from "@/lib/build";
 import { getPublishedPosts } from "@/lib/db/queries";
-import { getExperiences, getProjects, type ProjectView } from "@/lib/content";
+import {
+  getExperiences,
+  getProjects,
+  getSiteConfig,
+  type ProjectView,
+} from "@/lib/content";
 import { formatDate } from "@/lib/markdown";
-import siteConfig from "@/data/siteConfig.json";
 import communities from "@/data/communities.json";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +23,7 @@ function projectBadge(p: ProjectView): string | null {
 }
 
 export default async function Home() {
+  const siteConfig = await getSiteConfig();
   const feed = (await getPublishedPosts()).slice(0, 6);
   const experiences = await getExperiences();
   const now = experiences[0];

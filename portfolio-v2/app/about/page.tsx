@@ -3,10 +3,15 @@ import SiteFooter from "@/components/layout/SiteFooter";
 import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
 import { getBuildSha } from "@/lib/build";
-import siteConfig from "@/data/siteConfig.json";
+import { getSiteConfig } from "@/lib/content";
 import communities from "@/data/communities.json";
 
-export const metadata = { title: `About | ${siteConfig.name}` };
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const siteConfig = await getSiteConfig();
+  return { title: `About | ${siteConfig.name}` };
+}
 
 const KEYWORD_GLYPH: Record<string, string> = {
   graduation: "🎓",
@@ -22,7 +27,8 @@ function initials(name: string): string {
     .toUpperCase();
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const siteConfig = await getSiteConfig();
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, "").trim();
 
   return (
