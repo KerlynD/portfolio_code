@@ -8,14 +8,17 @@
   "graduationYear": "2027",
   "currentRole": "Software Engineer Intern at Google",
   "education": "CUNY Queens College, CS '27",
-  "statusMessage": "Open to Summer 2026 roles",
-  "bio": "CS student at CUNY Queens College. Interning at Google working on the Google Cloud Platform. Passionate about backend systems, distributed infrastructure, and developer tooling.",
-  "aboutDescription": "CS major at CUNY Queens College (class of '27). I lead the newsletter at Code For All with 1,800 members, organize Datadog office tours, and build projects that scratch my own itches. When I'm not coding I'm reading distributed systems papers.",
-  "aboutTagline": "Backend engineer with a love for distributed systems.",
+  "statusMessage": "flow state",
+  "bio": "CS student at CUNY Queens College. Interning at Google working on the Data Corruption Monitoring Team. Learning about backend systems, distributed infrastructure, and developer tooling.",
+  "aboutDescription": "CS major at CUNY Queens College (class of '27). I'm a board member at Code For All with over 2k members and build projects to scratch my own itches. When I'm not coding I'm usually playing league of legends.",
+  "aboutTagline": "to live intensely is a privelege",
   "currentlyReading": "Kingdom by Yasuhisa Hara",
+  "onTheShelf": "The Infinity Machine by Sebastian Mallaby",
+  "focus": "Backend & Machine Learning",
+  "building": "Intern Project!",
   "links": {
     "github": "https://github.com/KerlynD",
-    "linkedin": "https://www.linkedin.com/in/kerlyn-difo/",
+    "linkedin": "https://www.linkedin.com/in/kerlyn-angel-difo/",
     "email": "mailto:difokerlyn19@gmail.com",
     "resume": "https://drive.google.com/file/d/13vTzvybP8srdst6sHhduB46Bmfv7rGLI/view?usp=sharing"
   },
@@ -23,7 +26,7 @@
     "languages": ["Go", "Python", "Java", "TypeScript", "C++"],
     "infrastructure": ["Kubernetes", "AWS", "Docker", "Bazel"],
     "databases": ["PostgreSQL", "MongoDB", "SQLite", "Snowflake"],
-    "tools": ["Git", "Linux", "CI/CD", "Datadog"]
+    "tools": ["Git", "CI/CD", "Datadog"]
   },
   "achievements": [
     {

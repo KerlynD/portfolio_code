@@ -1,39 +1,200 @@
-import type { Metadata } from 'next'
-import Header from '@/components/layout/Header'
-import ExperienceList from '@/components/lists/ExperienceList'
-import AchievementsSection from '@/components/sections/AchievementsSection'
-import SkillsSection from '@/components/sections/SkillsSection'
-import FooterMinimal from '@/components/layout/FooterMinimal'
-import experiences from '@/data/experiences.json'
-import styles from './page.module.css'
+import SiteHeader from "@/components/layout/SiteHeader";
+import SiteFooter from "@/components/layout/SiteFooter";
+import { getBuildSha } from "@/lib/build";
+import siteConfig from "@/data/siteConfig.json";
+import experiences from "@/data/experiences.json";
 
-export const metadata: Metadata = {
-  title: 'Experience | Kerlyn Angel Difo',
-  description: 'Professional experience in software engineering, data engineering, and backend development.',
-}
+export const metadata = { title: `Experience | ${siteConfig.name}` };
+
+const CURRENT_ID = "google";
+
+type Experience = {
+  id: string;
+  company: string;
+  role: string;
+  team: string;
+  period: string;
+  logo: string;
+  logoFallback: string;
+  logoBackground?: string;
+  description: string;
+  tags: string[];
+  highlights: string[];
+  responsibilities: string[];
+};
+
+const items = experiences as Experience[];
 
 export default function ExperiencePage() {
+  const companies = new Set(items.map((e) => e.company)).size;
+
   return (
-    <>
-      <Header />
-      
-      <main className={styles.main}>
-        <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>Experience</h1>
-          <p className={styles.pageDescription}>
-            My professional journey in software engineering and data engineering.
-          </p>
+    <div className="shell">
+      <SiteHeader
+        active="experience"
+        ghost={["THE", "LOG"]}
+        readoutTop={`history :: ${experiences.length} roles`}
+        ticker={experiences
+          .slice(0, 4)
+          .map((e) => `${e.company} — ${e.team.split("|")[0].trim()}`)}
+        build={getBuildSha()}
+      />
+
+      <div className="grid main-side">
+        {/* MAIN */}
+        <div className="col">
+          <div className="feedbar">
+            <span className="lead">The Job Log - Where I've Worked</span>
+            <span className="drop">{experiences.length}</span>
+            roles across cloud infrastructure, observability, fintech and
+            biomedical data. Newest first. Each entry lists what I actually
+            shipped in each.
+          </div>
+
+          {items.map((e) => (
+            <section className="panel" key={e.id}>
+              <div className="ph">
+                <span className="title big">{e.company}</span>
+                <span className="arch mono">{e.period}</span>
+              </div>
+              <div className="pb">
+                <div className="expmeta">
+                  <div
+                    className="logo"
+                    style={
+                      e.logoBackground
+                        ? { background: e.logoBackground }
+                        : undefined
+                    }
+                  >
+                    {e.logo ? (
+                      <img src={e.logo} alt={e.company} />
+                    ) : (
+                      e.logoFallback
+                    )}
+                  </div>
+                  <div>
+                    <div className="role">
+                      {e.role}
+                      {e.id === CURRENT_ID && (
+                        <span className="current-badge">Current</span>
+                      )}
+                    </div>
+                    <div className="team">{e.team}</div>
+                    <div className="desc">{e.description}</div>
+                  </div>
+                </div>
+
+                {e.responsibilities.length > 0 && (
+                  <ul className="resp">
+                    {e.responsibilities.map((r, i) => (
+                      <li key={i}>{r}</li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="taglist">
+                  {e.tags.map((t) => (
+                    <span className="chip" key={t}>
+                      {t}
+                    </span>
+                  ))}
+                  {e.highlights.map((h) => (
+                    <span className="hl" key={h}>
+                      {h}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
         </div>
 
-        <section className={styles.section}>
-          <ExperienceList experiences={experiences} />
-        </section>
+        {/* SIDEBAR */}
+        <aside className="col">
+          <section className="panel">
+            <div className="ph">
+              <span className="title">Timeline</span>
+              <span className="arch">{experiences.length}</span>
+            </div>
+            <div className="pb" style={{ padding: "10px 12px 14px" }}>
+              <div className="tl-wrap">
+                {experiences.map((e) => (
+                  <div className="tl" key={e.id}>
+                    <div className="co">{e.company}</div>
+                    <div className="yr">{e.period}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
-        <AchievementsSection />
-        <SkillsSection />
-      </main>
+          <section className="panel">
+            <div className="ph">
+              <span className="title">Stats</span>
+            </div>
+            <div className="pb" style={{ padding: "10px 12px 14px" }}>
+              <p className="statline">
+                {String(experiences.length).padStart(2, "0")} &nbsp;roles
+                <br />
+                {String(companies).padStart(2, "0")} &nbsp;companies
+                <br />
+                04 &nbsp;years shipping
+              </p>
+            </div>
+          </section>
 
-      <FooterMinimal />
-    </>
-  )
+          <section className="panel">
+            <div className="ph">
+              <span className="title">Currently</span>
+            </div>
+            <div className="pb nowbox" style={{ padding: "10px 12px 14px" }}>
+              <div className="np">
+                <span className="nk">Now</span>
+                <br />
+                {siteConfig.currentRole}
+              </div>
+              <div className="np">
+                <span className="nk">Seeking</span>
+                <br />
+                {siteConfig.statusMessage}
+              </div>
+            </div>
+          </section>
+
+          <section className="panel">
+            <div className="ph">
+              <span className="title">Find Me</span>
+            </div>
+            <div className="pb elsewhere" style={{ padding: "10px 12px 14px" }}>
+              <a
+                href={siteConfig.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              <a
+                href={siteConfig.links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a
+                href={siteConfig.links.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Résumé
+              </a>
+              <a href={siteConfig.links.email}>Email</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <SiteFooter page="experience" />
+    </div>
+  );
 }
