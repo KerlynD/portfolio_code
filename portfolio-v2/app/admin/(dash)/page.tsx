@@ -4,7 +4,7 @@ import { posts, experiences, projects } from '@/lib/db/schema'
 
 export const dynamic = 'force-dynamic'
 
-async function safeCount(run: () => Promise<unknown[]>): Promise<number> {
+async function safeCount(run: () => PromiseLike<unknown[]>): Promise<number> {
   try {
     return (await run()).length
   } catch {

@@ -17,7 +17,7 @@ export default async function ExperiencePage() {
         active="experience"
         ghost={["THE", "LOG"]}
         readoutTop={`history :: ${items.length} roles`}
-        ticker={experiences
+        ticker={items
           .slice(0, 4)
           .map((e) => `${e.company} — ${e.team.split("|")[0].trim()}`)}
         build={getBuildSha()}
