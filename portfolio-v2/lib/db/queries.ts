@@ -1,6 +1,15 @@
 import { asc, desc, eq } from 'drizzle-orm'
 import { db } from './index'
-import { posts, experiences, projects, type Post, type Experience, type Project } from './schema'
+import {
+  posts,
+  experiences,
+  projects,
+  communities,
+  type Post,
+  type Experience,
+  type Project,
+  type Community,
+} from './schema'
 
 /** Published posts, newest first. Falls back to [] if the DB isn't reachable/seeded. */
 export async function getPublishedPosts(): Promise<Post[]> {
@@ -44,5 +53,15 @@ export async function getAllProjects(): Promise<Project[]> {
 
 export async function getProjectById(id: number): Promise<Project | undefined> {
   const rows = await db.select().from(projects).where(eq(projects.id, id)).limit(1)
+  return rows[0]
+}
+
+/* ---- communities ---- */
+export async function getAllCommunities(): Promise<Community[]> {
+  return db.select().from(communities).orderBy(asc(communities.sort))
+}
+
+export async function getCommunityById(id: number): Promise<Community | undefined> {
+  const rows = await db.select().from(communities).where(eq(communities.id, id)).limit(1)
   return rows[0]
 }
