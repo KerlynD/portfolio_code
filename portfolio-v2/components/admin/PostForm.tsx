@@ -1,13 +1,39 @@
 'use client'
 
 import { useState, type ChangeEvent } from 'react'
-import { savePost } from '@/lib/actions/posts'
+import { useRouter } from 'next/navigation'
+import { savePost, deletePost } from '@/lib/actions/posts'
 import type { Post } from '@/lib/db/schema'
 
-export default function PostForm({ post }: { post?: Post }) {
+export default function PostForm({ post, onDone }: { post?: Post; onDone?: () => void }) {
   const [cover, setCover] = useState(post?.cover ?? '')
   const [body, setBody] = useState(post?.body ?? '')
   const [uploading, setUploading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const router = useRouter()
+
+  async function submit(fd: FormData) {
+    setSaving(true)
+    try {
+      await savePost(fd)
+      router.refresh()
+      onDone?.()
+    } catch {
+      alert('Save failed — are you still signed in?')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function onDelete() {
+    if (!post || !confirm(`Delete "${post.title}"? This cannot be undone.`)) return
+    const fd = new FormData()
+    fd.set('id', String(post.id))
+    fd.set('slug', post.slug)
+    await deletePost(fd)
+    router.refresh()
+    onDone?.()
+  }
 
   async function upload(file: File): Promise<string | null> {
     const fd = new FormData()
@@ -42,7 +68,7 @@ export default function PostForm({ post }: { post?: Post }) {
   }
 
   return (
-    <form action={savePost} className="admin-form">
+    <form action={submit} className="admin-form">
       {post && <input type="hidden" name="id" value={post.id} />}
       <input type="hidden" name="cover" value={cover} />
 
@@ -116,12 +142,17 @@ export default function PostForm({ post }: { post?: Post }) {
       </label>
 
       <div className="admin-actions">
-        <button className="btn" type="submit" disabled={uploading}>
-          {uploading ? 'Uploading…' : 'Save'}
+        <button className="btn" type="submit" disabled={uploading || saving}>
+          {uploading ? 'Uploading…' : saving ? 'Saving…' : 'Save'}
         </button>
-        <a className="btn ghost" href="/admin/posts">
+        <button className="btn ghost" type="button" onClick={() => onDone?.()}>
           Cancel
-        </a>
+        </button>
+        {post && (
+          <button className="btn danger" type="button" onClick={onDelete} style={{ marginLeft: 'auto' }}>
+            Delete
+          </button>
+        )}
       </div>
     </form>
   )

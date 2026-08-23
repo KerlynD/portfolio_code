@@ -5,7 +5,9 @@ import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
 import { getSiteConfig } from '@/lib/content'
 import { getPostBySlug, getPublishedPosts } from '@/lib/db/queries'
+import { isAdmin } from '@/lib/session'
 import { renderMarkdown, formatDate } from '@/lib/markdown'
+import PostEditButton from '@/components/edit/PostEditButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +21,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const siteConfig = await getSiteConfig()
   const post = await getPostBySlug(slug)
-  if (!post || !post.published) notFound()
+  if (!post) notFound()
+  // Drafts are viewable by admins (for on-site preview) but hidden from the public.
+  if (!post.published && !(await isAdmin())) notFound()
 
   const others = (await getPublishedPosts()).filter((p) => p.slug !== slug).slice(0, 5)
   const html = renderMarkdown(post.body)
@@ -38,6 +42,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         <main className="col">
           <div className="feedbar">
             <Link href="/writing">« back to writing</Link>
+            <PostEditButton post={post} />
           </div>
 
           <article className="panel">

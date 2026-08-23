@@ -1,19 +1,19 @@
 import { redirect } from 'next/navigation'
 import { checkPassword } from '@/lib/auth'
 import { setSessionCookie } from '@/lib/session'
-import '../admin.css'
 
 export const metadata = { title: 'Admin — Log in' }
 
 async function login(formData: FormData) {
   'use server'
   const password = String(formData.get('password') ?? '')
-  const next = String(formData.get('next') ?? '/admin')
+  const next = String(formData.get('next') ?? '/')
   if (!checkPassword(password)) {
     redirect(`/admin/login?error=1${next ? `&next=${encodeURIComponent(next)}` : ''}`)
   }
   await setSessionCookie()
-  redirect(next.startsWith('/admin') ? next : '/admin')
+  // Return to the live site (now editable inline). `/admin*` has no dashboard anymore.
+  redirect(next && !next.startsWith('/admin') ? next : '/')
 }
 
 export default async function LoginPage({
@@ -29,7 +29,7 @@ export default async function LoginPage({
           admin<span className="dot">.</span>
         </h1>
         <form action={login} className="admin-form">
-          <input type="hidden" name="next" value={next ?? '/admin'} />
+          <input type="hidden" name="next" value={next ?? '/'} />
           <div className="field">
             <label htmlFor="pw">Password</label>
             <input id="pw" name="password" type="password" autoFocus autoComplete="current-password" />

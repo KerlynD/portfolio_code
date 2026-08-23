@@ -1,0 +1,131 @@
+/* ============================================================
+   Inline edit layer — chrome + reused form styling.
+   Imported globally in the root layout so the affordances and
+   the reused *Form components are styled on the live site.
+   Form/login rules below are the ones the retired /admin dash
+   used to provide via admin.css.
+   ============================================================ */
+
+/* ---- reused form styling (from the old admin.css) ---- */
+.admin-form { display: flex; flex-direction: column; gap: 14px; }
+.admin-form .field { display: flex; flex-direction: column; gap: 4px; }
+.admin-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.admin-form label { font-family: var(--display); font-weight: 600; font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--olive); }
+.admin-form input, .admin-form textarea, .admin-form select {
+  font-family: var(--sans); font-size: 13px; color: var(--ink); background: #fff;
+  border: 1px solid var(--line-dk); padding: 8px 10px;
+}
+.admin-form textarea { min-height: 260px; resize: vertical; font-family: var(--mono); font-size: 15px; line-height: 1.5; }
+.admin-form .hint { color: var(--ink-faint); font-size: 11px; }
+.admin-actions { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 12px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 9px 18px; cursor: pointer; border: 1px solid var(--olive-dk);
+  background: var(--olive); color: var(--cream); }
+.btn:hover { background: var(--olive-dk); }
+.btn.ghost { background: none; color: var(--olive); }
+.btn.danger { background: none; border-color: var(--rust); color: var(--rust); }
+.btn.danger:hover { background: var(--rust); color: #fff; }
+.admin-cover { max-height: 120px; border: 1px solid var(--line-dk); margin-top: 6px; }
+
+/* ---- login (root layout now provides these globally) ---- */
+.login-wrap { max-width: 340px; margin: 12vh auto; }
+.login-wrap .box { background: var(--panel); border: 1px solid var(--line-dk); padding: 22px;
+  box-shadow: 2px 4px 14px rgba(0,0,0,0.14); }
+.login-wrap h1 { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 14px; }
+.login-wrap h1 .dot { color: var(--rust); }
+.login-err { color: var(--rust); font-size: 12px; margin-top: 8px; }
+
+/* ---- floating edit toolbar ---- */
+.edit-toolbar {
+  position: fixed; left: 16px; bottom: 16px; z-index: 9998;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--olive-dk); border: 2px solid var(--rust);
+  padding: 7px 10px; box-shadow: 2px 4px 14px rgba(0,0,0,0.28);
+}
+.edit-toolbar .tb-brand {
+  font-family: var(--display); font-weight: 700; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--cream); padding-right: 4px;
+}
+.edit-toolbar .tb-brand .dot { color: var(--rust); }
+.edit-toolbar button {
+  font-family: var(--display); font-weight: 600; font-size: 11px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 6px 11px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.28); background: none; color: #e7e8c8;
+}
+.edit-toolbar button:hover { background: rgba(255,255,255,0.10); color: #fff; }
+.edit-toolbar button.tb-toggle.on { background: var(--rust); border-color: var(--rust); color: #fff; }
+
+/* ---- editable region affordance ---- */
+.editable { position: relative; }
+.edit-on .editable { outline: 1px dashed rgba(150,90,50,0.45); outline-offset: 3px; }
+.edit-on .editable:hover { outline: 1px dashed var(--rust); background: rgba(179,107,58,0.05); }
+.edit-pencil {
+  position: absolute; top: -11px; right: -11px; z-index: 6;
+  width: 24px; height: 24px; line-height: 1; padding: 0; cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  border: 1px solid var(--rust); background: var(--cream); color: var(--rust);
+  font-size: 12px; box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+}
+.edit-on .editable > .edit-pencil { display: flex; }
+.edit-pencil:hover { background: var(--rust); color: #fff; }
+
+/* ---- popover (anchored inline editor) ---- */
+.edit-pop {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 9997;
+  width: min(340px, 86vw); background: var(--panel);
+  border: 1px solid var(--line-dk); border-top: 3px solid var(--rust);
+  box-shadow: 2px 6px 20px rgba(0,0,0,0.25); padding: 14px;
+}
+.edit-pop .edit-pop-h {
+  font-family: var(--display); font-weight: 600; font-size: 11px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--olive); margin-bottom: 10px;
+}
+.edit-pop .edit-pop-h .slash { color: var(--rust); }
+.edit-pop .admin-form textarea { min-height: 90px; }
+
+/* ---- centered modal (posts / experiences / projects) ---- */
+.edit-backdrop {
+  position: fixed; inset: 0; z-index: 9999; background: rgba(20,16,10,0.55);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 6vh 16px; overflow-y: auto;
+}
+.edit-modal {
+  width: min(760px, 100%); background: var(--panel);
+  border: 1px solid var(--line-dk); border-top: 4px solid var(--rust);
+  box-shadow: 2px 8px 30px rgba(0,0,0,0.4); padding: 22px;
+}
+.edit-modal-h {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+}
+.edit-modal-h h2 {
+  font-family: var(--display); font-weight: 700; font-size: 20px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--olive); margin: 0;
+}
+.edit-modal-h h2 .slash { color: var(--rust); }
+.edit-x {
+  background: none; border: 1px solid var(--line-dk); color: var(--ink-dim);
+  font-size: 15px; line-height: 1; width: 28px; height: 28px; cursor: pointer;
+}
+.edit-x:hover { border-color: var(--rust); color: var(--rust); }
+.edit-modal .admin-form { max-width: none; }
+
+/* ---- inline item controls (edit / delete / reorder) ---- */
+.edit-controls { display: none; gap: 4px; margin-top: 6px; }
+.edit-on .edit-controls { display: flex; flex-wrap: wrap; }
+.edit-mini {
+  font-family: var(--display); font-weight: 600; font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 8px; cursor: pointer;
+  border: 1px solid var(--line-dk); background: var(--panel-hd); color: var(--olive);
+}
+.edit-mini:hover { border-color: var(--rust); color: var(--rust); }
+.edit-mini.danger:hover { background: var(--rust); border-color: var(--rust); color: #fff; }
+
+/* ---- draft marker (only rendered for admins) ---- */
+.draft-tag {
+  display: inline-block; margin-left: 6px; padding: 1px 7px;
+  font-family: var(--display); font-weight: 700; font-size: 9px; letter-spacing: 1px;
+  text-transform: uppercase; color: #fff; background: var(--rust);
+  vertical-align: middle;
+}

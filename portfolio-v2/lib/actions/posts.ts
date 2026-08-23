@@ -1,10 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { posts } from '@/lib/db/schema'
+import { requireAdmin } from '@/lib/session'
 
 function slugify(s: string): string {
   return s
@@ -18,10 +18,10 @@ function revalidateAll(slug: string) {
   revalidatePath('/')
   revalidatePath('/writing')
   revalidatePath(`/writing/${slug}`)
-  revalidatePath('/admin/posts')
 }
 
 export async function savePost(formData: FormData) {
+  await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
 
@@ -50,13 +50,12 @@ export async function savePost(formData: FormData) {
   }
 
   revalidateAll(slug)
-  redirect('/admin/posts')
 }
 
 export async function deletePost(formData: FormData) {
+  await requireAdmin()
   const id = Number(formData.get('id'))
   const slug = String(formData.get('slug') ?? '')
   if (id) await db.delete(posts).where(eq(posts.id, id))
   revalidateAll(slug)
-  redirect('/admin/posts')
 }

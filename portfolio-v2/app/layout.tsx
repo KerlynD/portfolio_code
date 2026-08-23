@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { getSiteConfig } from '@/lib/content'
+import { isAdmin } from '@/lib/session'
+import EditProvider from '@/components/edit/EditProvider'
+import EditToolbar from '@/components/edit/EditToolbar'
 import './globals.css'
+import './edit.css'
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfig()
@@ -18,11 +22,12 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const admin = await isAdmin()
   return (
     <html lang="en">
       <head>
@@ -35,7 +40,14 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
+        {admin ? (
+          <EditProvider>
+            {children}
+            <EditToolbar />
+          </EditProvider>
+        ) : (
+          children
+        )}
         <Analytics />
       </body>
     </html>

@@ -8,6 +8,29 @@ import siteConfigJson from '@/data/siteConfig.json'
 
 export type SiteConfig = typeof siteConfigJson
 
+/** Content-slot config for the home "Now" featured card. */
+export type NowSlotSource = 'latestRole' | 'latestPost' | 'custom'
+export type NowSlot = {
+  source: NowSlotSource
+  title: string
+  subtitle: string
+  body: string
+  image: string
+}
+export const DEFAULT_NOW_SLOT: NowSlot = {
+  source: 'latestRole',
+  title: '',
+  subtitle: '',
+  body: '',
+  image: '',
+}
+
+/** Read the `now` slot from config, filled out with defaults. */
+export function getNowSlot(cfg: SiteConfig): NowSlot {
+  const slots = (cfg as unknown as { slots?: { now?: Partial<NowSlot> } }).slots
+  return { ...DEFAULT_NOW_SLOT, ...(slots?.now ?? {}) }
+}
+
 /**
  * Site config, merged: DB `config` rows (edited in the admin) win over the
  * bundled JSON defaults key-by-key, so nothing is ever missing.

@@ -47,5 +47,8 @@
       "description": "Contributed to hackathon-winning projects, demonstrating innovation and teamwork in high-pressure development environments.",
       "icon": "trophy"
     }
-  ]
+  ],
+  "slots": {
+    "now": { "source": "latestRole", "title": "", "subtitle": "", "body": "", "image": "" }
+  }
 }

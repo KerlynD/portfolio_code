@@ -1,35 +1,35 @@
-# Portfolio Website
+# Kerlyn Angel Difo — Portfolio
 
-A modern, responsive portfolio website built with HTML, CSS, and JavaScript made for my personal use and to showcase my projects and skills. 
+This is the source code for my personal portfolio and writing site. It's my own
+site, not a template or starter — I keep it public mostly so the code is visible,
+not so it can be reused or self-hosted by others.
 
-Initially for my Web Development Course!
+The current site lives in [`portfolio-v2/`](portfolio-v2/).
 
-## Features
+## Stack
 
-- Modern and clean design
-- Fully responsive layout
-- Light/Dark mode toggle
-- Smooth scrolling navigation
-- Contact form
-- Scroll-based animations
-- Project showcase section
-- Professional experience timeline
+- **Next.js 16** (App Router) + **React 19**
+- **libSQL / SQLite** via **Drizzle ORM** for content (posts, experience, projects, site config)
+- **Vercel Blob** for image uploads
+- **jose** for the admin session (JWT cookie)
+- **marked** for rendering post markdown
 
-## Technologies Used
+## How editing works
 
-- HTML5
-- CSS3 (with CSS Variables for theming)
-- JavaScript (ES6+)
-- Font Awesome Icons
-- Smooth Scroll library
+There's no separate admin dashboard. After signing in at `/admin`, the live site
+becomes editable in place: hovering a panel reveals a pencil that opens a small
+inline editor, and posts/experience/projects can be created, edited, reordered,
+and deleted directly on the page. Changes save to the database and refresh in
+place. Everything is gated behind an admin session; signed-out visitors just see
+the site.
 
-## Customization
+## Running locally
 
-1. **Content**: Edit the `index.html` file to update the content with your personal information.
-2. **Styling**: Modify the CSS variables in `style.css` to change colors and other visual elements.
-3. **Images**: Replace the images in the `assets` folder with your own.
-4. **Projects**: Add or remove project cards in the projects section of `index.html`.
+```bash
+cd portfolio-v2
+npm install
+npm run dev
+```
 
-## Contributing
-
-Feel free to submit issues and enhancement requests!
+Configuration (database URL, admin password, auth secret, blob token) comes from a
+local `.env` file, which is intentionally not committed.

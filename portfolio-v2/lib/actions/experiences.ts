@@ -1,10 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { experiences } from '@/lib/db/schema'
+import { requireAdmin } from '@/lib/session'
 
 const csv = (s: string) => s.split(',').map((x) => x.trim()).filter(Boolean)
 const lines = (s: string) => s.split('\n').map((x) => x.trim()).filter(Boolean)
@@ -14,10 +14,10 @@ const slug = (s: string) =>
 function revalidate() {
   revalidatePath('/')
   revalidatePath('/experience')
-  revalidatePath('/admin/experience')
 }
 
 export async function saveExperience(formData: FormData) {
+  await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
   const company = String(formData.get('company') ?? '').trim()
@@ -44,12 +44,28 @@ export async function saveExperience(formData: FormData) {
   else await db.insert(experiences).values(values)
 
   revalidate()
-  redirect('/admin/experience')
 }
 
 export async function deleteExperience(formData: FormData) {
+  await requireAdmin()
   const id = Number(formData.get('id'))
   if (id) await db.delete(experiences).where(eq(experiences.id, id))
   revalidate()
-  redirect('/admin/experience')
+}
+
+/** Nudge an experience up/down by swapping its `sort` with the neighbour's. */
+export async function reorderExperience(formData: FormData) {
+  await requireAdmin()
+  const id = Number(formData.get('id'))
+  const dir = String(formData.get('dir') ?? '')
+  if (!id || (dir !== 'up' && dir !== 'down')) return
+  const rows = await db.select().from(experiences).orderBy(asc(experiences.sort))
+  const i = rows.findIndex((r) => r.id === id)
+  const j = dir === 'up' ? i - 1 : i + 1
+  if (i < 0 || j < 0 || j >= rows.length) return
+  const a = rows[i]
+  const b = rows[j]
+  await db.update(experiences).set({ sort: b.sort }).where(eq(experiences.id, a.id))
+  await db.update(experiences).set({ sort: a.sort }).where(eq(experiences.id, b.id))
+  revalidate()
 }

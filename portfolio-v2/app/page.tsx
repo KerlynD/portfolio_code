@@ -3,10 +3,12 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
+import NowPanel from "@/components/panels/NowPanel";
+import NewPostButton from "@/components/edit/NewPostButton";
+import PostEditButton from "@/components/edit/PostEditButton";
 import { getBuildSha } from "@/lib/build";
 import { getPublishedPosts } from "@/lib/db/queries";
 import {
-  getExperiences,
   getProjects,
   getSiteConfig,
   type ProjectView,
@@ -25,8 +27,6 @@ function projectBadge(p: ProjectView): string | null {
 export default async function Home() {
   const siteConfig = await getSiteConfig();
   const feed = (await getPublishedPosts()).slice(0, 6);
-  const experiences = await getExperiences();
-  const now = experiences[0];
   const topProjects = (await getProjects()).slice(0, 4);
 
   return (
@@ -47,29 +47,7 @@ export default async function Home() {
       <div className="grid three">
         {/* LEFT */}
         <aside className="col">
-          <section className="panel featured">
-            <div className="ph">
-              <span className="title">Now</span>
-              <span className="arch">current</span>
-            </div>
-            <div className="pb">
-              <div
-                className="cover"
-                style={{
-                  background: "linear-gradient(135deg,#4d76b8,#20386a)",
-                }}
-              >
-                {now.logo ? (
-                  <img src={now.logo} alt={now.company} />
-                ) : (
-                  now.logoFallback
-                )}
-              </div>
-              <div className="fk">{now.role}</div>
-              <div className="ft">{now.company}</div>
-              <p>{now.description}</p>
-            </div>
-          </section>
+          <NowPanel />
 
           <VitalsPanel />
 
@@ -88,6 +66,7 @@ export default async function Home() {
           <section className="panel">
             <div className="ph">
               <span className="title">The Feed</span>
+              <NewPostButton className="edit-mini" />
               <span className="arch">latest</span>
             </div>
             {feed.length === 0 ? (
@@ -131,6 +110,7 @@ export default async function Home() {
                         <Link className="more" href={`/writing/${post.slug}`}>
                           continue reading »
                         </Link>
+                        <PostEditButton post={post} />
                       </div>
                     </div>
                   </article>
