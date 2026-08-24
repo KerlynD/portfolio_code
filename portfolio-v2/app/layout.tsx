@@ -31,7 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/jpeg" href="/assets/profile/profile.jpg" />
+        <link rel="icon" type="image/png" href="/assets/profile/me-if-alien.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
