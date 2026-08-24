@@ -1,10 +1,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { projects } from '@/lib/db/schema'
+import { requireAdmin } from '@/lib/session'
 
 const csv = (s: string) => s.split(',').map((x) => x.trim()).filter(Boolean)
 const slug = (s: string) =>
@@ -13,10 +13,10 @@ const slug = (s: string) =>
 function revalidate() {
   revalidatePath('/')
   revalidatePath('/projects')
-  revalidatePath('/admin/projects')
 }
 
 export async function saveProject(formData: FormData) {
+  await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
   const name = String(formData.get('name') ?? '').trim()
@@ -45,12 +45,28 @@ export async function saveProject(formData: FormData) {
   else await db.insert(projects).values(values)
 
   revalidate()
-  redirect('/admin/projects')
 }
 
 export async function deleteProject(formData: FormData) {
+  await requireAdmin()
   const id = Number(formData.get('id'))
   if (id) await db.delete(projects).where(eq(projects.id, id))
   revalidate()
-  redirect('/admin/projects')
+}
+
+/** Nudge a project up/down by swapping its `sort` with the neighbour's. */
+export async function reorderProject(formData: FormData) {
+  await requireAdmin()
+  const id = Number(formData.get('id'))
+  const dir = String(formData.get('dir') ?? '')
+  if (!id || (dir !== 'up' && dir !== 'down')) return
+  const rows = await db.select().from(projects).orderBy(asc(projects.sort))
+  const i = rows.findIndex((r) => r.id === id)
+  const j = dir === 'up' ? i - 1 : i + 1
+  if (i < 0 || j < 0 || j >= rows.length) return
+  const a = rows[i]
+  const b = rows[j]
+  await db.update(projects).set({ sort: b.sort }).where(eq(projects.id, a.id))
+  await db.update(projects).set({ sort: a.sort }).where(eq(projects.id, b.id))
+  revalidate()
 }

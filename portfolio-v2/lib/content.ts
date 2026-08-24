@@ -1,12 +1,36 @@
 import { cache } from 'react'
 import { asc } from 'drizzle-orm'
 import { db } from './db'
-import { experiences, projects, config } from './db/schema'
+import { experiences, projects, communities, config } from './db/schema'
 import experiencesJson from '@/data/experiences.json'
 import projectsJson from '@/data/projects.json'
+import communitiesJson from '@/data/communities.json'
 import siteConfigJson from '@/data/siteConfig.json'
 
 export type SiteConfig = typeof siteConfigJson
+
+/** Content-slot config for the home "Now" featured card. */
+export type NowSlotSource = 'latestRole' | 'latestPost' | 'custom'
+export type NowSlot = {
+  source: NowSlotSource
+  title: string
+  subtitle: string
+  body: string
+  image: string
+}
+export const DEFAULT_NOW_SLOT: NowSlot = {
+  source: 'latestRole',
+  title: '',
+  subtitle: '',
+  body: '',
+  image: '',
+}
+
+/** Read the `now` slot from config, filled out with defaults. */
+export function getNowSlot(cfg: SiteConfig): NowSlot {
+  const slots = (cfg as unknown as { slots?: { now?: Partial<NowSlot> } }).slots
+  return { ...DEFAULT_NOW_SLOT, ...(slots?.now ?? {}) }
+}
 
 /**
  * Site config, merged: DB `config` rows (edited in the admin) win over the
@@ -99,6 +123,35 @@ export const getExperiences = cache(async (): Promise<ExperienceView[]> => {
     highlights: (e.highlights as string[]) ?? [],
     responsibilities: (e.responsibilities as string[]) ?? [],
     current: e.id === 'google',
+  }))
+})
+
+export type CommunityView = {
+  id: string
+  name: string
+  icon: string | null
+  description: string
+}
+
+export const getCommunities = cache(async (): Promise<CommunityView[]> => {
+  try {
+    const rows = await db.select().from(communities).orderBy(asc(communities.sort))
+    if (rows.length) {
+      return rows.map((c) => ({
+        id: c.extId,
+        name: c.name,
+        icon: c.icon,
+        description: c.description,
+      }))
+    }
+  } catch (e) {
+    console.error('[content] getCommunities fell back to JSON:', e)
+  }
+  return (communitiesJson as Record<string, unknown>[]).map((c) => ({
+    id: c.id as string,
+    name: c.name as string,
+    icon: (c.icon as string) ?? null,
+    description: (c.description as string) ?? '',
   }))
 })
 

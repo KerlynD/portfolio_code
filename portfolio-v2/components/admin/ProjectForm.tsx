@@ -1,11 +1,40 @@
-import { saveProject } from '@/lib/actions/projects'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { saveProject, deleteProject } from '@/lib/actions/projects'
 import ImageField from './ImageField'
 import type { Project } from '@/lib/db/schema'
 
-export default function ProjectForm({ item }: { item?: Project }) {
+export default function ProjectForm({ item, onDone }: { item?: Project; onDone?: () => void }) {
   const links = item?.links ?? {}
+  const [saving, setSaving] = useState(false)
+  const router = useRouter()
+
+  async function submit(fd: FormData) {
+    setSaving(true)
+    try {
+      await saveProject(fd)
+      router.refresh()
+      onDone?.()
+    } catch {
+      alert('Save failed — are you still signed in?')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function onDelete() {
+    if (!item || !confirm(`Delete project "${item.name}"?`)) return
+    const fd = new FormData()
+    fd.set('id', String(item.id))
+    await deleteProject(fd)
+    router.refresh()
+    onDone?.()
+  }
+
   return (
-    <form action={saveProject} className="admin-form">
+    <form action={submit} className="admin-form">
       {item && <input type="hidden" name="id" value={item.id} />}
 
       <div className="row2">
@@ -74,8 +103,17 @@ export default function ProjectForm({ item }: { item?: Project }) {
       </label>
 
       <div className="admin-actions">
-        <button className="btn" type="submit">Save</button>
-        <a className="btn ghost" href="/admin/projects">Cancel</a>
+        <button className="btn" type="submit" disabled={saving}>
+          {saving ? 'Saving…' : 'Save'}
+        </button>
+        <button className="btn ghost" type="button" onClick={() => onDone?.()}>
+          Cancel
+        </button>
+        {item && (
+          <button className="btn danger" type="button" onClick={onDelete} style={{ marginLeft: 'auto' }}>
+            Delete
+          </button>
+        )}
       </div>
     </form>
   )

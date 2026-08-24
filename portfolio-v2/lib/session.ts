@@ -8,6 +8,14 @@ export async function isAdmin(): Promise<boolean> {
   return verifySession(store.get(SESSION_COOKIE)?.value)
 }
 
+/**
+ * Guard for mutating server actions / route handlers that are now reachable from
+ * the public site (inline editing). Throws if the caller isn't a signed-in admin.
+ */
+export async function requireAdmin(): Promise<void> {
+  if (!(await isAdmin())) throw new Error('Unauthorized')
+}
+
 export async function setSessionCookie(): Promise<void> {
   const store = await cookies()
   store.set(SESSION_COOKIE, await signSession(), {

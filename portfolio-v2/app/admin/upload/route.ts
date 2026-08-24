@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import { isAdmin } from '@/lib/session'
 
 export const runtime = 'nodejs'
 
-/** Protected by middleware (/admin/*). Uploads a file to Vercel Blob, returns its public URL. */
+/** Uploads a file to Vercel Blob, returns its public URL. Admin-only. */
 export async function POST(req: Request) {
+  if (!(await isAdmin())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const token = process.env.BLOB_READ_WRITE_TOKEN
   if (!token) {
     return NextResponse.json(

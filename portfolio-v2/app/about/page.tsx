@@ -3,8 +3,18 @@ import SiteFooter from "@/components/layout/SiteFooter";
 import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
 import { getBuildSha } from "@/lib/build";
-import { getSiteConfig } from "@/lib/content";
-import communities from "@/data/communities.json";
+import { getSiteConfig, getCommunities } from "@/lib/content";
+import { getAllCommunities } from "@/lib/db/queries";
+import { isAdmin } from "@/lib/session";
+import Editable from "@/components/edit/Editable";
+import ConfigFieldEditor from "@/components/edit/ConfigFieldEditor";
+import ConfigListEditor from "@/components/edit/ConfigListEditor";
+import SkillsEditor from "@/components/edit/SkillsEditor";
+import {
+  NewCommunityButton,
+  CommunityControls,
+} from "@/components/edit/CommunityEdit";
+import type { Community } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +40,19 @@ function initials(name: string): string {
 export default async function AboutPage() {
   const siteConfig = await getSiteConfig();
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, "").trim();
+  const communities = await getCommunities();
+
+  // Admin-only DB rows (keyed by extId) so inline community controls have the
+  // numeric id / full record the form needs.
+  const admin = await isAdmin();
+  const communityByExtId = new Map<string, Community>();
+  if (admin) {
+    try {
+      for (const row of await getAllCommunities()) communityByExtId.set(row.extId, row);
+    } catch {
+      /* DB unavailable — controls simply won't render */
+    }
+  }
 
   return (
     <div className="shell">
@@ -49,6 +72,22 @@ export default async function AboutPage() {
       <div className="grid main-side">
         {/* MAIN */}
         <div className="col">
+          <Editable
+            label="Profile"
+            editor={
+              <ConfigFieldEditor
+                fields={[
+                  { key: "name", label: "Name", value: siteConfig.name },
+                  { key: "currentRole", label: "Current role", value: siteConfig.currentRole },
+                  { key: "aboutTagline", label: "Tagline", value: siteConfig.aboutTagline },
+                  { key: "bio", label: "Bio", value: siteConfig.bio, multiline: true },
+                  { key: "education", label: "Education", value: siteConfig.education },
+                  { key: "location", label: "Location", value: siteConfig.location },
+                  { key: "focus", label: "Focus", value: siteConfig.focus },
+                ]}
+              />
+            }
+          >
           <section className="panel">
             <div className="ph">
               <span className="title">Profile</span>
@@ -80,13 +119,29 @@ export default async function AboutPage() {
                     <b>⚑</b> {siteConfig.currentRole.replace(/ at .*/, "")}
                   </span>
                   <span className="fact">
-                    <b>⚑</b> Backend & Machine Learning
+                    <b>⚑</b> {siteConfig.focus}
                   </span>
                 </div>
               </div>
             </div>
           </section>
+          </Editable>
 
+          <Editable
+            label="Who I Am"
+            editor={
+              <ConfigFieldEditor
+                fields={[
+                  {
+                    key: "aboutDescription",
+                    label: "Who I Am",
+                    value: siteConfig.aboutDescription,
+                    multiline: true,
+                  },
+                ]}
+              />
+            }
+          >
           <section className="panel">
             <div className="ph">
               <span className="title">Who I Am</span>
@@ -104,10 +159,12 @@ export default async function AboutPage() {
               </p>
             </div>
           </section>
+          </Editable>
 
           <section className="panel">
             <div className="ph">
               <span className="title">Communities</span>
+              <NewCommunityButton />
               <span className="arch">where I show up</span>
             </div>
             <div className="pb" style={{ padding: 0 }}>
@@ -121,12 +178,29 @@ export default async function AboutPage() {
                   <div>
                     <h5>{c.name}</h5>
                     <p>{c.description}</p>
+                    <CommunityControls item={communityByExtId.get(c.id)} />
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
+          <Editable
+            label="Achievements"
+            editor={
+              <ConfigListEditor
+                configKey="achievements"
+                itemLabel="achievement"
+                fields={[
+                  { key: "title", label: "Title" },
+                  { key: "organization", label: "Organization" },
+                  { key: "description", label: "Description", multiline: true },
+                  { key: "icon", label: "Icon (image path, or 'graduation'/'trophy')" },
+                ]}
+                value={siteConfig.achievements as Record<string, string>[]}
+              />
+            }
+          >
           <section className="panel">
             <div className="ph">
               <span className="title">Achievements</span>
@@ -150,6 +224,7 @@ export default async function AboutPage() {
               ))}
             </div>
           </section>
+          </Editable>
         </div>
 
         {/* SIDEBAR */}
@@ -158,6 +233,10 @@ export default async function AboutPage() {
 
           <CurrentlyPanel />
 
+          <Editable
+            label="Skills"
+            editor={<SkillsEditor value={siteConfig.skills as Record<string, string[]>} />}
+          >
           <section className="panel">
             <div className="ph">
               <span className="title">Skills</span>
@@ -176,6 +255,7 @@ export default async function AboutPage() {
               ))}
             </div>
           </section>
+          </Editable>
 
           <section className="panel">
             <div className="ph">

@@ -3,16 +3,22 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
+import NowPanel from "@/components/panels/NowPanel";
+import NewPostButton from "@/components/edit/NewPostButton";
+import PostEditButton from "@/components/edit/PostEditButton";
+import { NewProjectButton, ProjectControls } from "@/components/edit/ProjectEdit";
+import { NewCommunityButton, CommunityControls } from "@/components/edit/CommunityEdit";
 import { getBuildSha } from "@/lib/build";
-import { getPublishedPosts } from "@/lib/db/queries";
+import { getPublishedPosts, getAllProjects, getAllCommunities } from "@/lib/db/queries";
+import { isAdmin } from "@/lib/session";
 import {
-  getExperiences,
   getProjects,
+  getCommunities,
   getSiteConfig,
   type ProjectView,
 } from "@/lib/content";
 import { formatDate } from "@/lib/markdown";
-import communities from "@/data/communities.json";
+import type { Project, Community } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -25,9 +31,21 @@ function projectBadge(p: ProjectView): string | null {
 export default async function Home() {
   const siteConfig = await getSiteConfig();
   const feed = (await getPublishedPosts()).slice(0, 6);
-  const experiences = await getExperiences();
-  const now = experiences[0];
   const topProjects = (await getProjects()).slice(0, 4);
+  const communities = await getCommunities();
+
+  // Admin-only DB rows (keyed by extId) so inline controls have full records.
+  const admin = await isAdmin();
+  const projectByExtId = new Map<string, Project>();
+  const communityByExtId = new Map<string, Community>();
+  if (admin) {
+    try {
+      for (const row of await getAllProjects()) projectByExtId.set(row.extId, row);
+      for (const row of await getAllCommunities()) communityByExtId.set(row.extId, row);
+    } catch {
+      /* DB unavailable — controls simply won't render */
+    }
+  }
 
   return (
     <div className="shell">
@@ -47,29 +65,7 @@ export default async function Home() {
       <div className="grid three">
         {/* LEFT */}
         <aside className="col">
-          <section className="panel featured">
-            <div className="ph">
-              <span className="title">Now</span>
-              <span className="arch">current</span>
-            </div>
-            <div className="pb">
-              <div
-                className="cover"
-                style={{
-                  background: "linear-gradient(135deg,#4d76b8,#20386a)",
-                }}
-              >
-                {now.logo ? (
-                  <img src={now.logo} alt={now.company} />
-                ) : (
-                  now.logoFallback
-                )}
-              </div>
-              <div className="fk">{now.role}</div>
-              <div className="ft">{now.company}</div>
-              <p>{now.description}</p>
-            </div>
-          </section>
+          <NowPanel />
 
           <VitalsPanel />
 
@@ -88,6 +84,7 @@ export default async function Home() {
           <section className="panel">
             <div className="ph">
               <span className="title">The Feed</span>
+              <NewPostButton className="edit-mini" />
               <span className="arch">latest</span>
             </div>
             {feed.length === 0 ? (
@@ -131,6 +128,7 @@ export default async function Home() {
                         <Link className="more" href={`/writing/${post.slug}`}>
                           continue reading »
                         </Link>
+                        <PostEditButton post={post} />
                       </div>
                     </div>
                   </article>
@@ -148,6 +146,7 @@ export default async function Home() {
           <section className="panel">
             <div className="ph">
               <span className="title">Top Projects</span>
+              <NewProjectButton className="edit-mini" />
               <span className="arch">all »</span>
             </div>
             <div className="pb" style={{ padding: "8px 12px 15px" }}>
@@ -165,6 +164,7 @@ export default async function Home() {
                         </>
                       )}
                     </span>
+                    <ProjectControls item={projectByExtId.get(p.id)} />
                   </div>
                 );
               })}
@@ -177,12 +177,14 @@ export default async function Home() {
           <section className="panel">
             <div className="ph">
               <span className="title">Communities</span>
+              <NewCommunityButton className="edit-mini" />
             </div>
             <div className="pb" style={{ padding: "8px 12px 15px" }}>
               {communities.map((c) => (
                 <div className="plink" key={c.id}>
                   <Link href="/about">{c.name}</Link>
                   <span className="d">{c.description.split(".")[0]}.</span>
+                  <CommunityControls item={communityByExtId.get(c.id)} />
                 </div>
               ))}
             </div>

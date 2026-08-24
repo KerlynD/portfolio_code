@@ -1,10 +1,39 @@
-import { saveExperience } from '@/lib/actions/experiences'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { saveExperience, deleteExperience } from '@/lib/actions/experiences'
 import ImageField from './ImageField'
 import type { Experience } from '@/lib/db/schema'
 
-export default function ExperienceForm({ item }: { item?: Experience }) {
+export default function ExperienceForm({ item, onDone }: { item?: Experience; onDone?: () => void }) {
+  const [saving, setSaving] = useState(false)
+  const router = useRouter()
+
+  async function submit(fd: FormData) {
+    setSaving(true)
+    try {
+      await saveExperience(fd)
+      router.refresh()
+      onDone?.()
+    } catch {
+      alert('Save failed — are you still signed in?')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function onDelete() {
+    if (!item || !confirm(`Delete ${item.company} — ${item.role}?`)) return
+    const fd = new FormData()
+    fd.set('id', String(item.id))
+    await deleteExperience(fd)
+    router.refresh()
+    onDone?.()
+  }
+
   return (
-    <form action={saveExperience} className="admin-form">
+    <form action={submit} className="admin-form">
       {item && <input type="hidden" name="id" value={item.id} />}
 
       <div className="row2">
@@ -80,8 +109,17 @@ export default function ExperienceForm({ item }: { item?: Experience }) {
       </label>
 
       <div className="admin-actions">
-        <button className="btn" type="submit">Save</button>
-        <a className="btn ghost" href="/admin/experience">Cancel</a>
+        <button className="btn" type="submit" disabled={saving}>
+          {saving ? 'Saving…' : 'Save'}
+        </button>
+        <button className="btn ghost" type="button" onClick={() => onDone?.()}>
+          Cancel
+        </button>
+        {item && (
+          <button className="btn danger" type="button" onClick={onDelete} style={{ marginLeft: 'auto' }}>
+            Delete
+          </button>
+        )}
       </div>
     </form>
   )

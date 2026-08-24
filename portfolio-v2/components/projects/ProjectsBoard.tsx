@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { ProjectView as Project } from "@/lib/content";
+import type { Project as ProjectRow } from "@/lib/db/schema";
+import { NewProjectButton, ProjectControls } from "@/components/edit/ProjectEdit";
 
 type Links = { github: string; linkedin: string; resume: string; email: string };
 
@@ -57,11 +59,14 @@ const TECH_GROUPS: { label: string; match: (t: string) => boolean }[] = [
 export default function ProjectsBoard({
   projects,
   links,
+  editRows = [],
 }: {
   projects: Project[];
   links: Links;
+  editRows?: ProjectRow[];
 }) {
   const [active, setActive] = useState<string | null>(null);
+  const rowByExtId = new Map(editRows.map((r) => [r.extId, r]));
 
   const techCounts = TECH_GROUPS.map((g) => ({
     label: g.label,
@@ -87,6 +92,8 @@ export default function ProjectsBoard({
           <span className="drop">{projects.length}</span>
           shipped projects across various tech stacks. I built them for fun,
           learning, and solving real-world problems.
+          {"  "}
+          <NewProjectButton />
         </div>
 
         <div className="pgrid">
@@ -100,6 +107,7 @@ export default function ProjectsBoard({
                   <span className="arch mono">{primaryTag(p)}</span>
                 </div>
                 <div className="pb">
+                  <ProjectControls item={rowByExtId.get(p.id)} />
                   <div
                     className="cover"
                     style={{

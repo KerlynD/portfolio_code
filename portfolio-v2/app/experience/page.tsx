@@ -2,6 +2,15 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { getBuildSha } from "@/lib/build";
 import { getExperiences, getSiteConfig } from "@/lib/content";
+import { getAllExperiences } from "@/lib/db/queries";
+import { isAdmin } from "@/lib/session";
+import Editable from "@/components/edit/Editable";
+import ConfigFieldEditor from "@/components/edit/ConfigFieldEditor";
+import {
+  NewExperienceButton,
+  ExperienceControls,
+} from "@/components/edit/ExperienceEdit";
+import type { Experience } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +23,18 @@ export default async function ExperiencePage() {
   const siteConfig = await getSiteConfig();
   const items = await getExperiences();
   const companies = new Set(items.map((e) => e.company)).size;
+
+  // For admins, pull the editable DB rows (keyed by extId) so inline controls
+  // have the numeric id / full record the forms need.
+  const admin = await isAdmin();
+  const rowByExtId = new Map<string, Experience>();
+  if (admin) {
+    try {
+      for (const row of await getAllExperiences()) rowByExtId.set(row.extId, row);
+    } catch {
+      /* DB unavailable — controls simply won't render */
+    }
+  }
 
   return (
     <div className="shell">
@@ -36,6 +57,8 @@ export default async function ExperiencePage() {
             roles across cloud infrastructure, observability, fintech and
             biomedical data. Newest first. Each entry lists what I actually
             shipped in each.
+            {"  "}
+            <NewExperienceButton />
           </div>
 
           {items.map((e) => (
@@ -45,6 +68,7 @@ export default async function ExperiencePage() {
                 <span className="arch mono">{e.period}</span>
               </div>
               <div className="pb">
+                <ExperienceControls item={rowByExtId.get(e.id)} />
                 <div className="expmeta">
                   <div
                     className="logo"
@@ -131,23 +155,35 @@ export default async function ExperiencePage() {
             </div>
           </section>
 
-          <section className="panel">
-            <div className="ph">
-              <span className="title">Currently</span>
-            </div>
-            <div className="pb nowbox" style={{ padding: "10px 12px 14px" }}>
-              <div className="np">
-                <span className="nk">Now</span>
-                <br />
-                {siteConfig.currentRole}
+          <Editable
+            label="Currently"
+            editor={
+              <ConfigFieldEditor
+                fields={[
+                  { key: "currentRole", label: "Now (role)", value: siteConfig.currentRole },
+                  { key: "statusMessage", label: "Seeking / status", value: siteConfig.statusMessage },
+                ]}
+              />
+            }
+          >
+            <section className="panel">
+              <div className="ph">
+                <span className="title">Currently</span>
               </div>
-              <div className="np">
-                <span className="nk">Seeking</span>
-                <br />
-                {siteConfig.statusMessage}
+              <div className="pb nowbox" style={{ padding: "10px 12px 14px" }}>
+                <div className="np">
+                  <span className="nk">Now</span>
+                  <br />
+                  {siteConfig.currentRole}
+                </div>
+                <div className="np">
+                  <span className="nk">Seeking</span>
+                  <br />
+                  {siteConfig.statusMessage}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </Editable>
 
           <section className="panel">
             <div className="ph">

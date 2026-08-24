@@ -3,8 +3,11 @@ import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
 import { getSiteConfig } from '@/lib/content'
-import { getPublishedPosts } from '@/lib/db/queries'
+import { getPublishedPosts, getAllPosts } from '@/lib/db/queries'
+import { isAdmin } from '@/lib/session'
 import { formatDate } from '@/lib/markdown'
+import NewPostButton from '@/components/edit/NewPostButton'
+import PostEditButton from '@/components/edit/PostEditButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +22,10 @@ function kindClass(k: string): string {
 
 export default async function WritingPage() {
   const siteConfig = await getSiteConfig()
-  const feed = await getPublishedPosts()
+  // Admins see drafts too (so they can edit them on-site); the public sees only
+  // published posts. getAllPosts falls back gracefully if the DB is unreachable.
+  const admin = await isAdmin()
+  const feed = admin ? await getAllPosts().catch(() => getPublishedPosts()) : await getPublishedPosts()
   const kinds = ['Post', 'Review', 'Paper Notes']
     .map((k) => ({ k, n: feed.filter((p) => p.kind === k).length }))
     .filter((x) => x.n > 0)
@@ -48,6 +54,7 @@ export default async function WritingPage() {
           <section className="panel">
             <div className="ph">
               <span className="title">The Feed</span>
+              <NewPostButton className="edit-mini" />
               <span className="arch">{feed.length} posts</span>
             </div>
             {feed.length === 0 ? (
@@ -59,6 +66,7 @@ export default async function WritingPage() {
               feed.map((p, i) => (
                 <article className="post" key={p.id}>
                   <span className={`kind ${kindClass(p.kind)}`}>{p.kind}</span>
+                  {!p.published && <span className="draft-tag">draft</span>}
                   <h3>
                     <span className="idx">{String.fromCharCode(65 + (i % 26))}.</span>{' '}
                     <Link href={`/writing/${p.slug}`}>{p.title}</Link>
@@ -83,6 +91,7 @@ export default async function WritingPage() {
                       <Link className="more" href={`/writing/${p.slug}`}>
                         continue reading »
                       </Link>
+                      <PostEditButton post={p} />
                     </div>
                   </div>
                 </article>
