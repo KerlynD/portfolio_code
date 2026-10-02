@@ -139,3 +139,13 @@
   text-transform: uppercase; color: #fff; background: var(--rust);
   vertical-align: middle;
 }
+
+/* ---- post editor auto save ---- */
+.autosave-status { font-family: var(--mono); font-size: 15px; color: var(--ink-faint); }
+.autosave-status.failed { color: var(--rust); }
+.autosave-restore {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 8px 10px; background: var(--panel-hd); border: 1px dashed var(--rust);
+  font-size: 12px; color: var(--ink);
+}
+.autosave-restore span { margin-right: auto; }

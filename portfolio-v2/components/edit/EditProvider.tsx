@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 
 type EditContextValue = {
   editing: boolean
@@ -8,6 +8,8 @@ type EditContextValue = {
   /** Open a centered modal (e.g. the post / experience / project editor). */
   openModal: (node: ReactNode) => void
   closeModal: () => void
+  /** Let the open modal veto closing (e.g. unsaved changes). Return false to keep it open. */
+  setCloseGuard: (guard: (() => boolean) | null) => void
 }
 
 const EditContext = createContext<EditContextValue | null>(null)
@@ -20,6 +22,7 @@ export function useEdit(): EditContextValue {
       setEditing: () => {},
       openModal: () => {},
       closeModal: () => {},
+      setCloseGuard: () => {},
     }
   )
 }
@@ -29,6 +32,7 @@ const STORAGE_KEY = 'portfolio-edit-mode'
 export default function EditProvider({ children }: { children: ReactNode }) {
   const [editing, setEditingState] = useState(false)
   const [modal, setModal] = useState<ReactNode>(null)
+  const closeGuard = useRef<(() => boolean) | null>(null)
 
   // Restore the toggle across refreshes so an edit session feels continuous.
   // Default ON when there's no stored preference, so admins land editable.
@@ -50,21 +54,31 @@ export default function EditProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const openModal = (node: ReactNode) => setModal(node)
-  const closeModal = () => setModal(null)
+  const openModal = (node: ReactNode) => {
+    closeGuard.current = null
+    setModal(node)
+  }
+  const closeModal = () => {
+    if (closeGuard.current && !closeGuard.current()) return
+    closeGuard.current = null
+    setModal(null)
+  }
+  const setCloseGuard = (guard: (() => boolean) | null) => {
+    closeGuard.current = guard
+  }
 
   // Close the modal on Escape.
   useEffect(() => {
     if (!modal) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setModal(null)
+      if (e.key === 'Escape') closeModal()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [modal])
 
   return (
-    <EditContext.Provider value={{ editing, setEditing, openModal, closeModal }}>
+    <EditContext.Provider value={{ editing, setEditing, openModal, closeModal, setCloseGuard }}>
       <div className={editing ? 'edit-on' : undefined}>{children}</div>
       {modal && (
         <div className="edit-backdrop" onClick={(e) => e.target === e.currentTarget && closeModal()}>
