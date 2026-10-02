@@ -20,7 +20,7 @@ function revalidateAll(slug: string) {
   revalidatePath(`/writing/${slug}`)
 }
 
-export async function savePost(formData: FormData) {
+export async function savePost(formData: FormData): Promise<{ id: number; slug: string }> {
   await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
@@ -43,13 +43,16 @@ export async function savePost(formData: FormData) {
     updatedAt: new Date(),
   }
 
+  let savedId = id
   if (id) {
     await db.update(posts).set(values).where(eq(posts.id, id))
   } else {
-    await db.insert(posts).values(values)
+    const [row] = await db.insert(posts).values(values).returning({ id: posts.id })
+    savedId = row.id
   }
 
   revalidateAll(slug)
+  return { id: savedId!, slug }
 }
 
 export async function deletePost(formData: FormData) {
