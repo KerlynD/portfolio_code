@@ -15,8 +15,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const [post, siteConfig, emojis] = await Promise.all([getPostBySlug(slug), getSiteConfig(), getEmojis()])
-  return { title: post ? `${stripEmoji(post.title, toEmojiMap(emojis))} | ${siteConfig.name}` : 'Writing' }
+  const [post, emojis] = await Promise.all([getPostBySlug(slug), getEmojis()])
+  return { title: post ? stripEmoji(post.title, toEmojiMap(emojis)) : 'Writing' }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {

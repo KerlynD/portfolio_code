@@ -18,10 +18,7 @@ import type { Community } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata() {
-  const siteConfig = await getSiteConfig();
-  return { title: `About | ${siteConfig.name}` };
-}
+export const metadata = { title: "About" };
 
 const KEYWORD_GLYPH: Record<string, string> = {
   graduation: "🎓",

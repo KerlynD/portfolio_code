@@ -9,10 +9,7 @@ import type { Project } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata() {
-  const siteConfig = await getSiteConfig();
-  return { title: `Projects | ${siteConfig.name}` };
-}
+export const metadata = { title: "Projects" };
 
 export default async function ProjectsPage() {
   const siteConfig = await getSiteConfig();

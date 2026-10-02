@@ -13,10 +13,7 @@ import PostEditButton from '@/components/edit/PostEditButton'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata() {
-  const siteConfig = await getSiteConfig()
-  return { title: `Writing | ${siteConfig.name}` }
-}
+export const metadata = { title: 'Writing' }
 
 function kindClass(k: string): string {
   return k === 'Review' ? 'review' : k === 'Paper Notes' ? 'notes' : ''
