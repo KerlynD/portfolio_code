@@ -13,8 +13,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const [post, siteConfig] = await Promise.all([getPostBySlug(slug), getSiteConfig()])
-  return { title: post ? `${post.title} | ${siteConfig.name}` : 'Writing' }
+  const post = await getPostBySlug(slug)
+  return { title: post ? post.title : 'Writing' }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {

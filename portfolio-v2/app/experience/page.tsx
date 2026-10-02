@@ -14,10 +14,7 @@ import type { Experience } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata() {
-  const siteConfig = await getSiteConfig();
-  return { title: `Experience | ${siteConfig.name}` };
-}
+export const metadata = { title: "Experience" };
 
 export default async function ExperiencePage() {
   const siteConfig = await getSiteConfig();
