@@ -9,7 +9,9 @@ import PostEditButton from "@/components/edit/PostEditButton";
 import { NewProjectButton, ProjectControls } from "@/components/edit/ProjectEdit";
 import { NewCommunityButton, CommunityControls } from "@/components/edit/CommunityEdit";
 import { getBuildSha } from "@/lib/build";
-import { getPublishedPosts, getAllProjects, getAllCommunities } from "@/lib/db/queries";
+import { getPublishedPosts, getAllProjects, getAllCommunities, getEmojis } from "@/lib/db/queries";
+import { toEmojiMap } from "@/lib/emoji";
+import RichTitle from "@/components/RichTitle";
 import { isAdmin } from "@/lib/session";
 import {
   getProjects,
@@ -33,6 +35,7 @@ export default async function Home() {
   const feed = (await getPublishedPosts()).slice(0, 6);
   const topProjects = (await getProjects()).slice(0, 4);
   const communities = await getCommunities();
+  const emojis = toEmojiMap(await getEmojis());
 
   // Admin-only DB rows (keyed by extId) so inline controls have full records.
   const admin = await isAdmin();
@@ -106,7 +109,9 @@ export default async function Home() {
                       <span className="idx">
                         {String.fromCharCode(65 + i)}.
                       </span>{" "}
-                      <Link href={`/writing/${post.slug}`}>{post.title}</Link>
+                      <Link href={`/writing/${post.slug}`}>
+                        <RichTitle text={post.title} emojis={emojis} />
+                      </Link>
                     </h3>
                     <div className="meta">
                       {formatDate(post.postDate)} :: {post.category}

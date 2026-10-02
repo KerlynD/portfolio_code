@@ -4,7 +4,9 @@ import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
 import { getSiteConfig } from '@/lib/content'
-import { getPostBySlug, getPublishedPosts } from '@/lib/db/queries'
+import { getPostBySlug, getPublishedPosts, getEmojis } from '@/lib/db/queries'
+import { toEmojiMap, stripEmoji } from '@/lib/emoji'
+import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
 import { renderMarkdown, formatDate } from '@/lib/markdown'
 import PostEditButton from '@/components/edit/PostEditButton'
@@ -13,8 +15,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = await getPostBySlug(slug)
-  return { title: post ? post.title : 'Writing' }
+  const [post, emojis] = await Promise.all([getPostBySlug(slug), getEmojis()])
+  return { title: post ? stripEmoji(post.title, toEmojiMap(emojis)) : 'Writing' }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,7 +28,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post.published && !(await isAdmin())) notFound()
 
   const others = (await getPublishedPosts()).filter((p) => p.slug !== slug).slice(0, 5)
-  const html = renderMarkdown(post.body)
+  const emojis = toEmojiMap(await getEmojis())
+  const html = renderMarkdown(post.body, emojis)
 
   return (
     <div className="shell">
@@ -34,7 +37,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         active="writing"
         ghost={['NOTES', '& REVIEWS']}
         readoutTop={`writing :: ${post.kind.toLowerCase()}`}
-        ticker={[post.title, `${post.kind} · ${formatDate(post.postDate)}`, 'more at /writing']}
+        ticker={[stripEmoji(post.title, emojis), `${post.kind} · ${formatDate(post.postDate)}`, 'more at /writing']}
         build={getBuildSha()}
       />
 
@@ -51,7 +54,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               <span className="arch mono">{formatDate(post.postDate)}</span>
             </div>
             <div className="pb">
-              <h1 className="article-title">{post.title}</h1>
+              <h1 className="article-title">
+                <RichTitle text={post.title} emojis={emojis} />
+              </h1>
               <div className="article-meta">
                 {post.category}
                 {post.rating ? ` · ${'★'.repeat(post.rating)}` : ''}
@@ -71,7 +76,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               )}
               {others.map((p) => (
                 <div className="plink" key={p.id}>
-                  <Link href={`/writing/${p.slug}`}>{p.title}</Link>
+                  <Link href={`/writing/${p.slug}`}>
+                    <RichTitle text={p.title} emojis={emojis} />
+                  </Link>
                   <span className="d">
                     {p.kind} · {formatDate(p.postDate)}
                   </span>

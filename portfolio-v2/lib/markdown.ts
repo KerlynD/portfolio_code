@@ -1,9 +1,14 @@
-import { marked } from 'marked'
+import { Marked, marked } from 'marked'
+import { emojiExtension, type EmojiMap } from './emoji'
 
 marked.setOptions({ gfm: true, breaks: true })
 
-/** Render markdown to HTML (single-admin content). */
-export function renderMarkdown(md: string): string {
+/** Render markdown to HTML (single-admin content). Pass emojis to expand `:name:` shortcodes. */
+export function renderMarkdown(md: string, emojis?: EmojiMap): string {
+  if (emojis && Object.keys(emojis).length) {
+    const m = new Marked({ gfm: true, breaks: true }, emojiExtension(emojis))
+    return m.parse(md ?? '', { async: false }) as string
+  }
   return marked.parse(md ?? '', { async: false }) as string
 }
 
