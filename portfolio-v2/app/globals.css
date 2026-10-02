@@ -1345,3 +1345,10 @@ footer.site .mono {
     border-left: 3px solid var(--rust); padding-left: 12px; margin: 0 0 12px; color: var(--ink-dim);
 }
 
+
+/* ===== CUSTOM EMOJI (:name:) — inline at text height, like Discord ===== */
+img.emoji {
+    display: inline-block; width: auto; height: 1.2em; max-width: none; vertical-align: -0.25em;
+    margin: 0 0.05em; border: none; object-fit: contain;
+}
+.article-body img.emoji { border: none; margin: 0 0.05em; max-width: none; }

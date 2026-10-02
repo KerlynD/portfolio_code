@@ -3,6 +3,7 @@
 import { logout } from '@/lib/actions/auth'
 import { useEdit } from './EditProvider'
 import PostEditorModal from './PostEditorModal'
+import EmojiManager from './EmojiManager'
 
 /** Floating control bar shown only to signed-in admins. */
 export default function EditToolbar() {
@@ -21,6 +22,9 @@ export default function EditToolbar() {
       </button>
       <button type="button" onClick={() => openModal(<PostEditorModal />)}>
         + Post
+      </button>
+      <button type="button" onClick={() => openModal(<EmojiManager />)}>
+        ☺ Emojis
       </button>
       <form action={logout}>
         <button type="submit">Log out</button>

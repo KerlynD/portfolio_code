@@ -65,6 +65,14 @@ export const communities = sqliteTable('communities', {
   sort: integer('sort').notNull().default(0),
 })
 
+/** Custom emojis, Discord-style: `:name:` in post titles and bodies renders the image inline. */
+export const emojis = sqliteTable('emojis', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull().unique(), // a-z 0-9 _, 2-32 chars
+  url: text('url').notNull(), // Vercel Blob
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().$defaultFn(() => new Date()),
+})
+
 /** Site config — simple key/value; values are JSON-encoded. */
 export const config = sqliteTable('config', {
   key: text('key').primaryKey(),
@@ -76,3 +84,4 @@ export type NewPost = typeof posts.$inferInsert
 export type Experience = typeof experiences.$inferSelect
 export type Project = typeof projects.$inferSelect
 export type Community = typeof communities.$inferSelect
+export type Emoji = typeof emojis.$inferSelect

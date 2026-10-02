@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { asc, desc, eq } from 'drizzle-orm'
 import { db } from './index'
 import {
@@ -5,6 +6,8 @@ import {
   experiences,
   projects,
   communities,
+  emojis,
+  type Emoji,
   type Post,
   type Experience,
   type Project,
@@ -65,3 +68,13 @@ export async function getCommunityById(id: number): Promise<Community | undefine
   const rows = await db.select().from(communities).where(eq(communities.id, id)).limit(1)
   return rows[0]
 }
+
+/** Custom emojis by name. Cached per request since every post render needs them. */
+export const getEmojis = cache(async (): Promise<Emoji[]> => {
+  try {
+    return await db.select().from(emojis).orderBy(asc(emojis.name))
+  } catch (e) {
+    console.error('[db] getEmojis failed:', e)
+    return []
+  }
+})

@@ -3,7 +3,9 @@ import SiteHeader from '@/components/layout/SiteHeader'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { getBuildSha } from '@/lib/build'
 import { getSiteConfig } from '@/lib/content'
-import { getPublishedPosts, getAllPosts } from '@/lib/db/queries'
+import { getPublishedPosts, getAllPosts, getEmojis } from '@/lib/db/queries'
+import { toEmojiMap, stripEmoji } from '@/lib/emoji'
+import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
 import { formatDate } from '@/lib/markdown'
 import NewPostButton from '@/components/edit/NewPostButton'
@@ -29,6 +31,7 @@ export default async function WritingPage() {
   const kinds = ['Post', 'Review', 'Paper Notes']
     .map((k) => ({ k, n: feed.filter((p) => p.kind === k).length }))
     .filter((x) => x.n > 0)
+  const emojis = toEmojiMap(await getEmojis())
 
   return (
     <div className="shell">
@@ -38,7 +41,7 @@ export default async function WritingPage() {
         readoutTop={`writing :: ${feed.length} posts`}
         ticker={
           feed.length
-            ? feed.slice(0, 4).map((p) => `${p.kind} — ${p.title}`)
+            ? feed.slice(0, 4).map((p) => `${p.kind} — ${stripEmoji(p.title, emojis)}`)
             : ['nothing published yet', 'check back soon']
         }
         build={getBuildSha()}
@@ -69,7 +72,9 @@ export default async function WritingPage() {
                   {!p.published && <span className="draft-tag">draft</span>}
                   <h3>
                     <span className="idx">{String.fromCharCode(65 + (i % 26))}.</span>{' '}
-                    <Link href={`/writing/${p.slug}`}>{p.title}</Link>
+                    <Link href={`/writing/${p.slug}`}>
+                      <RichTitle text={p.title} emojis={emojis} />
+                    </Link>
                   </h3>
                   <div className="meta">
                     {formatDate(p.postDate)} :: {p.category}
