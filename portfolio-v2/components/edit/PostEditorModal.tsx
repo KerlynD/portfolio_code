@@ -9,7 +9,7 @@ import { useEdit } from './EditProvider'
 export default function PostEditorModal({ post }: { post?: Post }) {
   const { closeModal } = useEdit()
   return (
-    <Modal title={post ? 'Edit post' : 'New post'}>
+    <Modal title={post ? 'Edit post' : 'New post'} wide>
       <PostForm post={post} onDone={closeModal} />
     </Modal>
   )

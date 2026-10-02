@@ -4,10 +4,10 @@ import type { ReactNode } from 'react'
 import { useEdit } from './EditProvider'
 
 /** Body of a centered modal. Render inside EditProvider's backdrop via openModal(). */
-export default function Modal({ title, children }: { title: string; children: ReactNode }) {
+export default function Modal({ title, wide, children }: { title: string; wide?: boolean; children: ReactNode }) {
   const { closeModal } = useEdit()
   return (
-    <div className="edit-modal">
+    <div className={wide ? 'edit-modal wide' : 'edit-modal'}>
       <div className="edit-modal-h">
         <h2>
           <span className="slash">/</span> {title}
