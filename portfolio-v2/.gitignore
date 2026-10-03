@@ -25,6 +25,9 @@ local.db
 local.db-*
 *.sqlite
 
+# CLI screenshots (published to the pr-screenshots branch, never committed here)
+.shots/
+
 # Vercel
 .vercel
 

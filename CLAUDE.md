@@ -73,6 +73,20 @@ npm run build
 
 There is no test suite. `npm run build` (type-check + build) is the gate, plus a manual pass in the browser.
 
+### Dev CLI (`scripts/cli.ts`)
+
+Shortcuts for the routines above. Run `npm run cli -- help` to list them. Start the dev server with the CLI's dev-only secret so `admin-cookie` works:
+
+```bash
+AUTH_SECRET=portfolio-cli-local-only DATABASE_URL=file:local.db npm run dev
+```
+
+- `npm run cli -- db reset [--fresh]`: push the schema and seed `local.db`. It refuses any non-`file:` `DATABASE_URL`.
+- `npm run cli -- smoke`: GET every public route and post, and exit 1 on any unexpected status.
+- `npm run cli -- admin-cookie`: print an `admin_session` cookie signed with the dev secret, for checking admin UI locally.
+- `npm run cli -- shots / writing --mobile --prefix after`: screenshots go into `.shots/` (gitignored).
+- `npm run cli -- shots publish <pr-branch-slug>`: replace that folder on `pr-screenshots`, push, and print the markdown embeds.
+
 ## ⚠️ Database safety
 
 `portfolio-v2/.env` points `DATABASE_URL` at the **production** database. When you run anything locally, always override it with `DATABASE_URL=file:local.db`. That applies to `dev`, `db:push`, `db:seed`, and scripts.
