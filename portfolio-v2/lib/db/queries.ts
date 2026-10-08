@@ -14,10 +14,14 @@ import {
   type Community,
 } from './schema'
 
-/** Published posts, newest first. Falls back to [] if the DB isn't reachable/seeded. */
+/** Published posts, newest first (id breaks same-day ties). Falls back to [] if the DB isn't reachable/seeded. */
 export async function getPublishedPosts(): Promise<Post[]> {
   try {
-    return await db.select().from(posts).where(eq(posts.published, true)).orderBy(desc(posts.postDate))
+    return await db
+      .select()
+      .from(posts)
+      .where(eq(posts.published, true))
+      .orderBy(desc(posts.postDate), desc(posts.id))
   } catch (e) {
     console.error('[db] getPublishedPosts failed:', e)
     return []

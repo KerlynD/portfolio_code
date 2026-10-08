@@ -8,7 +8,7 @@ import { getPostBySlug, getPublishedPosts, getEmojis } from '@/lib/db/queries'
 import { toEmojiMap, stripEmoji } from '@/lib/emoji'
 import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
-import { renderMarkdown, formatDate } from '@/lib/markdown'
+import { renderMarkdown, formatDate, readingMinutes } from '@/lib/markdown'
 import PostEditButton from '@/components/edit/PostEditButton'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +27,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   // Drafts are viewable by admins (for on-site preview) but hidden from the public.
   if (!post.published && !(await isAdmin())) notFound()
 
-  const others = (await getPublishedPosts()).filter((p) => p.slug !== slug).slice(0, 5)
+  const published = await getPublishedPosts()
+  const others = published.filter((p) => p.slug !== slug).slice(0, 5)
+  // Newest first, so the older neighbour is the next index. Drafts aren't in the list (at = -1).
+  const at = published.findIndex((p) => p.id === post.id)
+  const older = at < 0 ? undefined : published[at + 1]
+  const newer = at < 0 ? undefined : published[at - 1]
   const emojis = toEmojiMap(await getEmojis())
   const html = renderMarkdown(post.body, emojis)
 
@@ -60,11 +65,33 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               <div className="article-meta">
                 {post.category}
                 {post.rating ? ` · ${'★'.repeat(post.rating)}` : ''}
+                {` · ${readingMinutes(post.body)} min read`}
               </div>
               {post.cover && <img className="article-cover" src={post.cover} alt="" />}
               <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
             </div>
           </article>
+
+          {(older || newer) && (
+            <nav className="post-nav" aria-label="More posts">
+              {older ? (
+                <Link className="older" href={`/writing/${older.slug}`}>
+                  <span className="dir">« older</span>
+                  <RichTitle text={older.title} emojis={emojis} />
+                </Link>
+              ) : (
+                <span />
+              )}
+              {newer ? (
+                <Link className="newer" href={`/writing/${newer.slug}`}>
+                  <span className="dir">newer »</span>
+                  <RichTitle text={newer.title} emojis={emojis} />
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )}
         </main>
 
         <aside className="col">
