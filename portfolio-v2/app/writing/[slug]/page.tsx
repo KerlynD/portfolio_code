@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import SiteHeader from '@/components/layout/SiteHeader'
@@ -13,10 +14,26 @@ import PostEditButton from '@/components/edit/PostEditButton'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const [post, emojis] = await Promise.all([getPostBySlug(slug), getEmojis()])
-  return { title: post ? stripEmoji(post.title, toEmojiMap(emojis)) : 'Writing' }
+  if (!post) return { title: 'Writing' }
+  const title = stripEmoji(post.title, toEmojiMap(emojis))
+  // Drafts get no share tags; the card image 404s for them too.
+  if (!post.published) return { title }
+  const description = post.excerpt || undefined
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `/writing/${post.slug}`,
+      publishedTime: post.postDate,
+    },
+    twitter: { card: 'summary_large_image', title, description },
+  }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
