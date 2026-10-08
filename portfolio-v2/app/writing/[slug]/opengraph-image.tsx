@@ -6,6 +6,7 @@ import { getSiteConfig } from '@/lib/content'
 import { getPostBySlug, getEmojis } from '@/lib/db/queries'
 import { toEmojiMap, stripEmoji } from '@/lib/emoji'
 import { formatDate } from '@/lib/markdown'
+import { shortName } from '@/lib/site'
 
 export const dynamic = 'force-dynamic'
 export const alt = 'Post share card'
@@ -47,6 +48,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     font('Oswald-SemiBold.ttf'),
     font('VT323-Regular.ttf'),
   ])
+  const name = shortName(siteConfig.name)
   const title = stripEmoji(post.title, toEmojiMap(emojis))
   const meta = [post.kind, formatDate(post.postDate), post.category].filter(Boolean).join(' · ')
 
@@ -65,7 +67,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           }}
         >
           <div style={{ fontSize: 44, letterSpacing: 2, color: c.cream, textTransform: 'uppercase' }}>
-            {siteConfig.name}
+            {name}
           </div>
           <div style={{ fontFamily: 'VT323', fontSize: 30, letterSpacing: 2, color: 'rgba(244, 241, 230, 0.6)' }}>
             {`writing :: ${post.kind.toLowerCase()}`}
@@ -129,7 +131,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
                   >
                     {meta}
                   </span>
-                  <span style={{ flexShrink: 0, marginLeft: 40, color: c.rust }}>{siteConfig.name}</span>
+                  <span style={{ flexShrink: 0, marginLeft: 40, color: c.rust }}>{name}</span>
                 </div>
               </div>
             </div>

@@ -9,3 +9,8 @@ export function getSiteUrl(): string {
   if (vercel) return `https://${vercel}`
   return `http://localhost:${process.env.PORT ?? 3000}`
 }
+
+/** The name the site goes by: the last two words of the full name, as in the masthead. */
+export function shortName(fullName: string): string {
+  return fullName.trim().split(/\s+/).slice(-2).join(' ')
+}
