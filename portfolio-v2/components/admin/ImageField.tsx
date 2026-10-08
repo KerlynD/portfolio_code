@@ -1,19 +1,35 @@
 'use client'
 
 import { useState, type ChangeEvent } from 'react'
+import { isImageSrc } from '@/lib/images'
 
-/** A URL text input you can also upload into (Vercel Blob). Value submits under `name`. */
+/**
+ * A URL text input you can also upload into (Vercel Blob). Value submits under `name`.
+ * Pass `value` + `onChange` to control it from a parent instead.
+ */
 export default function ImageField({
   name,
   label,
   defaultValue,
+  value,
+  onChange,
+  placeholder = '/assets/… or https://…',
 }: {
-  name: string
+  name?: string
   label: string
   defaultValue?: string | null
+  value?: string
+  onChange?: (url: string) => void
+  placeholder?: string
 }) {
-  const [url, setUrl] = useState(defaultValue ?? '')
+  const [inner, setInner] = useState(defaultValue ?? '')
   const [busy, setBusy] = useState(false)
+  const url = value ?? inner
+
+  function setUrl(v: string) {
+    setInner(v)
+    onChange?.(v)
+  }
 
   async function onFile(e: ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0]
@@ -41,11 +57,11 @@ export default function ImageField({
         name={name}
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        placeholder="/assets/… or https://…"
+        placeholder={placeholder}
       />
       <input type="file" accept="image/*" onChange={onFile} />
       {busy && <span className="hint">Uploading…</span>}
-      {url && <img className="admin-cover" src={url} alt="" />}
+      {isImageSrc(url) && <img className="admin-cover" src={url} alt="" />}
     </div>
   )
 }

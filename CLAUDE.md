@@ -86,6 +86,7 @@ AUTH_SECRET=portfolio-cli-local-only DATABASE_URL=file:local.db npm run dev
 - `npm run cli -- admin-cookie`: print an `admin_session` cookie signed with the dev secret, for checking admin UI locally.
 - `npm run cli -- shots / writing --mobile --prefix after`: screenshots go into `.shots/` (gitignored).
 - `npm run cli -- shots publish <pr-branch-slug>`: replace that folder on `pr-screenshots`, push, and print the markdown embeds.
+- `npm run cli -- images migrate`: list bundled `/assets` images still referenced by the DB or `data/*.json` (dry run). `--apply` uploads them to Blob and rewrites the references; only Kerlyn runs it against production (`--apply --prod`).
 
 ## ⚠️ Database safety
 

@@ -4,9 +4,11 @@ import { logout } from '@/lib/actions/auth'
 import { useEdit } from './EditProvider'
 import PostEditorModal from './PostEditorModal'
 import EmojiManager from './EmojiManager'
+import SiteImagesEditor from './SiteImagesEditor'
+import type { SiteImages } from '@/lib/images'
 
 /** Floating control bar shown only to signed-in admins. */
-export default function EditToolbar() {
+export default function EditToolbar({ images }: { images: SiteImages }) {
   const { editing, setEditing, openModal } = useEdit()
   return (
     <div className="edit-toolbar">
@@ -25,6 +27,9 @@ export default function EditToolbar() {
       </button>
       <button type="button" onClick={() => openModal(<EmojiManager />)}>
         ☺ Emojis
+      </button>
+      <button type="button" onClick={() => openModal(<SiteImagesEditor value={images} />)}>
+        ▣ Images
       </button>
       <form action={logout}>
         <button type="submit">Log out</button>

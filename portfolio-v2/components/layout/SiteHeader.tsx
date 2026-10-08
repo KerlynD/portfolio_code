@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSiteConfig } from "@/lib/content";
+import { getSiteImages } from "@/lib/images";
 import Metrics from "./Metrics";
 
 export type PageKey = "home" | "experience" | "projects" | "writing" | "about";
@@ -38,10 +39,14 @@ export default async function SiteHeader({
   const [first, last] = brandParts(siteConfig.name);
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, "").trim();
   const doubled = [...ticker, ...ticker];
+  const { headerBackground } = getSiteImages(siteConfig);
 
   return (
     <>
-      <header className="masthead">
+      <header
+        className="masthead"
+        style={{ "--mast-photo": `url(${JSON.stringify(headerBackground)})` } as React.CSSProperties}
+      >
         <svg
           className="mast-graph"
           viewBox="0 0 1080 172"

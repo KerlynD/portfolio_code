@@ -1,12 +1,14 @@
 /**
  * Dev/test helpers for the portfolio. Run from portfolio-v2/:
  *   npm run cli -- <command>
- * Every command is local-only: DB commands refuse non-file: DATABASE_URLs.
+ * Every command is local-only (DB commands refuse non-file: DATABASE_URLs),
+ * except `images migrate --apply --prod`, the one-time move of bundled images to Blob.
  */
 import { dbReset } from './cli/db'
 import { smoke } from './cli/smoke'
 import { adminCookie } from './cli/admin'
 import { publishShots, shots } from './cli/shots'
+import { imagesMigrate } from './cli/images'
 import { die, parseArgs } from './cli/util'
 
 const HELP = `portfolio dev CLI
@@ -18,6 +20,9 @@ const HELP = `portfolio dev CLI
                                       headless Chrome screenshots at 1280×900 (+390×844)
   shots publish <branch-slug> [--from .shots]
                                       replace <slug>/ on pr-screenshots, push, print embeds
+  images migrate [--apply] [--prod] [--env-file .env]
+                                      move bundled /assets images to Blob and repoint the DB + data/*.json
+                                      (dry run unless --apply; a non-file DB also needs --prod)
 
 Run the dev server for these with:
   AUTH_SECRET=portfolio-cli-local-only DATABASE_URL=file:local.db npm run dev`
@@ -37,6 +42,9 @@ async function main() {
     case 'shots':
       if (positional[0] === 'publish') return publishShots(positional[1], flags)
       return shots(positional, flags)
+    case 'images':
+      if (positional[0] !== 'migrate') die('Usage: images migrate [--apply] [--prod] [--env-file .env]')
+      return imagesMigrate(flags)
     case undefined:
     case 'help':
     case '--help':

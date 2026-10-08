@@ -4,6 +4,7 @@ import VitalsPanel from "@/components/panels/VitalsPanel";
 import CurrentlyPanel from "@/components/panels/CurrentlyPanel";
 import { getBuildSha } from "@/lib/build";
 import { getSiteConfig, getCommunities } from "@/lib/content";
+import { getSiteImages, isImageSrc } from "@/lib/images";
 import { getAllCommunities } from "@/lib/db/queries";
 import { isAdmin } from "@/lib/session";
 import Editable from "@/components/edit/Editable";
@@ -93,7 +94,7 @@ export default async function AboutPage() {
             <div className="pb bio-hero">
               <img
                 className="portrait"
-                src="/assets/profile/profile.jpg"
+                src={getSiteImages(siteConfig).profile}
                 alt={siteConfig.name}
               />
               <div className="who">
@@ -192,7 +193,12 @@ export default async function AboutPage() {
                   { key: "title", label: "Title" },
                   { key: "organization", label: "Organization" },
                   { key: "description", label: "Description", multiline: true },
-                  { key: "icon", label: "Icon (image path, or 'graduation'/'trophy')" },
+                  {
+                    key: "icon",
+                    label: "Icon (upload, or type 'graduation'/'trophy')",
+                    image: true,
+                    placeholder: "https://… or graduation / trophy",
+                  },
                 ]}
                 value={siteConfig.achievements as Record<string, string>[]}
               />
@@ -206,7 +212,7 @@ export default async function AboutPage() {
               {siteConfig.achievements.map((a, i) => (
                 <div className="ach" key={i}>
                   <div className="medal">
-                    {a.icon?.startsWith("/") ? (
+                    {isImageSrc(a.icon) ? (
                       <img src={a.icon} alt="" />
                     ) : (
                       (KEYWORD_GLYPH[a.icon] ?? "✎")
