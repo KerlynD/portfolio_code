@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { getSiteConfig } from '@/lib/content'
 import { isAdmin } from '@/lib/session'
+import { getSiteUrl } from '@/lib/site'
 import EditProvider from '@/components/edit/EditProvider'
 import EditToolbar from '@/components/edit/EditToolbar'
 import './globals.css'
@@ -10,6 +11,7 @@ import './edit.css'
 export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfig()
   return {
+    metadataBase: new URL(getSiteUrl()),
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: siteConfig.bio,
     keywords: ['Software Engineer', 'Backend', 'Distributed Systems', 'Go', 'Python', 'Datadog', 'Google Cloud'],
