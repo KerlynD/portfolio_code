@@ -16,6 +16,7 @@ import { isAdmin } from "@/lib/session";
 import {
   getProjects,
   getCommunities,
+  getExperiences,
   getSiteConfig,
   type ProjectView,
 } from "@/lib/content";
@@ -31,20 +32,28 @@ function projectBadge(p: ProjectView): string | null {
 }
 
 export default async function Home() {
-  const siteConfig = await getSiteConfig();
-  const feed = (await getPublishedPosts()).slice(0, 6);
-  const topProjects = (await getProjects()).slice(0, 4);
-  const communities = await getCommunities();
-  const emojis = toEmojiMap(await getEmojis());
+  // getExperiences is only here to start NowPanel's read alongside the others.
+  const [siteConfig, posts, projects, communities, emojiRows, admin] = await Promise.all([
+    getSiteConfig(),
+    getPublishedPosts(),
+    getProjects(),
+    getCommunities(),
+    getEmojis(),
+    isAdmin(),
+    getExperiences(),
+  ]);
+  const feed = posts.slice(0, 6);
+  const topProjects = projects.slice(0, 4);
+  const emojis = toEmojiMap(emojiRows);
 
   // Admin-only DB rows (keyed by extId) so inline controls have full records.
-  const admin = await isAdmin();
   const projectByExtId = new Map<string, Project>();
   const communityByExtId = new Map<string, Community>();
   if (admin) {
     try {
-      for (const row of await getAllProjects()) projectByExtId.set(row.extId, row);
-      for (const row of await getAllCommunities()) communityByExtId.set(row.extId, row);
+      const [projectRows, communityRows] = await Promise.all([getAllProjects(), getAllCommunities()]);
+      for (const row of projectRows) projectByExtId.set(row.extId, row);
+      for (const row of communityRows) communityByExtId.set(row.extId, row);
     } catch {
       /* DB unavailable — controls simply won't render */
     }
@@ -125,7 +134,7 @@ export default async function Home() {
                     <div className="body">
                       {post.cover && (
                         <div className="thumb">
-                          <img src={post.cover} alt="" />
+                          <img src={post.cover} alt="" loading={i < 2 ? undefined : "lazy"} />
                         </div>
                       )}
                       <div>

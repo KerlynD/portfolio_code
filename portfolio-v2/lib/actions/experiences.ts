@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { experiences } from '@/lib/db/schema'
@@ -12,6 +12,7 @@ const slug = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 function revalidate() {
+  updateTag('experiences')
   revalidatePath('/')
   revalidatePath('/experience')
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { and, eq, ne } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { posts } from '@/lib/db/schema'
@@ -8,6 +8,7 @@ import { requireAdmin } from '@/lib/session'
 import { slugify, excerptFrom } from '@/lib/slug'
 
 function revalidateAll(slug: string) {
+  updateTag('posts')
   revalidatePath('/')
   revalidatePath('/writing')
   revalidatePath(`/writing/${slug}`)

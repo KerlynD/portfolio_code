@@ -36,13 +36,15 @@ function initials(name: string): string {
 }
 
 export default async function AboutPage() {
-  const siteConfig = await getSiteConfig();
+  const [siteConfig, communities, admin] = await Promise.all([
+    getSiteConfig(),
+    getCommunities(),
+    isAdmin(),
+  ]);
   const location = siteConfig.location.replace(/[^\x00-\x7F]/g, "").trim();
-  const communities = await getCommunities();
 
   // Admin-only DB rows (keyed by extId) so inline community controls have the
   // numeric id / full record the form needs.
-  const admin = await isAdmin();
   const communityByExtId = new Map<string, Community>();
   if (admin) {
     try {
@@ -169,7 +171,7 @@ export default async function AboutPage() {
               {communities.map((c) => (
                 <div className="commcard" key={c.id}>
                   {c.icon ? (
-                    <img className="ic" src={c.icon} alt={c.name} />
+                    <img className="ic" src={c.icon} alt={c.name} loading="lazy" />
                   ) : (
                     <div className="ic">{initials(c.name)}</div>
                   )}
@@ -213,7 +215,7 @@ export default async function AboutPage() {
                 <div className="ach" key={i}>
                   <div className="medal">
                     {isImageSrc(a.icon) ? (
-                      <img src={a.icon} alt="" />
+                      <img src={a.icon} alt="" loading="lazy" />
                     ) : (
                       (KEYWORD_GLYPH[a.icon] ?? "✎")
                     )}

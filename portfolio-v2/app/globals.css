@@ -26,8 +26,8 @@
     );
 
     --sans: Verdana, Geneva, "DejaVu Sans", Tahoma, sans-serif;
-    --display: "Oswald", "Arial Narrow", Arial, sans-serif;
-    --mono: "VT323", "Courier New", monospace;
+    --display: var(--font-oswald), "Arial Narrow", Arial, sans-serif;
+    --mono: var(--font-vt323), "Courier New", monospace;
 }
 
 * {

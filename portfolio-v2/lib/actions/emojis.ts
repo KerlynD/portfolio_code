@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { emojis, type Emoji } from '@/lib/db/schema'
@@ -21,6 +21,7 @@ export async function addEmoji(name: string, url: string): Promise<{ error?: str
   const [taken] = await db.select({ id: emojis.id }).from(emojis).where(eq(emojis.name, name)).limit(1)
   if (taken) return { error: `:${name}: already exists` }
   await db.insert(emojis).values({ name, url })
+  updateTag('emojis')
   revalidatePath('/', 'layout')
   return {}
 }
@@ -28,5 +29,6 @@ export async function addEmoji(name: string, url: string): Promise<{ error?: str
 export async function deleteEmoji(id: number) {
   await requireAdmin()
   await db.delete(emojis).where(eq(emojis.id, id))
+  updateTag('emojis')
   revalidatePath('/', 'layout')
 }

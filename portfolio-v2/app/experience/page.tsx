@@ -17,13 +17,15 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Experience" };
 
 export default async function ExperiencePage() {
-  const siteConfig = await getSiteConfig();
-  const items = await getExperiences();
+  const [siteConfig, items, admin] = await Promise.all([
+    getSiteConfig(),
+    getExperiences(),
+    isAdmin(),
+  ]);
   const companies = new Set(items.map((e) => e.company)).size;
 
   // For admins, pull the editable DB rows (keyed by extId) so inline controls
   // have the numeric id / full record the forms need.
-  const admin = await isAdmin();
   const rowByExtId = new Map<string, Experience>();
   if (admin) {
     try {
@@ -58,7 +60,7 @@ export default async function ExperiencePage() {
             <NewExperienceButton />
           </div>
 
-          {items.map((e) => (
+          {items.map((e, i) => (
             <section className="panel" key={e.id}>
               <div className="ph">
                 <span className="title big">{e.company}</span>
@@ -76,7 +78,11 @@ export default async function ExperiencePage() {
                     }
                   >
                     {e.logo ? (
-                      <img src={e.logo} alt={e.company} />
+                      <img
+                        src={e.logo}
+                        alt={e.company}
+                        loading={i < 2 ? undefined : "lazy"}
+                      />
                     ) : (
                       e.logoFallback
                     )}

@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { db } from '@/lib/db'
 import { config } from '@/lib/db/schema'
 import { requireAdmin } from '@/lib/session'
@@ -23,5 +23,6 @@ export async function updateConfig(partial: Record<string, unknown>) {
   for (const [key, value] of Object.entries(partial)) {
     await setKey(key, value)
   }
+  updateTag('config')
   revalidatePath('/', 'layout')
 }

@@ -97,7 +97,7 @@ export default function ProjectsBoard({
         </div>
 
         <div className="pgrid">
-          {shown.map((p) => {
+          {shown.map((p, i) => {
             const b = badge(p);
             const pLinks = Object.entries(p.links ?? {});
             return (
@@ -116,7 +116,13 @@ export default function ProjectsBoard({
                         "linear-gradient(135deg,#4d5720,#242c0d)",
                     }}
                   >
-                    {p.image && <img src={p.image} alt={p.name} />}
+                    {p.image && (
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        loading={i < 2 ? undefined : "lazy"}
+                      />
+                    )}
                     <span className="scrim" />
                     {!p.image &&
                       (COVER_LABEL[p.id] ?? p.name.slice(0, 3).toUpperCase())}
