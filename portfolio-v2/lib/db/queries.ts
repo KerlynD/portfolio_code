@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { asc, desc, eq } from 'drizzle-orm'
 import { db } from './index'
+import { cachedRead, withDates } from './cache'
 import {
   posts,
   experiences,
@@ -14,26 +15,33 @@ import {
   type Community,
 } from './schema'
 
+const readPublishedPosts = cachedRead('posts', () =>
+  db
+    .select()
+    .from(posts)
+    .where(eq(posts.published, true))
+    .orderBy(desc(posts.postDate), desc(posts.id)),
+)
+
 /** Published posts, newest first (id breaks same-day ties). Falls back to [] if the DB isn't reachable/seeded. */
-export async function getPublishedPosts(): Promise<Post[]> {
+export const getPublishedPosts = cache(async (): Promise<Post[]> => {
   try {
-    return await db
-      .select()
-      .from(posts)
-      .where(eq(posts.published, true))
-      .orderBy(desc(posts.postDate), desc(posts.id))
+    return (await readPublishedPosts()).map(withDates)
   } catch (e) {
     console.error('[db] getPublishedPosts failed:', e)
     return []
   }
-}
+})
 
 /** All posts incl. drafts (admin). */
 export async function getAllPosts(): Promise<Post[]> {
   return db.select().from(posts).orderBy(desc(posts.postDate))
 }
 
+/** Published posts come from the cached list; only drafts and unknown slugs query the DB. */
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
+  const published = (await getPublishedPosts()).find((p) => p.slug === slug)
+  if (published) return published
   const rows = await db.select().from(posts).where(eq(posts.slug, slug)).limit(1)
   return rows[0]
 }
@@ -73,10 +81,12 @@ export async function getCommunityById(id: number): Promise<Community | undefine
   return rows[0]
 }
 
-/** Custom emojis by name. Cached per request since every post render needs them. */
+const readEmojis = cachedRead('emojis', () => db.select().from(emojis).orderBy(asc(emojis.name)))
+
+/** Custom emojis by name. */
 export const getEmojis = cache(async (): Promise<Emoji[]> => {
   try {
-    return await db.select().from(emojis).orderBy(asc(emojis.name))
+    return (await readEmojis()).map(withDates)
   } catch (e) {
     console.error('[db] getEmojis failed:', e)
     return []

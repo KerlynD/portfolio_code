@@ -12,12 +12,14 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Projects" };
 
 export default async function ProjectsPage() {
-  const siteConfig = await getSiteConfig();
-  const projects = await getProjects();
+  const [siteConfig, projects, admin] = await Promise.all([
+    getSiteConfig(),
+    getProjects(),
+    isAdmin(),
+  ]);
   const wins = projects.filter((p) => p.hackathon).slice(0, 3);
 
   // Editable DB rows for admins (keyed by extId in the board).
-  const admin = await isAdmin();
   let editRows: Project[] = [];
   if (admin) {
     try {

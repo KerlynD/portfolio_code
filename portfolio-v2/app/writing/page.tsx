@@ -20,15 +20,19 @@ function kindClass(k: string): string {
 }
 
 export default async function WritingPage() {
-  const siteConfig = await getSiteConfig()
+  const [siteConfig, published, emojiRows, admin] = await Promise.all([
+    getSiteConfig(),
+    getPublishedPosts(),
+    getEmojis(),
+    isAdmin(),
+  ])
   // Admins see drafts too (so they can edit them on-site); the public sees only
   // published posts. getAllPosts falls back gracefully if the DB is unreachable.
-  const admin = await isAdmin()
-  const feed = admin ? await getAllPosts().catch(() => getPublishedPosts()) : await getPublishedPosts()
+  const feed = admin ? await getAllPosts().catch(() => published) : published
   const kinds = ['Post', 'Review', 'Paper Notes']
     .map((k) => ({ k, n: feed.filter((p) => p.kind === k).length }))
     .filter((x) => x.n > 0)
-  const emojis = toEmojiMap(await getEmojis())
+  const emojis = toEmojiMap(emojiRows)
 
   return (
     <div className="shell">
@@ -85,7 +89,7 @@ export default async function WritingPage() {
                   <div className="body">
                     {p.cover && (
                       <div className="thumb">
-                        <img src={p.cover} alt="" />
+                        <img src={p.cover} alt="" loading={i < 2 ? undefined : 'lazy'} />
                       </div>
                     )}
                     <div>

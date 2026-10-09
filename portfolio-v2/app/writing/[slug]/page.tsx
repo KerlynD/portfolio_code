@@ -38,19 +38,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const siteConfig = await getSiteConfig()
-  const post = await getPostBySlug(slug)
+  const [siteConfig, post, published, emojiRows] = await Promise.all([
+    getSiteConfig(),
+    getPostBySlug(slug),
+    getPublishedPosts(),
+    getEmojis(),
+  ])
   if (!post) notFound()
   // Drafts are viewable by admins (for on-site preview) but hidden from the public.
   if (!post.published && !(await isAdmin())) notFound()
 
-  const published = await getPublishedPosts()
   const others = published.filter((p) => p.slug !== slug).slice(0, 5)
   // Newest first, so the older neighbour is the next index. Drafts aren't in the list (at = -1).
   const at = published.findIndex((p) => p.id === post.id)
   const older = at < 0 ? undefined : published[at + 1]
   const newer = at < 0 ? undefined : published[at - 1]
-  const emojis = toEmojiMap(await getEmojis())
+  const emojis = toEmojiMap(emojiRows)
   const html = renderMarkdown(post.body, emojis)
 
   return (

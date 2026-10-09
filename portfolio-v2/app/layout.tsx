@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Oswald, VT323 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { getSiteConfig } from '@/lib/content'
 import { getSiteImages } from '@/lib/images'
@@ -8,6 +9,10 @@ import EditProvider from '@/components/edit/EditProvider'
 import EditToolbar from '@/components/edit/EditToolbar'
 import './globals.css'
 import './edit.css'
+
+// Self-hosted at build time; globals.css reads these through --display and --mono.
+const oswald = Oswald({ subsets: ['latin'], variable: '--font-oswald', display: 'swap' })
+const vt323 = VT323({ subsets: ['latin'], weight: '400', variable: '--font-vt323', display: 'swap' })
 
 export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfig()
@@ -31,18 +36,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const admin = await isAdmin()
-  const images = getSiteImages(await getSiteConfig())
+  const [admin, siteConfig] = await Promise.all([isAdmin(), getSiteConfig()])
+  const images = getSiteImages(siteConfig)
   return (
-    <html lang="en">
+    <html lang="en" className={`${oswald.variable} ${vt323.variable}`}>
       <head>
         <link rel="icon" href={images.favicon} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=VT323&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body>
         {admin ? (

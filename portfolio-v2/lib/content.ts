@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { asc } from 'drizzle-orm'
 import { db } from './db'
+import { cachedRead } from './db/cache'
 import { experiences, projects, communities, config } from './db/schema'
 import experiencesJson from '@/data/experiences.json'
 import projectsJson from '@/data/projects.json'
@@ -32,6 +33,16 @@ export function getNowSlot(cfg: SiteConfig): NowSlot {
   return { ...DEFAULT_NOW_SLOT, ...(slots?.now ?? {}) }
 }
 
+// The JSON fallbacks are applied outside these reads, so a DB failure is never cached.
+const readConfig = cachedRead('config', () => db.select().from(config))
+const readExperiences = cachedRead('experiences', () =>
+  db.select().from(experiences).orderBy(asc(experiences.sort)),
+)
+const readProjects = cachedRead('projects', () => db.select().from(projects).orderBy(asc(projects.sort)))
+const readCommunities = cachedRead('communities', () =>
+  db.select().from(communities).orderBy(asc(communities.sort)),
+)
+
 /**
  * Site config, merged: DB `config` rows (edited in the admin) win over the
  * bundled JSON defaults key-by-key, so nothing is ever missing.
@@ -39,7 +50,7 @@ export function getNowSlot(cfg: SiteConfig): NowSlot {
 export const getSiteConfig = cache(async (): Promise<SiteConfig> => {
   const base = { ...(siteConfigJson as SiteConfig) } as Record<string, unknown>
   try {
-    const rows = await db.select().from(config)
+    const rows = await readConfig()
     for (const r of rows) {
       try {
         base[r.key] = JSON.parse(r.value)
@@ -88,7 +99,7 @@ export type ProjectView = {
 
 export const getExperiences = cache(async (): Promise<ExperienceView[]> => {
   try {
-    const rows = await db.select().from(experiences).orderBy(asc(experiences.sort))
+    const rows = await readExperiences()
     if (rows.length) {
       return rows.map((e) => ({
         id: e.extId,
@@ -135,7 +146,7 @@ export type CommunityView = {
 
 export const getCommunities = cache(async (): Promise<CommunityView[]> => {
   try {
-    const rows = await db.select().from(communities).orderBy(asc(communities.sort))
+    const rows = await readCommunities()
     if (rows.length) {
       return rows.map((c) => ({
         id: c.extId,
@@ -157,7 +168,7 @@ export const getCommunities = cache(async (): Promise<CommunityView[]> => {
 
 export const getProjects = cache(async (): Promise<ProjectView[]> => {
   try {
-    const rows = await db.select().from(projects).orderBy(asc(projects.sort))
+    const rows = await readProjects()
     if (rows.length) {
       return rows.map((p) => ({
         id: p.extId,
