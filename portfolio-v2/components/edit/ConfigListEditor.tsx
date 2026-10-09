@@ -3,9 +3,17 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateConfig } from '@/lib/actions/config'
+import ImageField from '@/components/admin/ImageField'
 import { usePopoverClose } from './EditAffordance'
 
-export type ListField = { key: string; label: string; multiline?: boolean }
+export type ListField = {
+  key: string
+  label: string
+  multiline?: boolean
+  /** Render as an upload field with a thumbnail. */
+  image?: boolean
+  placeholder?: string
+}
 type Item = Record<string, string>
 
 /**
@@ -82,20 +90,30 @@ export default function ConfigListEditor({
               </button>
             </span>
           </div>
-          {fields.map((f) => (
-            <div className="field" key={f.key}>
-              <label>{f.label}</label>
-              {f.multiline ? (
-                <textarea
-                  value={it[f.key] ?? ''}
-                  onChange={(e) => setField(i, f.key, e.target.value)}
-                  style={{ minHeight: 60 }}
-                />
-              ) : (
-                <input value={it[f.key] ?? ''} onChange={(e) => setField(i, f.key, e.target.value)} />
-              )}
-            </div>
-          ))}
+          {fields.map((f) =>
+            f.image ? (
+              <ImageField
+                key={f.key}
+                label={f.label}
+                value={it[f.key] ?? ''}
+                onChange={(v) => setField(i, f.key, v)}
+                placeholder={f.placeholder}
+              />
+            ) : (
+              <div className="field" key={f.key}>
+                <label>{f.label}</label>
+                {f.multiline ? (
+                  <textarea
+                    value={it[f.key] ?? ''}
+                    onChange={(e) => setField(i, f.key, e.target.value)}
+                    style={{ minHeight: 60 }}
+                  />
+                ) : (
+                  <input value={it[f.key] ?? ''} onChange={(e) => setField(i, f.key, e.target.value)} />
+                )}
+              </div>
+            ),
+          )}
         </div>
       ))}
 

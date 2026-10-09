@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { getSiteConfig } from '@/lib/content'
+import { getSiteImages } from '@/lib/images'
 import { isAdmin } from '@/lib/session'
 import { getSiteUrl, shortName } from '@/lib/site'
 import EditProvider from '@/components/edit/EditProvider'
@@ -31,10 +32,11 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const admin = await isAdmin()
+  const images = getSiteImages(await getSiteConfig())
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/png" href="/assets/profile/me-if-alien.png" />
+        <link rel="icon" href={images.favicon} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -46,7 +48,7 @@ export default async function RootLayout({
         {admin ? (
           <EditProvider>
             {children}
-            <EditToolbar />
+            <EditToolbar images={images} />
           </EditProvider>
         ) : (
           children

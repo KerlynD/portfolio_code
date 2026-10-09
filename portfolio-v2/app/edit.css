@@ -26,7 +26,7 @@
 .btn.ghost { background: none; color: var(--olive); }
 .btn.danger { background: none; border-color: var(--rust); color: var(--rust); }
 .btn.danger:hover { background: var(--rust); color: #fff; }
-.admin-cover { max-height: 120px; border: 1px solid var(--line-dk); margin-top: 6px; }
+.admin-cover { max-height: 120px; max-width: 100%; align-self: flex-start; border: 1px solid var(--line-dk); margin-top: 6px; }
 
 /* ---- login (root layout now provides these globally) ---- */
 .login-wrap { max-width: 340px; margin: 12vh auto; }

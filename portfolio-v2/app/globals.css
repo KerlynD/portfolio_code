@@ -97,7 +97,7 @@ a:hover {
             rgba(77, 87, 32, 0.35) 78%,
             rgba(77, 87, 32, 0) 92%
         ),
-        url("/assets/profile/momonosuke.jpg");
+        var(--mast-photo, url("/assets/profile/momonosuke.jpg"));
     background-repeat: no-repeat, no-repeat;
     background-position:
         center,
