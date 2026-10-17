@@ -10,7 +10,9 @@ import { toEmojiMap, stripEmoji } from '@/lib/emoji'
 import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
 import { renderMarkdown, formatDate, readingMinutes } from '@/lib/markdown'
+import { codeExtension } from '@/lib/highlight'
 import PostEditButton from '@/components/edit/PostEditButton'
+import CopyCode from '@/components/CopyCode'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +56,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const older = at < 0 ? undefined : published[at + 1]
   const newer = at < 0 ? undefined : published[at - 1]
   const emojis = toEmojiMap(emojiRows)
-  const html = renderMarkdown(post.body, emojis)
+  const html = renderMarkdown(post.body, emojis, [codeExtension()])
 
   return (
     <div className="shell">
@@ -89,6 +91,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               </div>
               {post.cover && <img className="article-cover" src={post.cover} alt="" />}
               <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
+              <CopyCode />
             </div>
           </article>
 
