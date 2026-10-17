@@ -29,7 +29,7 @@ export default async function SiteHeader({
   ticker,
   build,
 }: {
-  active: PageKey;
+  active?: PageKey;
   ghost: string[];
   readoutTop: string;
   ticker: string[];

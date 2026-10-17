@@ -1257,8 +1257,162 @@ footer.site .mono {
     letter-spacing: 1px;
 }
 
+/* ===== 404 / ERROR: lost & found ===== */
+.lost {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+}
+.lost-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 154px;
+    padding: 30px 24px 40px;
+}
+.lost-hero .copy {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+}
+.lost-hero h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 12px;
+}
+.lost-hero p {
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: var(--ink-dim);
+}
+.lost-path {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--rust);
+    word-break: break-all;
+}
+/* giant outlined numerals, cut off by the tape */
+.lost-big {
+    position: absolute;
+    right: -2px;
+    top: -33px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 226px;
+    line-height: 1;
+    letter-spacing: 2px;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--line);
+    pointer-events: none;
+    user-select: none;
+}
+.lost-tape {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 14px;
+    border-top: 1px solid var(--rust-dk);
+    background: repeating-linear-gradient(
+        135deg,
+        var(--rust) 0 10px,
+        var(--cream) 10px 20px
+    );
+}
+.lost-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
+}
+.lost-actions a {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 15px;
+}
+.lost-btn {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--rust);
+    border: 1px solid var(--rust-dk);
+    padding: 5px 16px;
+    cursor: pointer;
+}
+.lost-btn:hover {
+    background: var(--rust-dk);
+}
+.lost-ref {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--ink-faint);
+}
+.lost-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+a.lost-card {
+    display: block;
+    color: var(--ink-dim);
+}
+a.lost-card:hover {
+    text-decoration: none;
+}
+.lost-card > .pb {
+    padding: 12px 12px 18px;
+}
+.lost-card .go {
+    display: block;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--rust);
+}
+.lost-card:hover .go {
+    color: var(--olive);
+    text-decoration: underline;
+}
+.lost-card .d {
+    display: block;
+    font-size: 11px;
+    margin-top: 2px;
+}
+/* error.tsx can't render SiteHeader, so it gets a plain olive masthead */
+.masthead.plain {
+    min-height: 140px;
+    background-image: none;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 840px) {
+    .lost-cards {
+        grid-template-columns: 1fr;
+    }
+    .lost-hero {
+        padding: 22px 16px 42px;
+    }
+    .lost-hero h1 {
+        font-size: 28px;
+    }
+    .lost-big {
+        top: auto;
+        bottom: -8px;
+        font-size: 120px;
+        letter-spacing: 3px;
+        opacity: 0.6;
+    }
     .grid.three,
     .grid.main-side {
         grid-template-columns: 1fr;
