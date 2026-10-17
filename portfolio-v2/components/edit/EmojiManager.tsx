@@ -21,6 +21,7 @@ function nameFromFile(f: File): string {
 export default function EmojiManager() {
   const router = useRouter()
   const [list, setList] = useState<Emoji[] | null>(null)
+  const [listError, setListError] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState('')
   const [name, setName] = useState('')
@@ -28,7 +29,17 @@ export default function EmojiManager() {
   const [busy, setBusy] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const load = () => listEmojis().then(setList, () => setList([]))
+  const load = () =>
+    listEmojis().then(
+      (r) => {
+        setList(r.emojis)
+        setListError(r.error ?? '')
+      },
+      (e) => {
+        setList([])
+        setListError(e instanceof Error ? e.message : String(e))
+      },
+    )
   useEffect(() => {
     load()
   }, [])
@@ -78,7 +89,8 @@ export default function EmojiManager() {
 
   async function remove(e: Emoji) {
     if (!confirm(`Delete :${e.name}:? Posts using it will show the text instead.`)) return
-    await deleteEmoji(e.id)
+    const r = await deleteEmoji(e.id)
+    setError(r.error ?? '')
     await load()
     router.refresh()
   }
@@ -114,7 +126,8 @@ export default function EmojiManager() {
 
       <div className="emoji-grid">
         {list === null && <span className="emoji-none">loading…</span>}
-        {list?.length === 0 && <span className="emoji-none">No emojis yet. Upload your first one above.</span>}
+        {listError && <span className="emoji-err">Couldn't load emojis. {listError}</span>}
+        {list?.length === 0 && !listError && <span className="emoji-none">No emojis yet. Upload your first one above.</span>}
         {list?.map((e) => (
           <div className="emoji-cell" key={e.id} title={`:${e.name}:`}>
             <img src={e.url} alt={`:${e.name}:`} />
