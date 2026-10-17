@@ -1495,6 +1495,54 @@ a.lost-card:hover {
 }
 .article-body code { font-family: var(--mono); font-size: 15px; background: var(--panel-alt); padding: 0 3px; }
 .article-body pre code { background: none; padding: 0; }
+
+/* fenced code: language/copy bar + highlight.js tokens (rendered server-side in lib/highlight.ts) */
+.article-body .code-block { margin-bottom: 12px; border: 1px solid var(--olive-dk); }
+.article-body .code-block pre { margin: 0; border: 0; line-height: 1.4; }
+.code-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: var(--olive-dk); padding: 3px 6px 3px 14px; min-height: 24px;
+}
+.code-lang {
+    font-family: var(--mono); font-size: 14px; line-height: 1; letter-spacing: 2px; text-transform: uppercase;
+    color: color-mix(in srgb, var(--olive-lt) 45%, var(--cream));
+}
+.code-copy {
+    font-family: var(--mono); font-size: 14px; line-height: 1; letter-spacing: 1px; cursor: pointer;
+    background: transparent; color: var(--cream); padding: 2px 7px 1px;
+    border: 1px solid color-mix(in srgb, var(--olive-lt) 70%, var(--cream));
+}
+.code-copy:hover, .code-copy:focus-visible { background: var(--cream); color: var(--olive-dk); outline: none; }
+.code-block .hljs-comment, .code-block .hljs-quote { color: var(--ink-faint); font-style: italic; }
+.code-block .hljs-keyword, .code-block .hljs-selector-tag, .code-block .hljs-doctag {
+    color: color-mix(in srgb, var(--rust) 58%, var(--cream));
+}
+.code-block .hljs-string, .code-block .hljs-regexp, .code-block .hljs-char.escape_, .code-block .hljs-symbol {
+    color: color-mix(in srgb, var(--olive-lt) 72%, var(--cream));
+}
+.code-block .hljs-number, .code-block .hljs-literal, .code-block .hljs-variable.constant_ {
+    color: color-mix(in srgb, var(--rust) 30%, var(--cream));
+}
+.code-block .hljs-title, .code-block .hljs-section, .code-block .hljs-selector-id, .code-block .hljs-selector-class {
+    color: var(--cream);
+}
+.code-block .hljs-type, .code-block .hljs-built_in, .code-block .hljs-title.class_ {
+    color: color-mix(in srgb, var(--olive-lt) 38%, var(--cream));
+}
+.code-block .hljs-attr, .code-block .hljs-attribute, .code-block .hljs-property, .code-block .hljs-name,
+.code-block .hljs-tag { color: var(--line); }
+.code-block .hljs-meta, .code-block .hljs-punctuation, .code-block .hljs-operator { color: var(--line-dk); }
+.code-block .hljs-subst, .code-block .hljs-params, .code-block .hljs-variable { color: inherit; }
+.code-block .hljs-addition {
+    color: color-mix(in srgb, var(--olive-lt) 72%, var(--cream));
+    background: color-mix(in srgb, var(--olive-lt) 22%, transparent);
+}
+.code-block .hljs-deletion {
+    color: color-mix(in srgb, var(--rust) 58%, var(--cream));
+    background: color-mix(in srgb, var(--rust) 22%, transparent);
+}
+.code-block .hljs-emphasis { font-style: italic; }
+.code-block .hljs-strong { font-weight: bold; }
 .article-body blockquote {
     border-left: 3px solid var(--rust); padding-left: 12px; margin: 0 0 12px; color: var(--ink-dim);
 }

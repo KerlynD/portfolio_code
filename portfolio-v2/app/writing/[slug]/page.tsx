@@ -11,7 +11,9 @@ import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
 import { renderMarkdown, formatDate, readingMinutes } from '@/lib/markdown'
 import { headingExtension, type Heading } from '@/lib/headings'
+import { codeExtension } from '@/lib/highlight'
 import PostEditButton from '@/components/edit/PostEditButton'
+import CopyCode from '@/components/CopyCode'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,7 +58,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const newer = at < 0 ? undefined : published[at - 1]
   const emojis = toEmojiMap(emojiRows)
   const outline: Heading[] = []
-  const html = renderMarkdown(post.body, emojis, [headingExtension(outline)])
+  const html = renderMarkdown(post.body, emojis, [headingExtension(outline), codeExtension()])
   const showToc = outline.length >= 3
   const minDepth = Math.min(...outline.map((h) => h.depth))
   const tocList = (
@@ -110,6 +112,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 </details>
               )}
               <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
+              <CopyCode />
             </div>
           </article>
 
