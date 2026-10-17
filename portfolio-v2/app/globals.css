@@ -1257,8 +1257,162 @@ footer.site .mono {
     letter-spacing: 1px;
 }
 
+/* ===== 404 / ERROR: lost & found ===== */
+.lost {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+}
+.lost-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 154px;
+    padding: 30px 24px 40px;
+}
+.lost-hero .copy {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+}
+.lost-hero h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 12px;
+}
+.lost-hero p {
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: var(--ink-dim);
+}
+.lost-path {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--rust);
+    word-break: break-all;
+}
+/* giant outlined numerals, cut off by the tape */
+.lost-big {
+    position: absolute;
+    right: -2px;
+    top: -33px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 226px;
+    line-height: 1;
+    letter-spacing: 2px;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--line);
+    pointer-events: none;
+    user-select: none;
+}
+.lost-tape {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 14px;
+    border-top: 1px solid var(--rust-dk);
+    background: repeating-linear-gradient(
+        135deg,
+        var(--rust) 0 10px,
+        var(--cream) 10px 20px
+    );
+}
+.lost-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
+}
+.lost-actions a {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 15px;
+}
+.lost-btn {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--rust);
+    border: 1px solid var(--rust-dk);
+    padding: 5px 16px;
+    cursor: pointer;
+}
+.lost-btn:hover {
+    background: var(--rust-dk);
+}
+.lost-ref {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--ink-faint);
+}
+.lost-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+a.lost-card {
+    display: block;
+    color: var(--ink-dim);
+}
+a.lost-card:hover {
+    text-decoration: none;
+}
+.lost-card > .pb {
+    padding: 12px 12px 18px;
+}
+.lost-card .go {
+    display: block;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--rust);
+}
+.lost-card:hover .go {
+    color: var(--olive);
+    text-decoration: underline;
+}
+.lost-card .d {
+    display: block;
+    font-size: 11px;
+    margin-top: 2px;
+}
+/* error.tsx can't render SiteHeader, so it gets a plain olive masthead */
+.masthead.plain {
+    min-height: 140px;
+    background-image: none;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 840px) {
+    .lost-cards {
+        grid-template-columns: 1fr;
+    }
+    .lost-hero {
+        padding: 22px 16px 42px;
+    }
+    .lost-hero h1 {
+        font-size: 28px;
+    }
+    .lost-big {
+        top: auto;
+        bottom: -8px;
+        font-size: 120px;
+        letter-spacing: 3px;
+        opacity: 0.6;
+    }
     .grid.three,
     .grid.main-side {
         grid-template-columns: 1fr;
@@ -1341,6 +1495,54 @@ footer.site .mono {
 }
 .article-body code { font-family: var(--mono); font-size: 15px; background: var(--panel-alt); padding: 0 3px; }
 .article-body pre code { background: none; padding: 0; }
+
+/* fenced code: language/copy bar + highlight.js tokens (rendered server-side in lib/highlight.ts) */
+.article-body .code-block { margin-bottom: 12px; border: 1px solid var(--olive-dk); }
+.article-body .code-block pre { margin: 0; border: 0; line-height: 1.4; }
+.code-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: var(--olive-dk); padding: 3px 6px 3px 14px; min-height: 24px;
+}
+.code-lang {
+    font-family: var(--mono); font-size: 14px; line-height: 1; letter-spacing: 2px; text-transform: uppercase;
+    color: color-mix(in srgb, var(--olive-lt) 45%, var(--cream));
+}
+.code-copy {
+    font-family: var(--mono); font-size: 14px; line-height: 1; letter-spacing: 1px; cursor: pointer;
+    background: transparent; color: var(--cream); padding: 2px 7px 1px;
+    border: 1px solid color-mix(in srgb, var(--olive-lt) 70%, var(--cream));
+}
+.code-copy:hover, .code-copy:focus-visible { background: var(--cream); color: var(--olive-dk); outline: none; }
+.code-block .hljs-comment, .code-block .hljs-quote { color: var(--ink-faint); font-style: italic; }
+.code-block .hljs-keyword, .code-block .hljs-selector-tag, .code-block .hljs-doctag {
+    color: color-mix(in srgb, var(--rust) 58%, var(--cream));
+}
+.code-block .hljs-string, .code-block .hljs-regexp, .code-block .hljs-char.escape_, .code-block .hljs-symbol {
+    color: color-mix(in srgb, var(--olive-lt) 72%, var(--cream));
+}
+.code-block .hljs-number, .code-block .hljs-literal, .code-block .hljs-variable.constant_ {
+    color: color-mix(in srgb, var(--rust) 30%, var(--cream));
+}
+.code-block .hljs-title, .code-block .hljs-section, .code-block .hljs-selector-id, .code-block .hljs-selector-class {
+    color: var(--cream);
+}
+.code-block .hljs-type, .code-block .hljs-built_in, .code-block .hljs-title.class_ {
+    color: color-mix(in srgb, var(--olive-lt) 38%, var(--cream));
+}
+.code-block .hljs-attr, .code-block .hljs-attribute, .code-block .hljs-property, .code-block .hljs-name,
+.code-block .hljs-tag { color: var(--line); }
+.code-block .hljs-meta, .code-block .hljs-punctuation, .code-block .hljs-operator { color: var(--line-dk); }
+.code-block .hljs-subst, .code-block .hljs-params, .code-block .hljs-variable { color: inherit; }
+.code-block .hljs-addition {
+    color: color-mix(in srgb, var(--olive-lt) 72%, var(--cream));
+    background: color-mix(in srgb, var(--olive-lt) 22%, transparent);
+}
+.code-block .hljs-deletion {
+    color: color-mix(in srgb, var(--rust) 58%, var(--cream));
+    background: color-mix(in srgb, var(--rust) 22%, transparent);
+}
+.code-block .hljs-emphasis { font-style: italic; }
+.code-block .hljs-strong { font-weight: bold; }
 .article-body blockquote {
     border-left: 3px solid var(--rust); padding-left: 12px; margin: 0 0 12px; color: var(--ink-dim);
 }
@@ -1357,6 +1559,40 @@ footer.site .mono {
 @media (max-width: 840px) {
     .post-nav { grid-template-columns: 1fr; }
     .post-nav > span { display: none; }
+}
+
+/* contents panel (posts with 3+ headings): sticky sidebar panel on desktop, collapsed box in the article on mobile */
+.article-body :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 16px; }
+/* page-coloured backing so panels scrolling up underneath don't show through the chamfered corners */
+.toc-side {
+    position: sticky; top: 12px; z-index: 3;
+    background: var(--page); background-image: var(--hatch);
+}
+.toc-side .pb { padding: 6px 12px 12px; max-height: calc(100vh - 64px); overflow-y: auto; }
+.toc-list { list-style: none; }
+.toc-list li { padding: 3px 0; border-bottom: 1px dotted var(--line); font-size: 11px; line-height: 1.35; }
+.toc-list li:last-child { border-bottom: 0; }
+.toc-list .lvl0 a { font-weight: bold; }
+.toc-list .lvl1 { padding-left: 12px; }
+.toc-list .lvl2 { padding-left: 24px; }
+.toc-list .lvl1::before, .toc-list .lvl2::before {
+    content: "›"; color: var(--olive-lt); margin: 0 5px 0 -9px;
+}
+.toc-inline { display: none; }
+@media (max-width: 840px) {
+    .toc-side { display: none; }
+    .toc-inline {
+        display: block; margin-bottom: 14px; border: 1px solid var(--line-dk);
+        border-left: 4px solid var(--olive); background: var(--panel-alt);
+    }
+    .toc-inline summary {
+        cursor: pointer; padding: 5px 10px; font-family: var(--display); font-weight: 600;
+        font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--olive);
+    }
+    .toc-inline summary::marker { color: var(--rust); }
+    .toc-inline[open] summary { border-bottom: 1px dotted var(--line-dk); }
+    .toc-inline .toc-list { padding: 4px 10px 6px; }
+    .toc-inline .toc-list li { font-size: 12px; padding-top: 5px; padding-bottom: 5px; }
 }
 
 

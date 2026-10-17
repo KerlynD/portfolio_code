@@ -10,7 +10,10 @@ import { toEmojiMap, stripEmoji } from '@/lib/emoji'
 import RichTitle from '@/components/RichTitle'
 import { isAdmin } from '@/lib/session'
 import { renderMarkdown, formatDate, readingMinutes } from '@/lib/markdown'
+import { headingExtension, type Heading } from '@/lib/headings'
+import { codeExtension } from '@/lib/highlight'
 import PostEditButton from '@/components/edit/PostEditButton'
+import CopyCode from '@/components/CopyCode'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +57,21 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const older = at < 0 ? undefined : published[at + 1]
   const newer = at < 0 ? undefined : published[at - 1]
   const emojis = toEmojiMap(emojiRows)
-  const html = renderMarkdown(post.body, emojis)
+  const outline: Heading[] = []
+  const html = renderMarkdown(post.body, emojis, [headingExtension(outline), codeExtension()])
+  const showToc = outline.length >= 3
+  const minDepth = Math.min(...outline.map((h) => h.depth))
+  const tocList = (
+    <ul className="toc-list">
+      {outline.map((h) => (
+        <li key={h.id} className={`lvl${h.depth - minDepth}`}>
+          <a href={`#${h.id}`}>
+            <RichTitle text={h.text} emojis={emojis} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
 
   return (
     <div className="shell">
@@ -88,7 +105,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 {` · ${readingMinutes(post.body)} min read`}
               </div>
               {post.cover && <img className="article-cover" src={post.cover} alt="" />}
+              {showToc && (
+                <details className="toc-inline">
+                  <summary>Contents</summary>
+                  {tocList}
+                </details>
+              )}
               <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
+              <CopyCode />
             </div>
           </article>
 
@@ -115,6 +139,15 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </main>
 
         <aside className="col">
+          {showToc && (
+            <div className="toc-side">
+              <nav className="panel" aria-label="Contents">
+                <div className="ph"><span className="title">Contents</span></div>
+                <div className="pb">{tocList}</div>
+              </nav>
+            </div>
+          )}
+
           <section className="panel">
             <div className="ph"><span className="title">More Writing</span></div>
             <div className="pb" style={{ padding: '8px 12px 14px' }}>
