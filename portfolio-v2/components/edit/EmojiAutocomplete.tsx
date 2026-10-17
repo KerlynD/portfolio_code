@@ -47,7 +47,7 @@ export default function EmojiAutocomplete() {
   state.current = { open, active }
 
   useEffect(() => {
-    listEmojis().then(setEmojis, () => {})
+    listEmojis().then((r) => setEmojis(r.emojis), () => {})
   }, [])
 
   useEffect(() => {

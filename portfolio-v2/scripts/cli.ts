@@ -2,9 +2,10 @@
  * Dev/test helpers for the portfolio. Run from portfolio-v2/:
  *   npm run cli -- <command>
  * Every command is local-only (DB commands refuse non-file: DATABASE_URLs),
- * except `images migrate --apply --prod`, the one-time move of bundled images to Blob.
+ * except `db migrate --apply --prod` (schema migrations) and `images migrate
+ * --apply --prod` (the one-time move of bundled images to Blob).
  */
-import { dbReset } from './cli/db'
+import { dbMigrate, dbReset } from './cli/db'
 import { smoke } from './cli/smoke'
 import { adminCookie } from './cli/admin'
 import { publishShots, shots } from './cli/shots'
@@ -14,6 +15,9 @@ import { die, parseArgs } from './cli/util'
 const HELP = `portfolio dev CLI
 
   db reset [--fresh]                  push schema + seed into local.db (--fresh deletes it first)
+  db migrate [--apply] [--prod] [--env-file .env]
+                                      apply pending lib/db/migrations files
+                                      (dry run unless --apply; a non-file DB also needs --prod)
   smoke [--port 3000]                 GET every public route + each post, report status codes
   admin-cookie [--port 3000]          print a local admin session cookie (dev secret only)
   shots <pages…> [--mobile] [--prefix before] [--out .shots] [--port 3000]
@@ -33,8 +37,9 @@ async function main() {
 
   switch (cmd) {
     case 'db':
-      if (positional[0] !== 'reset') die('Usage: db reset [--fresh]')
-      return dbReset(flags)
+      if (positional[0] === 'reset') return dbReset(flags)
+      if (positional[0] === 'migrate') return dbMigrate(flags)
+      die('Usage: db reset [--fresh] | db migrate [--apply] [--prod] [--env-file .env]')
     case 'smoke':
       return smoke(flags)
     case 'admin-cookie':

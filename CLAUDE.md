@@ -82,6 +82,7 @@ AUTH_SECRET=portfolio-cli-local-only DATABASE_URL=file:local.db npm run dev
 ```
 
 - `npm run cli -- db reset [--fresh]`: push the schema and seed `local.db`. It refuses any non-`file:` `DATABASE_URL`.
+- `npm run cli -- db migrate`: list pending `lib/db/migrations` files (dry run). `--apply` runs them; a DB with no migration history first gets the migrations whose tables already exist recorded as applied. Only Kerlyn runs it against production (`--apply --prod`).
 - `npm run cli -- smoke`: GET every public route and post, and exit 1 on any unexpected status.
 - `npm run cli -- admin-cookie`: print an `admin_session` cookie signed with the dev secret, for checking admin UI locally.
 - `npm run cli -- shots / writing --mobile --prefix after`: screenshots go into `.shots/` (gitignored).
@@ -93,6 +94,7 @@ AUTH_SECRET=portfolio-cli-local-only DATABASE_URL=file:local.db npm run dev
 `portfolio-v2/.env` points `DATABASE_URL` at the **production** database. When you run anything locally, always override it with `DATABASE_URL=file:local.db`. That applies to `dev`, `db:push`, `db:seed`, and scripts.
 - Fresh worktree or empty DB: `DATABASE_URL=file:local.db npm run db:push && DATABASE_URL=file:local.db npm run db:seed`.
 - Schema changes: edit `schema.ts`, run `npm run db:generate`, and commit the migration. Never `db:push` to production.
+- A PR with a new migration must say in its body that Kerlyn runs `npm run cli -- db migrate --apply --prod` before merging; otherwise the deployed code queries tables prod doesn't have.
 - Never print or log the contents of `.env`.
 - Don't test admin writes against production, and don't upload test images to Blob.
 
