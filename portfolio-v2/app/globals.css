@@ -1359,6 +1359,40 @@ footer.site .mono {
     .post-nav > span { display: none; }
 }
 
+/* contents panel (posts with 3+ headings): sticky sidebar panel on desktop, collapsed box in the article on mobile */
+.article-body :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 16px; }
+/* page-coloured backing so panels scrolling up underneath don't show through the chamfered corners */
+.toc-side {
+    position: sticky; top: 12px; z-index: 3;
+    background: var(--page); background-image: var(--hatch);
+}
+.toc-side .pb { padding: 6px 12px 12px; max-height: calc(100vh - 64px); overflow-y: auto; }
+.toc-list { list-style: none; }
+.toc-list li { padding: 3px 0; border-bottom: 1px dotted var(--line); font-size: 11px; line-height: 1.35; }
+.toc-list li:last-child { border-bottom: 0; }
+.toc-list .lvl0 a { font-weight: bold; }
+.toc-list .lvl1 { padding-left: 12px; }
+.toc-list .lvl2 { padding-left: 24px; }
+.toc-list .lvl1::before, .toc-list .lvl2::before {
+    content: "›"; color: var(--olive-lt); margin: 0 5px 0 -9px;
+}
+.toc-inline { display: none; }
+@media (max-width: 840px) {
+    .toc-side { display: none; }
+    .toc-inline {
+        display: block; margin-bottom: 14px; border: 1px solid var(--line-dk);
+        border-left: 4px solid var(--olive); background: var(--panel-alt);
+    }
+    .toc-inline summary {
+        cursor: pointer; padding: 5px 10px; font-family: var(--display); font-weight: 600;
+        font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--olive);
+    }
+    .toc-inline summary::marker { color: var(--rust); }
+    .toc-inline[open] summary { border-bottom: 1px dotted var(--line-dk); }
+    .toc-inline .toc-list { padding: 4px 10px 6px; }
+    .toc-inline .toc-list li { font-size: 12px; padding-top: 5px; padding-bottom: 5px; }
+}
+
 
 /* ===== CUSTOM EMOJI (:name:) — inline at text height, like Discord ===== */
 img.emoji {

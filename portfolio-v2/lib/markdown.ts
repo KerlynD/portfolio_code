@@ -1,12 +1,13 @@
-import { Marked, marked } from 'marked'
+import { Marked, marked, type MarkedExtension } from 'marked'
 import { emojiExtension, type EmojiMap } from './emoji'
 
 marked.setOptions({ gfm: true, breaks: true })
 
-/** Render markdown to HTML (single-admin content). Pass emojis to expand `:name:` shortcodes. */
-export function renderMarkdown(md: string, emojis?: EmojiMap): string {
-  if (emojis && Object.keys(emojis).length) {
-    const m = new Marked({ gfm: true, breaks: true }, emojiExtension(emojis))
+/** Render markdown to HTML (single-admin content). Pass emojis to expand `:name:` shortcodes, plus any extra marked extensions. */
+export function renderMarkdown(md: string, emojis?: EmojiMap, extensions: MarkedExtension[] = []): string {
+  const exts = emojis && Object.keys(emojis).length ? [emojiExtension(emojis), ...extensions] : extensions
+  if (exts.length) {
+    const m = new Marked({ gfm: true, breaks: true }, ...exts)
     return m.parse(md ?? '', { async: false }) as string
   }
   return marked.parse(md ?? '', { async: false }) as string
