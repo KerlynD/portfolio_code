@@ -1452,6 +1452,11 @@ a.lost-card:hover {
     .bio-hero {
         flex-direction: column;
     }
+    .bio-hero .portrait {
+        flex: none;
+        width: 100%;
+        height: auto;
+    }
 }
 
 /* ===== FEED thumbnails / meta (writing + home) ===== */
