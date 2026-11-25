@@ -85,6 +85,28 @@ export type ExperienceView = {
   current: boolean
 }
 
+/** Roles at one company (a promotion adds a role), newest first. */
+export type ExperienceGroup = {
+  key: string
+  company: string
+  roles: ExperienceView[]
+}
+
+/**
+ * Group roles by company name (case and spacing ignored). Input is already in
+ * sort order, so each group lands where its newest (first) role sorts.
+ */
+export function groupExperiences(items: ExperienceView[]): ExperienceGroup[] {
+  const groups = new Map<string, ExperienceGroup>()
+  for (const e of items) {
+    const key = e.company.toLowerCase().replace(/\s+/g, ' ').trim()
+    const group = groups.get(key)
+    if (group) group.roles.push(e)
+    else groups.set(key, { key, company: e.company, roles: [e] })
+  }
+  return [...groups.values()]
+}
+
 export type ProjectView = {
   id: string
   name: string

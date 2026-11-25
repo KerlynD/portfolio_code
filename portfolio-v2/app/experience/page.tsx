@@ -1,7 +1,12 @@
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { getBuildSha } from "@/lib/build";
-import { getExperiences, getSiteConfig } from "@/lib/content";
+import {
+  getExperiences,
+  getSiteConfig,
+  groupExperiences,
+  type ExperienceView,
+} from "@/lib/content";
 import { getAllExperiences } from "@/lib/db/queries";
 import { isAdmin } from "@/lib/session";
 import Editable from "@/components/edit/Editable";
@@ -9,6 +14,7 @@ import ConfigFieldEditor from "@/components/edit/ConfigFieldEditor";
 import {
   NewExperienceButton,
   ExperienceControls,
+  AddRoleButton,
 } from "@/components/edit/ExperienceEdit";
 import type { Experience } from "@/lib/db/schema";
 
@@ -16,13 +22,77 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Experience" };
 
+/** One role: logo + title block, responsibilities, tags. `hideRole` when an accordion bar already shows the title. */
+function RoleBody({
+  e,
+  eager,
+  hideRole = false,
+}: {
+  e: ExperienceView;
+  eager: boolean;
+  hideRole?: boolean;
+}) {
+  return (
+    <>
+      <div className="expmeta">
+        <div
+          className="logo"
+          style={e.logoBackground ? { background: e.logoBackground } : undefined}
+        >
+          {e.logo ? (
+            <img
+              src={e.logo}
+              alt={e.company}
+              loading={eager ? undefined : "lazy"}
+            />
+          ) : (
+            e.logoFallback
+          )}
+        </div>
+        <div>
+          {!hideRole && (
+            <div className="role">
+              {e.role}
+              {e.current && <span className="current-badge">Current</span>}
+            </div>
+          )}
+          <div className="team">{e.team}</div>
+          <div className="desc">{e.description}</div>
+        </div>
+      </div>
+
+      {e.responsibilities.length > 0 && (
+        <ul className="resp">
+          {e.responsibilities.map((r, i) => (
+            <li key={i}>{r}</li>
+          ))}
+        </ul>
+      )}
+
+      <div className="taglist">
+        {e.tags.map((t) => (
+          <span className="chip" key={t}>
+            {t}
+          </span>
+        ))}
+        {e.highlights.map((h) => (
+          <span className="hl" key={h}>
+            {h}
+          </span>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export default async function ExperiencePage() {
   const [siteConfig, items, admin] = await Promise.all([
     getSiteConfig(),
     getExperiences(),
     isAdmin(),
   ]);
-  const companies = new Set(items.map((e) => e.company)).size;
+  const groups = groupExperiences(items);
+  const companies = groups.length;
 
   // For admins, pull the editable DB rows (keyed by extId) so inline controls
   // have the numeric id / full record the forms need.
@@ -60,68 +130,55 @@ export default async function ExperiencePage() {
             <NewExperienceButton />
           </div>
 
-          {items.map((e, i) => (
-            <section className="panel" key={e.id}>
-              <div className="ph">
-                <span className="title big">{e.company}</span>
-                <span className="arch mono">{e.period}</span>
-              </div>
-              <div className="pb">
-                <ExperienceControls item={rowByExtId.get(e.id)} />
-                <div className="expmeta">
-                  <div
-                    className="logo"
-                    style={
-                      e.logoBackground
-                        ? { background: e.logoBackground }
-                        : undefined
-                    }
-                  >
-                    {e.logo ? (
-                      <img
-                        src={e.logo}
-                        alt={e.company}
-                        loading={i < 2 ? undefined : "lazy"}
-                      />
-                    ) : (
-                      e.logoFallback
-                    )}
-                  </div>
-                  <div>
-                    <div className="role">
-                      {e.role}
-                      {e.current && (
-                        <span className="current-badge">Current</span>
-                      )}
-                    </div>
-                    <div className="team">{e.team}</div>
-                    <div className="desc">{e.description}</div>
-                  </div>
+          {groups.map((g, gi) => {
+            const newest = g.roles[0];
+            const eager = gi < 2;
+            return (
+              <section className="panel" key={g.key}>
+                <div className="ph">
+                  <span className="title big">{g.company}</span>
+                  <span className="arch mono">{newest.period}</span>
                 </div>
-
-                {e.responsibilities.length > 0 && (
-                  <ul className="resp">
-                    {e.responsibilities.map((r, i) => (
-                      <li key={i}>{r}</li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="taglist">
-                  {e.tags.map((t) => (
-                    <span className="chip" key={t}>
-                      {t}
-                    </span>
-                  ))}
-                  {e.highlights.map((h) => (
-                    <span className="hl" key={h}>
-                      {h}
-                    </span>
-                  ))}
+                <div className="pb">
+                  {g.roles.length === 1 ? (
+                    <>
+                      <ExperienceControls item={rowByExtId.get(newest.id)} addRole />
+                      <RoleBody e={newest} eager={eager} />
+                    </>
+                  ) : (
+                    <>
+                      <div className="edit-controls">
+                        <AddRoleButton from={rowByExtId.get(newest.id)} />
+                      </div>
+                      {/* Exclusive accordion: native <details name>, no JS. Newest role starts open. */}
+                      {g.roles.map((e, ri) => (
+                        <details
+                          className="role-acc"
+                          name={`roles-${g.key}`}
+                          open={ri === 0}
+                          key={e.id}
+                        >
+                          <summary>
+                            <span className="ra-title">
+                              {e.role}
+                              {e.current && (
+                                <span className="current-badge">Current</span>
+                              )}
+                            </span>
+                            <span className="ra-period">{e.period}</span>
+                          </summary>
+                          <div className="ra-body">
+                            <ExperienceControls item={rowByExtId.get(e.id)} />
+                            <RoleBody e={e} eager={eager} hideRole />
+                          </div>
+                        </details>
+                      ))}
+                    </>
+                  )}
                 </div>
-              </div>
-            </section>
-          ))}
+              </section>
+            );
+          })}
         </div>
 
         {/* SIDEBAR */}
@@ -129,14 +186,23 @@ export default async function ExperiencePage() {
           <section className="panel">
             <div className="ph">
               <span className="title">Timeline</span>
-              <span className="arch">{items.length}</span>
+              <span className="arch">{groups.length}</span>
             </div>
             <div className="pb" style={{ padding: "10px 12px 14px" }}>
               <div className="tl-wrap">
-                {items.map((e) => (
-                  <div className="tl" key={e.id}>
-                    <div className="co">{e.company}</div>
-                    <div className="yr">{e.period}</div>
+                {groups.map((g) => (
+                  <div className="tl" key={g.key}>
+                    <div className="co">{g.company}</div>
+                    {g.roles.length === 1 ? (
+                      <div className="yr">{g.roles[0].period}</div>
+                    ) : (
+                      g.roles.map((e) => (
+                        <div className="tl-role" key={e.id}>
+                          <span className="rl">{e.role}</span>
+                          <span className="yr">{e.period}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 ))}
               </div>

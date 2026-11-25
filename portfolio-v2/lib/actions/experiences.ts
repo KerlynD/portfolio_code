@@ -5,11 +5,10 @@ import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { experiences } from '@/lib/db/schema'
 import { requireAdmin } from '@/lib/session'
+import { dbError, resolveExtId } from '@/lib/db/ext-id'
 
 const csv = (s: string) => s.split(',').map((x) => x.trim()).filter(Boolean)
 const lines = (s: string) => s.split('\n').map((x) => x.trim()).filter(Boolean)
-const slug = (s: string) =>
-  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 function revalidate() {
   updateTag('experiences')
@@ -17,34 +16,51 @@ function revalidate() {
   revalidatePath('/experience')
 }
 
-export async function saveExperience(formData: FormData) {
+export async function saveExperience(formData: FormData): Promise<{ error?: string }> {
   await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
   const company = String(formData.get('company') ?? '').trim()
+  const role = String(formData.get('role') ?? '').trim()
 
-  const values = {
-    extId: String(formData.get('extId') ?? '').trim() || slug(company),
-    company,
-    role: String(formData.get('role') ?? '').trim(),
-    team: String(formData.get('team') ?? '').trim(),
-    period: String(formData.get('period') ?? '').trim(),
-    description: String(formData.get('description') ?? '').trim(),
-    logo: String(formData.get('logo') ?? '').trim() || null,
-    logoFallback: String(formData.get('logoFallback') ?? '').trim(),
-    logoBackground: String(formData.get('logoBackground') ?? '').trim() || null,
-    tags: csv(String(formData.get('tags') ?? '')),
-    highlights: csv(String(formData.get('highlights') ?? '')),
-    responsibilities: lines(String(formData.get('responsibilities') ?? '')),
-    current: formData.get('current') === 'on',
-    sort: Number(formData.get('sort') ?? 0) || 0,
-    updatedAt: new Date(),
+  try {
+    const taken = await db
+      .select({ id: experiences.id, extId: experiences.extId, company: experiences.company, role: experiences.role })
+      .from(experiences)
+    const picked = resolveExtId(
+      taken.map((r) => ({ id: r.id, extId: r.extId, label: `${r.company} — ${r.role}` })),
+      id,
+      String(formData.get('extId') ?? '').trim(),
+      company,
+    )
+    if (picked.error !== undefined) return { error: picked.error }
+
+    const values = {
+      extId: picked.extId,
+      company,
+      role,
+      team: String(formData.get('team') ?? '').trim(),
+      period: String(formData.get('period') ?? '').trim(),
+      description: String(formData.get('description') ?? '').trim(),
+      logo: String(formData.get('logo') ?? '').trim() || null,
+      logoFallback: String(formData.get('logoFallback') ?? '').trim(),
+      logoBackground: String(formData.get('logoBackground') ?? '').trim() || null,
+      tags: csv(String(formData.get('tags') ?? '')),
+      highlights: csv(String(formData.get('highlights') ?? '')),
+      responsibilities: lines(String(formData.get('responsibilities') ?? '')),
+      current: formData.get('current') === 'on',
+      sort: Number(formData.get('sort') ?? 0) || 0,
+      updatedAt: new Date(),
+    }
+
+    if (id) await db.update(experiences).set(values).where(eq(experiences.id, id))
+    else await db.insert(experiences).values(values)
+  } catch (e) {
+    return { error: dbError(e) }
   }
 
-  if (id) await db.update(experiences).set(values).where(eq(experiences.id, id))
-  else await db.insert(experiences).values(values)
-
   revalidate()
+  return {}
 }
 
 export async function deleteExperience(formData: FormData) {

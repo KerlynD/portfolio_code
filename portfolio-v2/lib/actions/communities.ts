@@ -5,9 +5,7 @@ import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { communities } from '@/lib/db/schema'
 import { requireAdmin } from '@/lib/session'
-
-const slug = (s: string) =>
-  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+import { dbError, resolveExtId } from '@/lib/db/ext-id'
 
 function revalidate() {
   updateTag('communities')
@@ -15,24 +13,35 @@ function revalidate() {
   revalidatePath('/about')
 }
 
-export async function saveCommunity(formData: FormData) {
+export async function saveCommunity(formData: FormData): Promise<{ error?: string }> {
   await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
   const name = String(formData.get('name') ?? '').trim()
 
-  const values = {
-    extId: String(formData.get('extId') ?? '').trim() || slug(name),
-    name,
-    icon: String(formData.get('icon') ?? '').trim() || null,
-    description: String(formData.get('description') ?? '').trim(),
-    sort: Number(formData.get('sort') ?? 0) || 0,
+  try {
+    const taken = await db
+      .select({ id: communities.id, extId: communities.extId, label: communities.name })
+      .from(communities)
+    const picked = resolveExtId(taken, id, String(formData.get('extId') ?? '').trim(), name)
+    if (picked.error !== undefined) return { error: picked.error }
+
+    const values = {
+      extId: picked.extId,
+      name,
+      icon: String(formData.get('icon') ?? '').trim() || null,
+      description: String(formData.get('description') ?? '').trim(),
+      sort: Number(formData.get('sort') ?? 0) || 0,
+    }
+
+    if (id) await db.update(communities).set(values).where(eq(communities.id, id))
+    else await db.insert(communities).values(values)
+  } catch (e) {
+    return { error: dbError(e) }
   }
 
-  if (id) await db.update(communities).set(values).where(eq(communities.id, id))
-  else await db.insert(communities).values(values)
-
   revalidate()
+  return {}
 }
 
 export async function deleteCommunity(formData: FormData) {
