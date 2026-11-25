@@ -5,10 +5,9 @@ import { asc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { projects } from '@/lib/db/schema'
 import { requireAdmin } from '@/lib/session'
+import { dbError, resolveExtId } from '@/lib/db/ext-id'
 
 const csv = (s: string) => s.split(',').map((x) => x.trim()).filter(Boolean)
-const slug = (s: string) =>
-  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 function revalidate() {
   updateTag('projects')
@@ -16,7 +15,7 @@ function revalidate() {
   revalidatePath('/projects')
 }
 
-export async function saveProject(formData: FormData) {
+export async function saveProject(formData: FormData): Promise<{ error?: string }> {
   await requireAdmin()
   const idRaw = formData.get('id')
   const id = idRaw ? Number(idRaw) : null
@@ -28,24 +27,35 @@ export async function saveProject(formData: FormData) {
     if (v) links[k] = v
   }
 
-  const values = {
-    extId: String(formData.get('extId') ?? '').trim() || slug(name),
-    name,
-    shortDescription: String(formData.get('shortDescription') ?? '').trim(),
-    description: String(formData.get('description') ?? '').trim(),
-    tags: csv(String(formData.get('tags') ?? '')),
-    image: String(formData.get('image') ?? '').trim() || null,
-    links,
-    confidential: formData.get('confidential') === 'on',
-    hackathon: String(formData.get('hackathon') ?? '').trim() || null,
-    sort: Number(formData.get('sort') ?? 0) || 0,
-    updatedAt: new Date(),
+  try {
+    const taken = await db
+      .select({ id: projects.id, extId: projects.extId, label: projects.name })
+      .from(projects)
+    const picked = resolveExtId(taken, id, String(formData.get('extId') ?? '').trim(), name)
+    if (picked.error !== undefined) return { error: picked.error }
+
+    const values = {
+      extId: picked.extId,
+      name,
+      shortDescription: String(formData.get('shortDescription') ?? '').trim(),
+      description: String(formData.get('description') ?? '').trim(),
+      tags: csv(String(formData.get('tags') ?? '')),
+      image: String(formData.get('image') ?? '').trim() || null,
+      links,
+      confidential: formData.get('confidential') === 'on',
+      hackathon: String(formData.get('hackathon') ?? '').trim() || null,
+      sort: Number(formData.get('sort') ?? 0) || 0,
+      updatedAt: new Date(),
+    }
+
+    if (id) await db.update(projects).set(values).where(eq(projects.id, id))
+    else await db.insert(projects).values(values)
+  } catch (e) {
+    return { error: dbError(e) }
   }
 
-  if (id) await db.update(projects).set(values).where(eq(projects.id, id))
-  else await db.insert(projects).values(values)
-
   revalidate()
+  return {}
 }
 
 export async function deleteProject(formData: FormData) {

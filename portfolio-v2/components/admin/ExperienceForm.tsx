@@ -6,14 +6,27 @@ import { saveExperience, deleteExperience } from '@/lib/actions/experiences'
 import ImageField from './ImageField'
 import type { Experience } from '@/lib/db/schema'
 
-export default function ExperienceForm({ item, onDone }: { item?: Experience; onDone?: () => void }) {
+/** Company fields copied from an existing role when adding a promotion ("+ Role"). */
+export type RolePreset = Pick<Experience, 'company' | 'logo' | 'logoFallback' | 'logoBackground' | 'sort'>
+
+export default function ExperienceForm({
+  item,
+  preset,
+  onDone,
+}: {
+  item?: Experience
+  preset?: RolePreset
+  onDone?: () => void
+}) {
   const [saving, setSaving] = useState(false)
   const router = useRouter()
+  const base = item ?? preset
 
   async function submit(fd: FormData) {
     setSaving(true)
     try {
-      await saveExperience(fd)
+      const res = await saveExperience(fd)
+      if (res.error) return alert(res.error)
       router.refresh()
       onDone?.()
     } catch {
@@ -33,13 +46,20 @@ export default function ExperienceForm({ item, onDone }: { item?: Experience; on
   }
 
   return (
-    <form action={submit} className="admin-form">
+    // onSubmit, not action=: React resets uncontrolled fields after an action, which would wipe a failed save
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        submit(new FormData(e.currentTarget))
+      }}
+      className="admin-form"
+    >
       {item && <input type="hidden" name="id" value={item.id} />}
 
       <div className="row2">
         <div className="field">
           <label>Company</label>
-          <input name="company" defaultValue={item?.company} required />
+          <input name="company" defaultValue={base?.company} required />
         </div>
         <div className="field">
           <label>Slug / ext-id (optional)</label>
@@ -65,7 +85,7 @@ export default function ExperienceForm({ item, onDone }: { item?: Experience; on
         </div>
         <div className="field">
           <label>Sort (lower = higher up)</label>
-          <input name="sort" type="number" defaultValue={item?.sort ?? 0} />
+          <input name="sort" type="number" defaultValue={item?.sort ?? (preset ? preset.sort - 1 : 0)} />
         </div>
       </div>
 
@@ -78,16 +98,16 @@ export default function ExperienceForm({ item, onDone }: { item?: Experience; on
         />
       </div>
 
-      <ImageField name="logo" label="Logo image" defaultValue={item?.logo} />
+      <ImageField name="logo" label="Logo image" defaultValue={base?.logo} />
 
       <div className="row2">
         <div className="field">
           <label>Logo fallback (initials)</label>
-          <input name="logoFallback" defaultValue={item?.logoFallback} placeholder="G" />
+          <input name="logoFallback" defaultValue={base?.logoFallback} placeholder="G" />
         </div>
         <div className="field">
           <label>Logo background (hex)</label>
-          <input name="logoBackground" defaultValue={item?.logoBackground ?? ''} placeholder="#FFFFFF" />
+          <input name="logoBackground" defaultValue={base?.logoBackground ?? ''} placeholder="#FFFFFF" />
         </div>
       </div>
 

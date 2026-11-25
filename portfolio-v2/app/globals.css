@@ -883,6 +883,67 @@ table.vitals .v {
     margin-top: 10px;
 }
 
+/* promotions: one bar per role at the same company, one open at a time */
+.role-acc {
+    border: 1px solid var(--line-dk);
+    border-left: 4px solid var(--line-dk);
+    background: var(--panel-alt);
+}
+.role-acc + .role-acc,
+.edit-on .edit-controls + .role-acc {
+    margin-top: 6px;
+}
+.role-acc[open] {
+    border-left-color: var(--olive);
+    background: var(--panel);
+}
+.role-acc summary {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 10px;
+    list-style: none;
+}
+.role-acc summary::-webkit-details-marker {
+    display: none;
+}
+.role-acc summary::before {
+    content: "\25B8";
+    color: var(--rust);
+    font-size: 11px;
+}
+.role-acc[open] summary::before {
+    content: "\25BE";
+}
+.role-acc summary:hover .ra-title {
+    color: var(--rust);
+}
+.role-acc[open] summary {
+    border-bottom: 1px dotted var(--line-dk);
+}
+.ra-title {
+    flex: 1;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.2;
+}
+.ra-period {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--olive-lt);
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+.ra-body {
+    padding: 4px 10px 10px;
+}
+.ra-body .expmeta {
+    margin-top: 6px;
+}
+
 /* timeline — single arrow up (no diamonds) */
 .tl-wrap {
     position: relative;
@@ -927,6 +988,17 @@ table.vitals .v {
     font-size: 13px;
     color: var(--olive-lt);
     letter-spacing: 1px;
+}
+.tl-role {
+    padding-left: 9px;
+    border-left: 1px dotted var(--line-dk);
+    margin-top: 2px;
+}
+.tl-role .rl {
+    display: block;
+    font-size: 10.5px;
+    color: var(--ink-dim);
+    line-height: 1.3;
 }
 
 /* ===== PROJECTS ===== */

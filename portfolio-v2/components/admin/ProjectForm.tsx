@@ -14,7 +14,8 @@ export default function ProjectForm({ item, onDone }: { item?: Project; onDone?:
   async function submit(fd: FormData) {
     setSaving(true)
     try {
-      await saveProject(fd)
+      const res = await saveProject(fd)
+      if (res.error) return alert(res.error)
       router.refresh()
       onDone?.()
     } catch {
@@ -34,7 +35,14 @@ export default function ProjectForm({ item, onDone }: { item?: Project; onDone?:
   }
 
   return (
-    <form action={submit} className="admin-form">
+    // onSubmit, not action=: React resets uncontrolled fields after an action, which would wipe a failed save
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        submit(new FormData(e.currentTarget))
+      }}
+      className="admin-form"
+    >
       {item && <input type="hidden" name="id" value={item.id} />}
 
       <div className="row2">
